@@ -19,9 +19,10 @@ export default function PublicProfile({
         <>
             <Head title={`${creator.name} Portfolio`} />
 
-            <div className="min-h-screen bg-[linear-gradient(180deg,#f8f5ef_0%,#ffffff_38%,#f3f0ea_100%)] px-4 py-10 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-6xl space-y-10">
-                    <section className="rounded-[2rem] border bg-white/80 p-8 shadow-sm backdrop-blur">
+            <div className="relative min-h-screen bg-background px-4 py-10 text-foreground sm:px-6 lg:px-8">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.16),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_34%)]" />
+                <div className="relative mx-auto max-w-6xl space-y-10">
+                    <section className="rounded-xl border bg-card/85 p-8 shadow-sm backdrop-blur">
                         <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
                             CreativeHub Portfolio
                         </p>
@@ -49,7 +50,7 @@ export default function PublicProfile({
                         </div>
 
                         {projects.length === 0 ? (
-                            <div className="rounded-[2rem] border border-dashed bg-white/70 p-10 text-center text-sm text-muted-foreground">
+                            <div className="rounded-xl border border-dashed bg-card/70 p-10 text-center text-sm text-muted-foreground">
                                 No public projects yet.
                             </div>
                         ) : (

@@ -77,15 +77,23 @@ class ProjectController extends Controller
             ->values();
         $publicShare = $project->shares->firstWhere('type', 'public');
         $clientShare = $project->shares->firstWhere('type', 'client');
+        $hasPendingAnalysis = $project->assets->contains(
+            fn (ProjectAsset $asset) => $asset->analysis === null,
+        );
 
         return Inertia::render('projects/show', [
             'curator' => [
                 'assistant_name' => 'Curator',
-                'summary' => sprintf(
-                    'Hey, анализирах снимките ти. Имаш %d силни кадъра в акцентите за проекта "%s".',
-                    $highlights->count(),
-                    $project->name,
-                ),
+                'summary' => $hasPendingAnalysis
+                    ? sprintf(
+                        'Curator is reviewing the latest uploads for "%s". New insights will appear here automatically.',
+                        $project->name,
+                    )
+                    : sprintf(
+                        'Curator finished reviewing "%s". %d highlight suggestions are ready.',
+                        $project->name,
+                        $highlights->count(),
+                    ),
             ],
             'sharePanel' => [
                 'visibility' => $project->visibility->value,

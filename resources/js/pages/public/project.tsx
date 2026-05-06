@@ -20,8 +20,9 @@ export default function PublicProject({
         <>
             <Head title={project.name} />
 
-            <div className="min-h-screen bg-[linear-gradient(180deg,#f7f3ec_0%,#ffffff_44%,#f2ede5_100%)] px-4 py-10 sm:px-6 lg:px-8">
-                <div className="mx-auto max-w-6xl space-y-8">
+            <div className="relative min-h-screen bg-background px-4 py-10 text-foreground sm:px-6 lg:px-8">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.16),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_34%)]" />
+                <div className="relative mx-auto max-w-6xl space-y-8">
                     <div className="space-y-4">
                         <Link
                             href={creator.profile_url}
@@ -31,7 +32,7 @@ export default function PublicProject({
                             Back to portfolio
                         </Link>
 
-                        <div className="rounded-[2rem] border bg-white/80 p-8 shadow-sm backdrop-blur">
+                        <div className="rounded-xl border bg-card/85 p-8 shadow-sm backdrop-blur">
                             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                                 <div className="space-y-3">
                                     <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
@@ -62,7 +63,7 @@ export default function PublicProject({
                         {(project.assets ?? []).map((asset) => (
                             <figure
                                 key={asset.id}
-                                className="overflow-hidden rounded-[1.5rem] border bg-white shadow-sm"
+                                className="overflow-hidden rounded-xl border bg-card/85 shadow-sm"
                             >
                                 <img
                                     src={asset.url}

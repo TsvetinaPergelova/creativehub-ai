@@ -37,6 +37,9 @@ test('an authenticated creator can upload images to a project', function () {
     expect($project->fresh()->assets)->toHaveCount(2);
 
     Storage::disk('public')->assertCount('projects/'.$project->id, 2);
+
+    Queue::assertPushed(AnalyzeProjectAssetJob::class, 2);
+    Queue::assertPushed(RefreshProjectHighlightsJob::class, 1);
 });
 
 test('an authenticated creator can view ai analysis insights on the project page', function () {
