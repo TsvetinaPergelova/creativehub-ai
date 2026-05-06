@@ -1,25 +1,94 @@
-import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { Head, Link } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
+import Heading from '@/components/heading';
+import ProjectCard from '@/components/projects/project-card';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { create, index as projects } from '@/actions/App/Http/Controllers/Projects/ProjectController';
 import { dashboard } from '@/routes';
+import type { Project } from '@/types';
 
-export default function Dashboard() {
+type DashboardStat = {
+    label: string;
+    value: number;
+    hint: string;
+};
+
+export default function Dashboard({
+    stats,
+    recentProjects,
+}: {
+    stats: DashboardStat[];
+    recentProjects: Project[];
+}) {
     return (
         <>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                    <Heading
+                        title="Dashboard"
+                        description="Track how your portfolio is taking shape and jump back into recent work."
+                    />
+
+                    <div className="flex gap-3">
+                        <Button variant="outline" asChild>
+                            <Link href={projects()} prefetch>
+                                View projects
+                            </Link>
+                        </Button>
+
+                        <Button asChild>
+                            <Link href={create()} prefetch>
+                                <Plus className="mr-2 size-4" />
+                                New project
+                            </Link>
+                        </Button>
                     </div>
                 </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                <div className="grid gap-4 md:grid-cols-3">
+                    {stats.map((stat) => (
+                        <Card key={stat.label}>
+                            <CardHeader>
+                                <CardTitle className="text-sm text-muted-foreground">
+                                    {stat.label}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                                <p className="text-3xl font-semibold tracking-tight">
+                                    {stat.value}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                    {stat.hint}
+                                </p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-lg font-semibold">Recent projects</h2>
+                    </div>
+
+                    {recentProjects.length === 0 ? (
+                        <div className="rounded-xl border border-dashed p-10 text-center">
+                            <p className="text-sm text-muted-foreground">
+                                No projects yet. Create one to start shaping
+                                your portfolio.
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                            {recentProjects.map((project) => (
+                                <ProjectCard
+                                    key={project.id}
+                                    project={project}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </>

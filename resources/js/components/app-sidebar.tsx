@@ -13,6 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { index as projects } from '@/actions/App/Http/Controllers/Projects/ProjectController';
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
@@ -21,6 +22,11 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Projects',
+        href: projects(),
+        icon: FolderGit2,
     },
 ];
 
