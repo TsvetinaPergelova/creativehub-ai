@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Projects\StoreProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Models\Project;
+use App\Models\ProjectAsset;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -67,9 +68,34 @@ class ProjectController extends Controller
      */
     public function show(Project $project): Response
     {
-        $project = $this->resolveOwnedProject($project);
+        $this->authorize('view', $project);
+
+        $project->load(['assets.analysis', 'shares']);
+        $highlights = $project->assets
+            ->filter(fn (ProjectAsset $asset) => $asset->analysis?->is_highlight)
+            ->sortBy('sort_order')
+            ->values();
+        $publicShare = $project->shares->firstWhere('type', 'public');
+        $clientShare = $project->shares->firstWhere('type', 'client');
 
         return Inertia::render('projects/show', [
+            'curator' => [
+                'assistant_name' => 'Curator',
+                'summary' => sprintf(
+                    'Hey, анализирах снимките ти. Имаш %d силни кадъра в акцентите за проекта "%s".',
+                    $highlights->count(),
+                    $project->name,
+                ),
+            ],
+            'sharePanel' => [
+                'visibility' => $project->visibility->value,
+                'public_url' => $publicShare
+                    ? route('portfolio.project.show', [$project->user, $project])
+                    : null,
+                'client_url' => $clientShare
+                    ? url('/galleries/'.$clientShare->token)
+                    : null,
+            ],
             'project' => [
                 'id' => $project->id,
                 'name' => $project->name,
@@ -80,7 +106,14 @@ class ProjectController extends Controller
                 'visibility' => $project->visibility->value,
                 'created_at' => $project->created_at?->toISOString(),
                 'published_at' => $project->published_at?->toISOString(),
+                'assets' => $project->assets
+                    ->sortBy('sort_order')
+                    ->values()
+                    ->map(fn (ProjectAsset $asset) => $this->mapAsset($asset)),
             ],
+            'highlights' => $highlights
+                ->map(fn (ProjectAsset $asset) => $this->mapAsset($asset))
+                ->values(),
         ]);
     }
 
@@ -89,7 +122,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project): Response
     {
-        $project = $this->resolveOwnedProject($project);
+        $this->authorize('update', $project);
 
         return Inertia::render('projects/create', [
             'project' => [
@@ -111,8 +144,6 @@ class ProjectController extends Controller
         UpdateProjectRequest $request,
         Project $project,
     ): RedirectResponse {
-        $project = $this->resolveOwnedProject($project);
-
         $project->update($request->validated());
 
         Inertia::flash('toast', [
@@ -123,11 +154,32 @@ class ProjectController extends Controller
         return to_route('projects.show', $project);
     }
 
-    private function resolveOwnedProject(Project $project): Project
+    /**
+     * @return array<string, mixed>
+     */
+    private function mapAsset(ProjectAsset $asset): array
     {
-        return auth()->user()
-            ->projects()
-            ->whereKey($project->getKey())
-            ->firstOrFail();
+        return [
+            'id' => $asset->id,
+            'filename' => $asset->filename,
+            'path' => $asset->path,
+            'url' => asset('storage/'.$asset->path),
+            'mime_type' => $asset->mime_type,
+            'size' => $asset->size,
+            'width' => $asset->width,
+            'height' => $asset->height,
+            'sort_order' => $asset->sort_order,
+            'analysis' => $asset->analysis ? [
+                'tags' => $asset->analysis->tags ?? [],
+                'alt_text' => $asset->analysis->alt_text,
+                'composition_score' => $asset->analysis->composition_score,
+                'focus_score' => $asset->analysis->focus_score,
+                'lighting_score' => $asset->analysis->lighting_score,
+                'critique' => $asset->analysis->critique,
+                'mood' => $asset->analysis->mood?->value ?? $asset->analysis->mood,
+                'is_highlight' => $asset->analysis->is_highlight,
+                'is_near_duplicate' => $asset->analysis->is_near_duplicate,
+            ] : null,
+        ];
     }
 }

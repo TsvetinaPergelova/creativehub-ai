@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests\Projects;
 
+use App\Enums\ProjectVisibility;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
-class UpdateProjectRequest extends FormRequest
+class PublishProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +25,7 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'category' => ['required', 'string', 'max:120'],
-            'description' => ['nullable', 'string', 'max:5000'],
+            'visibility' => ['required', new Enum(ProjectVisibility::class)],
         ];
     }
 }

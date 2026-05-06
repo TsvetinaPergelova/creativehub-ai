@@ -50,3 +50,17 @@ test('an authenticated creator can view only their own projects', function () {
             ->missing('projects.1')
         );
 });
+
+test('a creator cannot update another creators project', function () {
+    $owner = User::factory()->create();
+    $intruder = User::factory()->create();
+    $project = Project::factory()->for($owner)->create();
+
+    $this->actingAs($intruder)
+        ->patch(route('projects.update', $project), [
+            'name' => 'Hijacked',
+            'category' => $project->category,
+            'description' => $project->description,
+        ])
+        ->assertForbidden();
+});

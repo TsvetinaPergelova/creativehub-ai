@@ -5,7 +5,7 @@ namespace App\Http\Requests\Projects;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProjectRequest extends FormRequest
+class StoreProjectAssetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,8 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'category' => ['required', 'string', 'max:120'],
-            'description' => ['nullable', 'string', 'max:5000'],
+            'files' => ['required', 'array', 'min:1', 'max:50'],
+            'files.*' => ['required', 'image', 'max:15360'],
         ];
     }
 }

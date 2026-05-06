@@ -17,9 +17,14 @@ type DashboardStat = {
 export default function Dashboard({
     stats,
     recentProjects,
+    portfolioAdvice,
 }: {
     stats: DashboardStat[];
     recentProjects: Project[];
+    portfolioAdvice: {
+        title: string;
+        message: string;
+    };
 }) {
     return (
         <>
@@ -68,6 +73,17 @@ export default function Dashboard({
                 </div>
 
                 <div className="space-y-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{portfolioAdvice.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm text-muted-foreground">
+                                {portfolioAdvice.message}
+                            </p>
+                        </CardContent>
+                    </Card>
+
                     <div className="flex items-center justify-between">
                         <h2 className="text-lg font-semibold">Recent projects</h2>
                     </div>

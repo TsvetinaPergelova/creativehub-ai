@@ -10,6 +10,27 @@
 
 ---
 
+## Implementation Status
+
+- [x] Task 1: Domain Foundation and Project Schema
+- [x] Task 2: Project CRUD and Dashboard Integration
+- [x] Task 3: Asset Upload Pipeline and Project Manager Shell
+- [x] Task 4: AI Analysis MVP for Tags, Alt Text, Critique, and Highlights
+- [x] Task 5: AI Sidebar and Curator Presence in Project Manager
+- [x] Task 6: Publishing, Public Profile, and Public Project Pages
+- [x] Task 7: Client Gallery with Password Access and Favorites
+- [x] Task 8: Explore Feed and Portfolio Intelligence Widgets
+- [x] Task 9: Polish, Authorization, Seed Data, and Regression Coverage
+
+## AI Provider Decision
+
+- MVP AI is `Gemini-only` through the Laravel AI SDK.
+- Use `GEMINI_API_KEY` as the runtime credential.
+- Default text, image, and embeddings flows should point to Gemini.
+- TTS, STT, and reranking stay out of MVP scope until there is a clear product need, since Gemini is not our active path for those capabilities here.
+
+---
+
 ## Scope Note
 
 Текущата спецификация покрива няколко подсистеми: вътрешен project manager, AI анализатор, публично портфолио, клиентска галерия и community explore. Вместо да се изпълняват едновременно, този master plan ги подрежда в фази. Препоръчаният ред е:
