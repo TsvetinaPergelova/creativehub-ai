@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { CheckCircle2, ImagePlus, LoaderCircle } from 'lucide-react';
 import ProjectAssetController from '@/actions/App/Http/Controllers/Projects/ProjectAssetController';
 import InputError from '@/components/input-error';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
 
@@ -78,12 +79,16 @@ export default function ProjectUploadDropzone({
                                 <ImagePlus className="size-4" />
                             </div>
                             <div>
+                                <Badge variant="outline" className="mb-2">
+                                    Step 1
+                                </Badge>
                                 <h2 className="text-lg font-semibold">
-                                    Upload images
+                                    Add images
                                 </h2>
                                 <p className="text-sm text-muted-foreground">
-                                    Pick files and CreativeHub will upload and
-                                    start AI analysis automatically.
+                                    Pick the frames you want in this project.
+                                    CreativeHub uploads them and starts AI
+                                    analysis automatically.
                                 </p>
                             </div>
                         </div>

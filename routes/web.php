@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientGalleryController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\Projects\ProjectAssetController;
 use App\Http\Controllers\Projects\ProjectController;
+use App\Http\Controllers\Projects\ProjectCoverController;
 use App\Http\Controllers\Projects\ProjectPublishController;
 use App\Http\Controllers\PublicProfileController;
 use App\Http\Controllers\PublicProjectController;
@@ -20,9 +21,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $user = request()->user();
 
         $projects = $user->projects()
+            ->with('coverAsset')
+            ->withCount('assets')
             ->latest()
             ->take(3)
-            ->get(['id', 'name', 'slug', 'category', 'status', 'visibility', 'created_at']);
+            ->get(['id', 'name', 'slug', 'category', 'description', 'status', 'visibility', 'cover_asset_id', 'created_at', 'published_at']);
         $draftCountsByCategory = $user->projects()
             ->selectRaw('category, count(*) as aggregate')
             ->where('status', 'draft')
@@ -62,7 +65,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     'hint' => 'Unique creative areas in your library',
                 ],
             ],
-            'recentProjects' => $projects,
+            'recentProjects' => $projects->map(fn ($project) => [
+                'id' => $project->id,
+                'name' => $project->name,
+                'slug' => $project->slug,
+                'category' => $project->category,
+                'description' => $project->description,
+                'status' => $project->status->value,
+                'visibility' => $project->visibility->value,
+                'cover_asset_id' => $project->cover_asset_id,
+                'cover_image_url' => $project->coverAsset
+                    ? asset('storage/'.$project->coverAsset->path)
+                    : null,
+                'asset_count' => $project->assets_count,
+                'created_at' => $project->created_at?->toISOString(),
+                'published_at' => $project->published_at?->toISOString(),
+            ])->values(),
             'portfolioAdvice' => [
                 'title' => 'AI Portfolio Advice',
                 'message' => $adviceCategory && (($publishedCountsByCategory[$adviceCategory] ?? 0) > 0)
@@ -78,6 +96,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class)->except(['destroy']);
     Route::post('projects/{project}/assets', [ProjectAssetController::class, 'store'])
         ->name('projects.assets.store');
+    Route::patch('projects/{project}/assets/{asset}', [ProjectAssetController::class, 'update'])
+        ->name('projects.assets.update');
+    Route::delete('projects/{project}/assets/{asset}', [ProjectAssetController::class, 'destroy'])
+        ->name('projects.assets.destroy');
+    Route::patch('projects/{project}/cover', [ProjectCoverController::class, 'update'])
+        ->name('projects.cover.update');
     Route::post('projects/{project}/publish', [ProjectPublishController::class, 'store'])
         ->name('projects.publish.store');
 });

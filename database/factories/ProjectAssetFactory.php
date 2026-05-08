@@ -23,6 +23,7 @@ class ProjectAssetFactory extends Factory
             'disk' => 'public',
             'path' => 'projects/'.fake()->uuid().'.jpg',
             'filename' => fake()->uuid().'.jpg',
+            'title' => null,
             'mime_type' => 'image/jpeg',
             'size' => fake()->numberBetween(500_000, 8_000_000),
             'width' => fake()->randomElement([1600, 2000, 2400, 3000]),

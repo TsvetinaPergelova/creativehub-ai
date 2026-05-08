@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
     'disk',
     'path',
     'filename',
+    'title',
     'mime_type',
     'size',
     'width',

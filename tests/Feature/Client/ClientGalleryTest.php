@@ -23,6 +23,7 @@ test('client gallery prompts for a password before showing protected content', f
 
     $this->get(route('client-galleries.show', $share->token))
         ->assertOk()
+        ->assertSee('meta name="csrf-token"', false)
         ->assertInertia(fn ($page) => $page
             ->component('projects/client')
             ->where('access.requires_password', true)
@@ -43,8 +44,13 @@ test('client can unlock a gallery and mark favorite images', function () {
     ]);
 
     $asset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Client proof hero',
         'filename' => 'client-proof.jpg',
         'path' => 'projects/'.$project->id.'/client-proof.jpg',
+    ]);
+
+    $project->update([
+        'cover_asset_id' => $asset->id,
     ]);
 
     $this->post(route('client-galleries.access.store', $share->token), [
@@ -56,6 +62,8 @@ test('client can unlock a gallery and mark favorite images', function () {
         ->assertInertia(fn ($page) => $page
             ->component('projects/client')
             ->where('access.requires_password', false)
+            ->where('gallery.cover_image_url', asset('storage/'.$asset->path))
+            ->where('gallery.assets.0.title', 'Client proof hero')
             ->where('gallery.assets.0.filename', 'client-proof.jpg')
         );
 

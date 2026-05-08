@@ -17,7 +17,7 @@ class ClientGalleryController extends Controller
 {
     public function show(ProjectShare $share): Response
     {
-        $share = $share->load(['project.assets.analysis', 'clientSelections']);
+        $share = $share->load(['project.assets.analysis', 'project.coverAsset', 'clientSelections']);
         $hasAccess = $this->hasAccess($share);
 
         return Inertia::render('projects/client', [
@@ -29,6 +29,9 @@ class ClientGalleryController extends Controller
                 'token' => $share->token,
                 'project_name' => $share->project->name,
                 'project_description' => $share->project->description,
+                'cover_image_url' => $share->project->coverAsset
+                    ? asset('storage/'.$share->project->coverAsset->path)
+                    : null,
                 'assets' => $hasAccess
                     ? $share->project->assets
                         ->sortBy('sort_order')
@@ -40,6 +43,7 @@ class ClientGalleryController extends Controller
                             return [
                                 'id' => $asset->id,
                                 'filename' => $asset->filename,
+                                'title' => $asset->title,
                                 'path' => $asset->path,
                                 'url' => asset('storage/'.$asset->path),
                                 'mime_type' => $asset->mime_type,

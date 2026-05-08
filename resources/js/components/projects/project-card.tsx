@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { show } from '@/actions/App/Http/Controllers/Projects/ProjectController';
 import { Badge } from '@/components/ui/badge';
 import {
     Card,
@@ -8,10 +9,11 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { show } from '@/actions/App/Http/Controllers/Projects/ProjectController';
 import type { Project } from '@/types';
 
 export default function ProjectCard({ project }: { project: Project }) {
+    const assetCount = project.asset_count ?? project.assets?.length ?? 0;
+
     return (
         <Card className="group gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-white/[0.04] shadow-[0_24px_80px_rgba(0,0,0,0.2)] transition-transform duration-200 hover:-translate-y-1">
             <div className="relative aspect-[16/10] overflow-hidden bg-muted">
@@ -59,12 +61,12 @@ export default function ProjectCard({ project }: { project: Project }) {
 
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <span>
-                        {project.assets?.length ?? 0} asset
-                        {(project.assets?.length ?? 0) === 1 ? '' : 's'}
+                        {assetCount} asset
+                        {assetCount === 1 ? '' : 's'}
                     </span>
                     {project.published_at && (
                         <>
-                            <span className="opacity-40">•</span>
+                            <span className="opacity-40">&bull;</span>
                             <span>Published</span>
                         </>
                     )}

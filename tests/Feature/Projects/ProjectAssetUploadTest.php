@@ -1,24 +1,46 @@
 <?php
 
-use App\Jobs\Ai\AnalyzeProjectAssetJob;
-use App\Jobs\Ai\RefreshProjectHighlightsJob;
+use App\Ai\Agents\AnalyzeProjectAssetAgent;
+use App\Models\ClientSelection;
 use App\Models\Project;
 use App\Models\ProjectAsset;
 use App\Models\ProjectAssetAnalysis;
+use App\Models\ProjectShare;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
 test('an authenticated creator can upload images to a project', function () {
-    Queue::fake([
-        AnalyzeProjectAssetJob::class,
-        RefreshProjectHighlightsJob::class,
-    ]);
+    $this->withoutDefer();
     Storage::fake('public');
+
+    AnalyzeProjectAssetAgent::fake([
+        [
+            'tags' => ['hero', 'ui'],
+            'alt_text' => 'A hero frame for the project.',
+            'composition_score' => 8,
+            'focus_score' => 8,
+            'lighting_score' => 8,
+            'critique' => 'Balanced composition.',
+            'mood' => 'minimalist',
+            'is_highlight' => true,
+            'is_near_duplicate' => false,
+        ],
+        [
+            'tags' => ['detail', 'ux'],
+            'alt_text' => 'A detail frame for the project.',
+            'composition_score' => 7,
+            'focus_score' => 8,
+            'lighting_score' => 7,
+            'critique' => 'Useful supporting frame.',
+            'mood' => 'warm',
+            'is_highlight' => false,
+            'is_near_duplicate' => false,
+        ],
+    ])->preventStrayPrompts();
 
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
@@ -35,11 +57,12 @@ test('an authenticated creator can upload images to a project', function () {
     $response->assertRedirect(route('projects.show', $project));
 
     expect($project->fresh()->assets)->toHaveCount(2);
+    expect(ProjectAssetAnalysis::query()->whereIn(
+        'project_asset_id',
+        $project->assets()->pluck('id')
+    )->count())->toBe(2);
 
     Storage::disk('public')->assertCount('projects/'.$project->id, 2);
-
-    Queue::assertPushed(AnalyzeProjectAssetJob::class, 2);
-    Queue::assertPushed(RefreshProjectHighlightsJob::class, 1);
 });
 
 test('an authenticated creator can view ai analysis insights on the project page', function () {
@@ -49,6 +72,7 @@ test('an authenticated creator can view ai analysis insights on the project page
     ]);
 
     $asset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Sunset hero frame',
         'filename' => 'portrait.jpg',
         'path' => 'projects/'.$project->id.'/portrait.jpg',
     ]);
@@ -72,17 +96,185 @@ test('an authenticated creator can view ai analysis insights on the project page
         ->assertOk()
         ->assertInertia(fn ($page) => $page
             ->component('projects/show')
+            ->where('project.assets.0.title', 'Sunset hero frame')
             ->where('project.assets.0.analysis.alt_text', 'Portrait during sunset with warm golden light.')
             ->where('highlights.0.filename', 'portrait.jpg')
             ->where('curator.assistant_name', 'Curator')
         );
 });
 
-test('a creator cannot upload images to another creators project', function () {
-    Queue::fake([
-        AnalyzeProjectAssetJob::class,
-        RefreshProjectHighlightsJob::class,
+test('the project page exposes a human-friendly processing snapshot while review is pending', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create([
+        'name' => 'Launch Campaign',
     ]);
+
+    $reviewedAsset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Approved hero frame',
+        'filename' => 'hero.jpg',
+        'path' => 'projects/'.$project->id.'/hero.jpg',
+    ]);
+
+    ProjectAssetAnalysis::query()->create([
+        'project_asset_id' => $reviewedAsset->id,
+        'tags' => ['hero', 'campaign'],
+        'alt_text' => 'Approved hero frame.',
+        'composition_score' => 9,
+        'focus_score' => 8,
+        'lighting_score' => 9,
+        'critique' => 'Strong cover image.',
+        'mood' => 'minimalist',
+        'is_highlight' => true,
+        'is_near_duplicate' => false,
+        'meta' => [],
+    ]);
+
+    ProjectAsset::factory()->for($project)->create([
+        'title' => 'Banknote concept',
+        'filename' => 'banknote.jpg',
+        'path' => 'projects/'.$project->id.'/banknote.jpg',
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('projects.show', $project))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('projects/show')
+            ->where('processing.is_reviewing', true)
+            ->where('processing.current_asset_label', 'Banknote concept')
+            ->where('processing.pending_count', 1)
+            ->where('processing.reviewed_count', 1)
+            ->where('processing.total_count', 2)
+            ->where('processing.coverage_percent', 50)
+            ->where('processing.headline', 'Curator is reviewing your latest image')
+        );
+});
+
+test('an authenticated creator can update an asset title', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create();
+    $asset = ProjectAsset::factory()->for($project)->create([
+        'title' => null,
+    ]);
+
+    $response = $this
+        ->actingAs($user)
+        ->patch(route('projects.assets.update', [$project, $asset]), [
+            'title' => 'Homepage concept',
+        ]);
+
+    $response->assertRedirect(route('projects.show', $project));
+
+    expect($asset->fresh()->title)->toBe('Homepage concept');
+});
+
+test('an authenticated creator can set a project cover from an existing asset', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create();
+    $asset = ProjectAsset::factory()->for($project)->create([
+        'path' => 'projects/'.$project->id.'/cover-frame.jpg',
+    ]);
+
+    $response = $this
+        ->actingAs($user)
+        ->patch(route('projects.cover.update', $project), [
+            'cover_asset_id' => $asset->id,
+        ]);
+
+    $response->assertRedirect(route('projects.show', $project));
+
+    expect($project->fresh()->cover_asset_id)->toBe($asset->id);
+});
+
+test('an authenticated creator can delete a project asset and clear related state', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create();
+    $asset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Hero frame',
+        'path' => 'projects/'.$project->id.'/hero-frame.jpg',
+        'disk' => 'public',
+    ]);
+
+    Storage::disk('public')->put($asset->path, 'image-bytes');
+
+    $project->update([
+        'cover_asset_id' => $asset->id,
+    ]);
+
+    ProjectAssetAnalysis::query()->create([
+        'project_asset_id' => $asset->id,
+        'tags' => ['hero'],
+        'alt_text' => 'Hero frame',
+        'composition_score' => 9,
+        'focus_score' => 9,
+        'lighting_score' => 9,
+        'critique' => 'Strong hero frame.',
+        'mood' => 'minimalist',
+        'is_highlight' => true,
+        'is_near_duplicate' => false,
+        'meta' => [],
+    ]);
+
+    $share = ProjectShare::factory()->for($project)->create([
+        'type' => 'client',
+    ]);
+
+    ClientSelection::query()->create([
+        'project_share_id' => $share->id,
+        'project_asset_id' => $asset->id,
+        'session_id' => 'test-session',
+        'is_favorite' => true,
+    ]);
+
+    $response = $this
+        ->actingAs($user)
+        ->delete(route('projects.assets.destroy', [$project, $asset]));
+
+    $response->assertRedirect(route('projects.show', $project));
+
+    expect($project->fresh()->cover_asset_id)->toBeNull();
+    expect(ProjectAsset::query()->whereKey($asset->id)->exists())->toBeFalse();
+    expect(ProjectAssetAnalysis::query()->where('project_asset_id', $asset->id)->exists())->toBeFalse();
+    expect(ClientSelection::query()->where('project_asset_id', $asset->id)->exists())->toBeFalse();
+
+    Storage::disk('public')->assertMissing($asset->path);
+});
+
+test('the project page exposes the selected cover image and cover asset state', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create([
+        'name' => 'Cover Story',
+    ]);
+    $coverAsset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Hero frame',
+        'path' => 'projects/'.$project->id.'/hero-frame.jpg',
+    ]);
+    $secondaryAsset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Detail frame',
+        'path' => 'projects/'.$project->id.'/detail-frame.jpg',
+    ]);
+
+    $project->update([
+        'cover_asset_id' => $coverAsset->id,
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('projects.show', $project))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('project.name', 'Cover Story')
+            ->where('project.cover_asset_id', $coverAsset->id)
+            ->where('project.cover_image_url', asset('storage/'.$coverAsset->path))
+            ->where('project.assets.0.is_cover', true)
+            ->where('project.assets.1.is_cover', false)
+            ->where('project.assets.0.title', 'Hero frame')
+            ->where('project.assets.1.title', 'Detail frame')
+        );
+});
+
+test('a creator cannot upload images to another creators project', function () {
     Storage::fake('public');
 
     $owner = User::factory()->create();
@@ -94,6 +286,43 @@ test('a creator cannot upload images to another creators project', function () {
             'files' => [
                 UploadedFile::fake()->image('intrusion.jpg', 2400, 1600),
             ],
+        ])
+        ->assertForbidden();
+});
+
+test('a creator cannot set a project cover from another projects asset', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create();
+    $otherProject = Project::factory()->for($user)->create();
+    $foreignAsset = ProjectAsset::factory()->for($otherProject)->create();
+
+    $this->actingAs($user)
+        ->patch(route('projects.cover.update', $project), [
+            'cover_asset_id' => $foreignAsset->id,
+        ])
+        ->assertInvalid(['cover_asset_id']);
+});
+
+test('a creator cannot delete another creators asset', function () {
+    $owner = User::factory()->create();
+    $intruder = User::factory()->create();
+    $project = Project::factory()->for($owner)->create();
+    $asset = ProjectAsset::factory()->for($project)->create();
+
+    $this->actingAs($intruder)
+        ->delete(route('projects.assets.destroy', [$project, $asset]))
+        ->assertForbidden();
+});
+
+test('a creator cannot update another creators asset title', function () {
+    $owner = User::factory()->create();
+    $intruder = User::factory()->create();
+    $project = Project::factory()->for($owner)->create();
+    $asset = ProjectAsset::factory()->for($project)->create();
+
+    $this->actingAs($intruder)
+        ->patch(route('projects.assets.update', [$project, $asset]), [
+            'title' => 'Do not allow',
         ])
         ->assertForbidden();
 });
