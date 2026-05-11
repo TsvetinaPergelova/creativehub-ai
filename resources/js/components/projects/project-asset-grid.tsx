@@ -1,10 +1,17 @@
 import { router } from '@inertiajs/react';
 import { type PointerEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertTriangle, ChevronLeft, ChevronRight, Expand, Search, Sparkles, Trash2 } from 'lucide-react';
+import {
+    AlertTriangle,
+    ChevronLeft,
+    ChevronRight,
+    Expand,
+    Search,
+    Sparkles,
+    Trash2,
+} from 'lucide-react';
 import { destroy } from '@/actions/App/Http/Controllers/Projects/ProjectAssetController';
 import ProjectAssetTitleForm from '@/components/projects/project-asset-title-form';
 import type { ProjectAsset } from '@/types';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -47,7 +54,7 @@ export default function ProjectAssetGrid({
     const [isZoomed, setIsZoomed] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [isDeletingAsset, setIsDeletingAsset] = useState(false);
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [isDeleteConfirming, setIsDeleteConfirming] = useState(false);
     const [pan, setPan] = useState({ x: 0, y: 0 });
     const imageViewportRef = useRef<HTMLDivElement | null>(null);
     const imageRef = useRef<HTMLImageElement | null>(null);
@@ -69,7 +76,7 @@ export default function ProjectAssetGrid({
         setIsZoomed(false);
         setPan({ x: 0, y: 0 });
         setIsDragging(false);
-        setIsDeleteDialogOpen(false);
+        setIsDeleteConfirming(false);
         dragStateRef.current = null;
         suppressToggleRef.current = false;
     }, [selectedAssetIndex]);
@@ -83,7 +90,7 @@ export default function ProjectAssetGrid({
             setIsZoomed(false);
             setIsDragging(false);
             setPan({ x: 0, y: 0 });
-            setIsDeleteDialogOpen(false);
+            setIsDeleteConfirming(false);
             dragStateRef.current = null;
             suppressToggleRef.current = false;
             setSelectedAssetIndex(null);
@@ -126,9 +133,7 @@ export default function ProjectAssetGrid({
         };
     }
 
-    function handlePreviewPointerDown(
-        event: PointerEvent<HTMLButtonElement>,
-    ): void {
+    function handlePreviewPointerDown(event: PointerEvent<HTMLButtonElement>): void {
         if (!isZoomed) {
             return;
         }
@@ -145,9 +150,7 @@ export default function ProjectAssetGrid({
         setIsDragging(true);
     }
 
-    function handlePreviewPointerMove(
-        event: PointerEvent<HTMLButtonElement>,
-    ): void {
+    function handlePreviewPointerMove(event: PointerEvent<HTMLButtonElement>): void {
         const dragState = dragStateRef.current;
 
         if (!isZoomed || !dragState || dragState.pointerId !== event.pointerId) {
@@ -170,9 +173,7 @@ export default function ProjectAssetGrid({
         );
     }
 
-    function handlePreviewPointerEnd(
-        event: PointerEvent<HTMLButtonElement>,
-    ): void {
+    function handlePreviewPointerEnd(event: PointerEvent<HTMLButtonElement>): void {
         const dragState = dragStateRef.current;
 
         if (dragState?.pointerId !== event.pointerId) {
@@ -218,7 +219,7 @@ export default function ProjectAssetGrid({
             return;
         }
 
-        setIsDeleteDialogOpen(true);
+        setIsDeleteConfirming(true);
     }
 
     function confirmDeleteSelectedAsset(): void {
@@ -234,7 +235,7 @@ export default function ProjectAssetGrid({
                 setIsDeletingAsset(false);
             },
             onSuccess: () => {
-                setIsDeleteDialogOpen(false);
+                setIsDeleteConfirming(false);
                 closeAsset(false);
             },
         });
@@ -306,13 +307,11 @@ export default function ProjectAssetGrid({
                             </div>
                             {(asset.analysis?.tags?.length ?? 0) > 0 && (
                                 <div className="flex flex-wrap gap-2">
-                                    {asset.analysis?.tags
-                                        .slice(0, 3)
-                                        .map((tag) => (
-                                            <Badge key={tag} variant="outline">
-                                                {tag}
-                                            </Badge>
-                                        ))}
+                                    {asset.analysis?.tags.slice(0, 3).map((tag) => (
+                                        <Badge key={tag} variant="outline">
+                                            {tag}
+                                        </Badge>
+                                    ))}
                                 </div>
                             )}
                         </div>
@@ -365,9 +364,7 @@ export default function ProjectAssetGrid({
                                         }
                                         className={cn(
                                             'pointer-events-none max-h-[72vh] w-auto max-w-full select-none rounded-lg object-contain transition duration-300 will-change-transform',
-                                            isZoomed
-                                                ? 'cursor-grab'
-                                                : '',
+                                            isZoomed ? 'cursor-grab' : '',
                                         )}
                                         style={{
                                             transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${isZoomed ? zoomScale : 1})`,
@@ -421,9 +418,7 @@ export default function ProjectAssetGrid({
                                 <div className="border-b bg-background/95 px-6 py-5 backdrop-blur-sm">
                                     <div className="space-y-3 pr-10">
                                         <div className="flex flex-wrap items-center gap-2">
-                                            {selectedAsset.is_cover && (
-                                                <Badge>Cover</Badge>
-                                            )}
+                                            {selectedAsset.is_cover && <Badge>Cover</Badge>}
                                             {selectedAsset.analysis?.is_highlight && (
                                                 <Badge className="bg-amber-400 text-amber-950 hover:bg-amber-300">
                                                     Highlight
@@ -442,11 +437,13 @@ export default function ProjectAssetGrid({
                                         </div>
                                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
                                             <span>{formatBytes(selectedAsset.size)}</span>
-                                            {selectedAsset.width && selectedAsset.height && (
-                                                <span>
-                                                    {selectedAsset.width} x {selectedAsset.height}
-                                                </span>
-                                            )}
+                                            {selectedAsset.width &&
+                                                selectedAsset.height && (
+                                                    <span>
+                                                        {selectedAsset.width} x{' '}
+                                                        {selectedAsset.height}
+                                                    </span>
+                                                )}
                                         </div>
                                         <p className="break-all text-xs leading-5 text-muted-foreground/90">
                                             Original file: {selectedAsset.filename}
@@ -577,79 +574,105 @@ export default function ProjectAssetGrid({
                                 </div>
 
                                 <div className="border-t bg-background/95 px-6 py-4 backdrop-blur-sm">
-                                    <div className="flex flex-wrap gap-3">
-                                        <Button
-                                            type="button"
-                                            variant="destructive"
-                                            onClick={requestDeleteSelectedAsset}
-                                            disabled={isDeletingAsset}
-                                            className="flex-1 sm:flex-none"
-                                        >
-                                            <Trash2 className="mr-2 size-4" />
-                                            {isDeletingAsset ? 'Deleting...' : 'Delete image'}
-                                        </Button>
-                                        <Button asChild className="flex-1 sm:flex-none">
-                                            <a
-                                                href={selectedAsset.url}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                Open full image
-                                            </a>
-                                        </Button>
+                                    <div className="space-y-4">
+                                        {isDeleteConfirming && (
+                                            <div className="rounded-2xl border border-destructive/35 bg-destructive/10 px-4 py-4">
+                                                <div className="space-y-3">
+                                                    <p className="text-sm font-semibold text-foreground">
+                                                        Are you sure you want to delete this image?
+                                                    </p>
+
+                                                    <div className="flex items-center gap-3">
+                                                    <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-destructive/40 bg-destructive/15 text-destructive shadow-sm">
+                                                        <AlertTriangle className="size-5" />
+                                                    </div>
+
+                                                        <div className="min-w-0 flex-1 space-y-1 text-left">
+                                                            <p className="truncate text-sm font-medium text-foreground">
+                                                            {getAssetDisplayTitle(
+                                                                selectedAsset,
+                                                            )}
+                                                            </p>
+                                                            <p className="truncate text-xs text-muted-foreground">
+                                                            File: {selectedAsset.filename}
+                                                            </p>
+                                                            {selectedAsset.is_cover && (
+                                                                <p className="text-xs text-destructive">
+                                                                    This will also clear the project cover.
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <div className="flex flex-wrap gap-3">
+                                            {isDeleteConfirming ? (
+                                                <>
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                        onClick={() =>
+                                                            setIsDeleteConfirming(
+                                                                false,
+                                                            )
+                                                        }
+                                                        disabled={isDeletingAsset}
+                                                        className="flex-1 sm:flex-none"
+                                                    >
+                                                        Cancel
+                                                    </Button>
+                                                    <Button
+                                                        type="button"
+                                                        variant="destructive"
+                                                        onClick={
+                                                            confirmDeleteSelectedAsset
+                                                        }
+                                                        disabled={isDeletingAsset}
+                                                        className="flex-1 sm:flex-none"
+                                                    >
+                                                        <Trash2 className="mr-2 size-4" />
+                                                        {isDeletingAsset
+                                                            ? 'Deleting...'
+                                                            : 'Delete image'}
+                                                    </Button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Button
+                                                        type="button"
+                                                        variant="destructive"
+                                                        onClick={
+                                                            requestDeleteSelectedAsset
+                                                        }
+                                                        disabled={isDeletingAsset}
+                                                        className="flex-1 sm:flex-none"
+                                                    >
+                                                        <Trash2 className="mr-2 size-4" />
+                                                        Delete image
+                                                    </Button>
+                                                    <Button
+                                                        asChild
+                                                        className="flex-1 sm:flex-none"
+                                                    >
+                                                        <a
+                                                            href={selectedAsset.url}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                        >
+                                                            Open full image
+                                                        </a>
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </DialogContent>
                 )}
-            </Dialog>
-
-            <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-                <DialogContent className="sm:max-w-md">
-                    <DialogTitle className="text-left text-xl font-semibold">
-                        Сигурни ли сте, че искате да изтриете тази снимка?
-                    </DialogTitle>
-                    <DialogDescription className="text-left text-sm leading-6 text-muted-foreground">
-                        Това ще премахне снимката от проекта, ще изтрие анализа за нея и ще махне client selections, свързани с този кадър.
-                    </DialogDescription>
-
-                    {selectedAsset && (
-                        <div className="space-y-4">
-                            <Alert variant="destructive" className="border-destructive/30 bg-destructive/10">
-                                <AlertTriangle className="size-4" />
-                                <AlertTitle className="line-clamp-none">
-                                    {getAssetDisplayTitle(selectedAsset)}
-                                </AlertTitle>
-                                <AlertDescription>
-                                    <p>Файл: {selectedAsset.filename}</p>
-                                    {selectedAsset.is_cover && (
-                                        <p>Тази снимка е корица на проекта и тя също ще бъде премахната.</p>
-                                    )}
-                                </AlertDescription>
-                            </Alert>
-
-                            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => setIsDeleteDialogOpen(false)}
-                                    disabled={isDeletingAsset}
-                                >
-                                    Отказ
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    onClick={confirmDeleteSelectedAsset}
-                                    disabled={isDeletingAsset}
-                                >
-                                    {isDeletingAsset ? 'Изтриване...' : 'Изтрий снимката'}
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </DialogContent>
             </Dialog>
         </>
     );

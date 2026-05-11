@@ -63,6 +63,17 @@ test('an authenticated creator can upload images to a project', function () {
     )->count())->toBe(2);
 
     Storage::disk('public')->assertCount('projects/'.$project->id, 2);
+
+    $this->actingAs($user)
+        ->get(route('projects.show', $project))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('projects/show')
+            ->has('recentlyUploadedAssetIds', 2)
+            ->where('project.assets.0.title', null)
+            ->where('processing.is_reviewing', false)
+            ->where('processing.pending_count', 0)
+        );
 });
 
 test('an authenticated creator can view ai analysis insights on the project page', function () {
@@ -142,11 +153,16 @@ test('the project page exposes a human-friendly processing snapshot while review
             ->component('projects/show')
             ->where('processing.is_reviewing', true)
             ->where('processing.current_asset_label', 'Banknote concept')
+            ->where('processing.pending_asset_labels.0', 'Banknote concept')
             ->where('processing.pending_count', 1)
             ->where('processing.reviewed_count', 1)
             ->where('processing.total_count', 2)
             ->where('processing.coverage_percent', 50)
             ->where('processing.headline', 'Curator is reviewing your latest image')
+            ->where(
+                'processing.expectation',
+                'Most uploads finish in under a minute. If this takes longer, Gemini may be busy and we will keep retrying automatically.',
+            )
         );
 });
 

@@ -1,10 +1,11 @@
 import { Head, Link, usePoll } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronDown, LoaderCircle, PencilLine, Sparkles } from 'lucide-react';
 import { edit, index } from '@/actions/App/Http/Controllers/Projects/ProjectController';
 import ProjectAiSidebar from '@/components/projects/project-ai-sidebar';
 import ProjectAssetGrid from '@/components/projects/project-asset-grid';
 import ProjectCoverPicker from '@/components/projects/project-cover-picker';
+import ProjectCuratorPresence from '@/components/projects/project-curator-presence';
 import ProjectSharePanel from '@/components/projects/project-share-panel';
 import ProjectUploadReview from '@/components/projects/project-upload-review';
 import ProjectUploadDropzone from '@/components/projects/project-upload-dropzone';
@@ -22,6 +23,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import type { Project, ProjectAsset, ProjectSharePanel as ProjectSharePanelData } from '@/types';
 import type { ProjectProcessing } from '@/types';
 
@@ -45,8 +47,12 @@ export default function ShowProject({
     recentlyUploadedAssetIds: number[];
     sharePanel: ProjectSharePanelData;
 }) {
+    const [isPulseOpen, setIsPulseOpen] = useState(true);
     const assets = project.assets ?? [];
     const analyzedAssets = assets.filter((asset) => asset.analysis);
+    const latestReviewedAsset = [...analyzedAssets]
+        .sort((leftAsset, rightAsset) => rightAsset.sort_order - leftAsset.sort_order)
+        .at(0) ?? null;
     const pendingAssets = assets.filter((asset) => !asset.analysis);
     const hasPendingAnalysis = pendingAssets.length > 0;
     const analysisCoverage = assets.length === 0
@@ -103,6 +109,21 @@ export default function ShowProject({
         stop();
     }, [hasPendingAnalysis, start, stop]);
 
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(min-width: 1536px)');
+
+        const syncPulseState = (): void => {
+            setIsPulseOpen(mediaQuery.matches);
+        };
+
+        syncPulseState();
+        mediaQuery.addEventListener('change', syncPulseState);
+
+        return () => {
+            mediaQuery.removeEventListener('change', syncPulseState);
+        };
+    }, []);
+
     return (
         <>
             <Head title={project.name} />
@@ -125,8 +146,8 @@ export default function ShowProject({
                             <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.03),transparent)]" />
                         </>
                     )}
-                    <div className="relative grid gap-8 xl:grid-cols-[minmax(0,1.25fr)_30rem] xl:items-stretch">
-                        <div className="flex min-w-0 flex-col justify-between gap-8">
+                    <div className="relative grid gap-8 xl:grid-cols-[minmax(0,1fr)_34rem] xl:items-stretch">
+                        <div className="flex min-w-0 flex-col gap-8">
                             <div className="space-y-6">
                                 <div className="space-y-3">
                                     <p className="text-xs uppercase tracking-[0.34em] text-muted-foreground">
@@ -141,141 +162,238 @@ export default function ShowProject({
                                     </p>
                                 </div>
 
-                                <div className="flex flex-wrap gap-2">
-                                    <Badge className="capitalize">{project.status}</Badge>
-                                    <Badge variant="outline" className="capitalize">
-                                        {project.visibility}
-                                    </Badge>
-                                    <Badge variant="outline">
-                                        {pulseStatus}
-                                    </Badge>
-                                </div>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                            Project state
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                            <Badge className="capitalize border border-primary/35 bg-primary/85 text-primary-foreground shadow-sm backdrop-blur-md">
+                                                {project.status}
+                                            </Badge>
+                                            <Badge
+                                                variant="outline"
+                                                className="capitalize border-white/15 bg-background/70 text-foreground shadow-sm backdrop-blur-md"
+                                            >
+                                                {project.visibility}
+                                            </Badge>
+                                            <Badge
+                                                variant="outline"
+                                                className="border-white/15 bg-background/70 text-foreground shadow-sm backdrop-blur-md"
+                                            >
+                                                {pulseStatus}
+                                            </Badge>
+                                        </div>
+                                    </div>
 
-                                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                                    <span>
-                                        {project.cover_image_url
-                                            ? 'Cover image selected from your asset library'
-                                            : 'Choose a cover image to personalize this project'}
-                                    </span>
-                                    {project.cover_image_url && (
-                                        <Badge variant="outline">Hero customized</Badge>
-                                    )}
+                                    <div className="space-y-2">
+                                        <p className="text-sm leading-6 text-muted-foreground">
+                                            {project.cover_image_url
+                                                ? 'Cover image selected from your asset library.'
+                                                : 'Choose a cover image to personalize this project.'}
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                            <Badge
+                                                variant="outline"
+                                                className="border-white/15 bg-background/70 text-foreground shadow-sm backdrop-blur-md"
+                                            >
+                                                {project.cover_image_url
+                                                    ? 'Hero customized'
+                                                    : 'Using default hero'}
+                                            </Badge>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="grid gap-3 md:grid-cols-3">
-                                <div className="rounded-xl border bg-background/45 p-4 backdrop-blur-sm">
-                                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                        Status
-                                    </p>
-                                    <p className="mt-2 text-lg font-semibold capitalize">
-                                        {project.status}
-                                    </p>
-                                    <p className="mt-1 text-sm text-muted-foreground">
-                                        {project.visibility === 'public'
-                                            ? 'Visible outside your workspace'
-                                            : 'Still private inside your workspace'}
-                                    </p>
-                                </div>
-                                <div className="rounded-xl border bg-background/45 p-4 backdrop-blur-sm">
-                                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                        Analysis coverage
-                                    </p>
-                                    <p className="mt-2 text-lg font-semibold">
-                                        {analysisCoverage}%
-                                    </p>
-                                    <p className="mt-1 text-sm text-muted-foreground">
-                                        {analyzedAssets.length} of {assets.length} assets reviewed
-                                    </p>
-                                </div>
-                                <div className="rounded-xl border bg-background/45 p-4 backdrop-blur-sm">
-                                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
-                                        Highlights ready
-                                    </p>
-                                    <p className="mt-2 text-lg font-semibold">
-                                        {highlights.length}
-                                    </p>
-                                    <p className="mt-1 text-sm text-muted-foreground">
-                                        {hasPendingAnalysis
-                                            ? 'More may appear as analysis finishes'
-                                            : 'Best frames are ready for review'}
-                                    </p>
-                                </div>
-                            </div>
                         </div>
 
-                        <Card className="gap-5 self-stretch border-white/10 bg-background/72 py-0 shadow-xl backdrop-blur">
-                            <CardHeader className="px-6 pb-0 pt-6">
-                                <CardTitle className="text-2xl tracking-tight">
-                                    Project pulse
-                                </CardTitle>
-                                <CardDescription className="max-w-sm text-sm leading-6">
-                                    Your working set, condensed into the numbers
-                                    and readiness signals that matter right now.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="grid gap-3 px-6 md:grid-cols-2">
-                                {heroStats.map((stat) => (
-                                    <div
-                                        key={stat.label}
-                                        className="rounded-xl border bg-background/65 p-4"
+                        <Collapsible
+                            open={isPulseOpen}
+                            onOpenChange={setIsPulseOpen}
+                            className="self-stretch"
+                        >
+                            <Card className="gap-0 overflow-hidden border-white/10 bg-background/72 py-0 shadow-xl backdrop-blur">
+                                <CollapsibleTrigger asChild>
+                                    <button
+                                        type="button"
+                                        className="w-full text-left transition hover:bg-white/[0.03] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
                                     >
-                                        <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-                                            {stat.label}
-                                        </p>
-                                        <p className="mt-3 text-4xl font-semibold tracking-tight">
-                                            {stat.value}
-                                        </p>
-                                        <p className="mt-2 text-sm text-muted-foreground">
-                                            {stat.hint}
-                                        </p>
-                                    </div>
-                                ))}
-                            </CardContent>
-                            <CardContent className="space-y-4 px-6 pb-6 pt-0">
-                                <div className="rounded-xl border bg-background/45 p-4">
-                                    <div className="flex items-center justify-between gap-4">
-                                        <div>
-                                            <p className="text-sm font-medium">
-                                                Set readiness
-                                            </p>
-                                            <p className="mt-1 text-sm text-muted-foreground">
-                                                {pulseStatus}
-                                            </p>
+                                        <CardHeader className="px-6 pb-5 pt-6">
+                                            <div className="space-y-5">
+                                                <div className="space-y-2">
+                                                    <CardTitle className="text-2xl tracking-tight">
+                                                        Project pulse
+                                                    </CardTitle>
+                                                    <CardDescription className="max-w-sm text-sm leading-6">
+                                                        Your working set, condensed into the numbers and readiness signals that matter right now.
+                                                    </CardDescription>
+                                                </div>
+
+                                                <div className="rounded-xl border bg-background/45 px-4 py-3 backdrop-blur-sm">
+                                                    <div className="grid gap-3">
+                                                        <div className="grid grid-cols-3 gap-4 text-sm">
+                                                        <div>
+                                                            <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                                                                Assets
+                                                            </p>
+                                                            <p className="mt-1 font-semibold">
+                                                                {assets.length}
+                                                            </p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                                                                Analyzed
+                                                            </p>
+                                                            <p className="mt-1 font-semibold">
+                                                                {analyzedAssets.length}
+                                                            </p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                                                                Highlights
+                                                            </p>
+                                                            <p className="mt-1 font-semibold">
+                                                                {highlights.length}
+                                                            </p>
+                                                        </div>
+                                                        </div>
+
+                                                        <div className="flex items-center justify-between gap-3 border-t border-white/10 pt-3">
+                                                            <div className="min-w-0">
+                                                                <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                                                                    Status
+                                                                </p>
+                                                                <p className="mt-1 text-base font-semibold">
+                                                                    {pulseStatus}
+                                                                </p>
+                                                            </div>
+
+                                                            <ChevronDown
+                                                                className={cn(
+                                                                    'size-4 shrink-0 text-muted-foreground transition-transform',
+                                                                    isPulseOpen && 'rotate-180',
+                                                                )}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </CardHeader>
+                                    </button>
+                                </CollapsibleTrigger>
+
+                                <CollapsibleContent>
+                                    <CardContent className="grid gap-3 border-t px-6 py-5 sm:grid-cols-2">
+                                        {heroStats.map((stat) => (
+                                            <div
+                                                key={stat.label}
+                                                className="rounded-xl border bg-background/65 p-3.5"
+                                            >
+                                                <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+                                                    {stat.label}
+                                                </p>
+                                                <p className="mt-2 text-3xl font-semibold tracking-tight">
+                                                    {stat.value}
+                                                </p>
+                                                <p className="mt-1.5 text-xs leading-5 text-muted-foreground">
+                                                    {stat.hint}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </CardContent>
+                                    <CardContent className="space-y-3 border-t px-6 pb-6 pt-5">
+                                        <div className="flex flex-wrap items-center gap-3">
+                                            <ProjectCoverPicker
+                                                assets={assets}
+                                                coverAssetId={project.cover_asset_id}
+                                                projectId={project.id}
+                                            />
+
+                                            <Button
+                                                variant="outline"
+                                                className="h-11"
+                                                asChild
+                                            >
+                                                <Link href={edit(project.id)} prefetch>
+                                                    <PencilLine className="mr-2 size-4" />
+                                                    Edit details
+                                                </Link>
+                                            </Button>
                                         </div>
-                                        <p className="text-lg font-semibold">
-                                            {analysisCoverage}%
-                                        </p>
-                                    </div>
-                                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
-                                        <div
-                                            className="h-full rounded-full bg-primary transition-all duration-500"
-                                            style={{ width: `${analysisCoverage}%` }}
-                                        />
-                                    </div>
-                                </div>
 
-                                <ProjectCoverPicker
-                                    assets={assets}
-                                    coverAssetId={project.cover_asset_id}
-                                    projectId={project.id}
-                                />
+                                        <div className="rounded-xl border bg-background/45 p-4">
+                                            <div className="flex items-center justify-between gap-4">
+                                                <div>
+                                                    <p className="text-sm font-medium">
+                                                        Set readiness
+                                                    </p>
+                                                    <p className="mt-1 text-sm text-muted-foreground">
+                                                        {pulseStatus}
+                                                    </p>
+                                                </div>
+                                                <p className="text-lg font-semibold">
+                                                    {analysisCoverage}%
+                                                </p>
+                                            </div>
+                                            <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
+                                                <div
+                                                    className="h-full rounded-full bg-primary transition-all duration-500"
+                                                    style={{ width: `${analysisCoverage}%` }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </CollapsibleContent>
+                            </Card>
+                        </Collapsible>
 
-                                <Button variant="outline" className="h-11 w-full" asChild>
-                                    <Link href={edit(project.id)} prefetch>
-                                        <PencilLine className="mr-2 size-4" />
-                                        Edit details
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
+                        <div className="grid gap-3 md:grid-cols-3 xl:col-span-2">
+                            <div className="rounded-xl border bg-background/45 p-4 backdrop-blur-sm">
+                                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                    Status
+                                </p>
+                                <p className="mt-2 text-lg font-semibold capitalize">
+                                    {project.status}
+                                </p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    {project.visibility === 'public'
+                                        ? 'Visible outside your workspace'
+                                        : 'Still private inside your workspace'}
+                                </p>
+                            </div>
+                            <div className="rounded-xl border bg-background/45 p-4 backdrop-blur-sm">
+                                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                    Analysis coverage
+                                </p>
+                                <p className="mt-2 text-lg font-semibold">
+                                    {analysisCoverage}%
+                                </p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    {analyzedAssets.length} of {assets.length} assets reviewed
+                                </p>
+                            </div>
+                            <div className="rounded-xl border bg-background/45 p-4 backdrop-blur-sm">
+                                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                    Highlights ready
+                                </p>
+                                <p className="mt-2 text-lg font-semibold">
+                                    {highlights.length}
+                                </p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                    {hasPendingAnalysis
+                                        ? 'More may appear as analysis finishes'
+                                        : 'Best frames are ready for review'}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
                 <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_28rem] xl:items-start">
                     <div className="space-y-6">
                         <section className="rounded-xl border bg-card/50 p-5 sm:p-6">
-                            <div className="flex flex-col gap-4 border-b pb-5 sm:flex-row sm:items-end sm:justify-between">
+                            <div className="flex flex-col gap-6 border-b pb-5 2xl:flex-row 2xl:items-end 2xl:justify-between">
                                 <div className="space-y-2">
                                     <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
                                         Project workflow
@@ -291,9 +409,9 @@ export default function ShowProject({
                                     </p>
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-3 text-sm sm:min-w-72">
+                                <div className="grid w-full gap-3 text-sm sm:grid-cols-3 2xl:w-auto 2xl:min-w-72">
                                     <div className="rounded-xl border bg-background/60 px-4 py-3">
-                                        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                                        <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                                             Uploaded
                                         </p>
                                         <p className="mt-2 text-xl font-semibold">
@@ -301,7 +419,7 @@ export default function ShowProject({
                                         </p>
                                     </div>
                                     <div className="rounded-xl border bg-background/60 px-4 py-3">
-                                        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                                        <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                                             Reviewed
                                         </p>
                                         <p className="mt-2 text-xl font-semibold">
@@ -309,7 +427,7 @@ export default function ShowProject({
                                         </p>
                                     </div>
                                     <div className="rounded-xl border bg-background/60 px-4 py-3">
-                                        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                                        <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                                             Pending
                                         </p>
                                         <p className="mt-2 text-xl font-semibold">
@@ -329,83 +447,196 @@ export default function ShowProject({
                                 />
 
                                 <div className="rounded-xl border bg-background/55 p-4">
-                                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex size-10 items-center justify-center rounded-lg bg-primary/12 text-primary">
-                                                {processing.is_reviewing ? (
-                                                    <LoaderCircle className="size-4 animate-spin" />
-                                                ) : (
-                                                    <Sparkles className="size-4" />
-                                                )}
-                                            </div>
-                                            <div className="space-y-3">
-                                                <div className="space-y-1">
-                                                    <p className="text-sm font-medium">
-                                                        {processing.headline}
-                                                    </p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        {processing.description}
-                                                    </p>
-                                                </div>
-
-                                                <div className="flex flex-wrap gap-2">
-                                                    {processing.current_asset_label && (
-                                                        <Badge variant="secondary">
-                                                            Reviewing now: {processing.current_asset_label}
-                                                        </Badge>
-                                                    )}
-                                                    {processing.pending_count > 1 && (
-                                                        <Badge variant="outline">
-                                                            {processing.pending_count - 1} more waiting behind it
-                                                        </Badge>
-                                                    )}
-                                                    {!processing.is_reviewing && (
-                                                        <Badge variant="outline">
-                                                            Ready for your next upload
-                                                        </Badge>
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                                            <div className="flex items-start gap-3">
+                                                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/12 text-primary">
+                                                    {processing.is_reviewing ? (
+                                                        <LoaderCircle className="size-4 animate-spin" />
+                                                    ) : (
+                                                        <Sparkles className="size-4" />
                                                     )}
                                                 </div>
-
-                                                {processing.pending_asset_labels.length > 1 && (
-                                                    <div className="space-y-2">
-                                                        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                                                            Up next
+                                                <div className="space-y-3">
+                                                    <div className="space-y-1">
+                                                        <p className="text-sm font-medium">
+                                                            {processing.headline}
                                                         </p>
-                                                        <div className="flex flex-wrap gap-2">
-                                                            {processing.pending_asset_labels
-                                                                .slice(1)
-                                                                .map((label) => (
-                                                                    <Badge key={label} variant="outline">
-                                                                        {label}
-                                                                    </Badge>
-                                                                ))}
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {processing.description}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {processing.current_asset_label && (
+                                                            <div className="max-w-full rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-sm text-primary">
+                                                                <span className="font-medium">Reviewing now:</span>{' '}
+                                                                <span
+                                                                    className="inline-block max-w-[min(100%,34rem)] truncate align-bottom text-primary/90"
+                                                                    title={processing.current_asset_label}
+                                                                >
+                                                                    {processing.current_asset_label}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        {processing.pending_count > 1 && (
+                                                            <Badge variant="outline">
+                                                                {processing.pending_count - 1} more waiting behind it
+                                                            </Badge>
+                                                        )}
+                                                        {!processing.is_reviewing && (
+                                                            <Badge variant="outline">
+                                                                Ready for your next upload
+                                                            </Badge>
+                                                        )}
+                                                    </div>
+
+                                                    {processing.pending_asset_labels.length > 1 && (
+                                                        <div className="space-y-2">
+                                                            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                                                                Up next
+                                                            </p>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {processing.pending_asset_labels
+                                                                    .slice(1)
+                                                                    .map((label) => (
+                                                                        <Badge
+                                                                            key={label}
+                                                                            variant="outline"
+                                                                            className="max-w-full"
+                                                                            title={label}
+                                                                        >
+                                                                            <span className="inline-block max-w-72 truncate align-bottom">
+                                                                                {label}
+                                                                            </span>
+                                                                        </Badge>
+                                                                    ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {processing.expectation}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="rounded-xl border bg-background/70 px-4 py-3 text-sm xl:min-w-56">
+                                                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                                                    Progress
+                                                </p>
+                                                <p className="mt-2 font-semibold">
+                                                    {processing.coverage_percent}% reviewed
+                                                </p>
+                                                <p className="mt-1 text-sm text-muted-foreground">
+                                                    {processing.reviewed_count} of {processing.total_count} images complete
+                                                </p>
+                                                <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
+                                                    <div
+                                                        className="h-full rounded-full bg-primary transition-all duration-500"
+                                                        style={{ width: `${processing.coverage_percent}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {latestReviewedAsset ? (
+                                            <div className="rounded-xl border bg-background/70 p-4">
+                                                <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
+                                                    <div className="space-y-4">
+                                                        <div className="flex flex-wrap items-center gap-2">
+                                                            <Badge variant="outline" className="border-primary/25 bg-primary/8 text-primary">
+                                                                Latest insight snapshot
+                                                            </Badge>
+                                                            {latestReviewedAsset.analysis?.is_highlight ? (
+                                                                <Badge variant="outline" className="border-amber-400/30 bg-amber-400/10 text-amber-200">
+                                                                    Highlight candidate
+                                                                </Badge>
+                                                            ) : null}
+                                                        </div>
+
+                                                        <div className="rounded-xl border border-primary/15 bg-primary/6 p-4">
+                                                            <p className="text-sm font-semibold">
+                                                                {latestReviewedAsset.title ?? latestReviewedAsset.filename}
+                                                            </p>
+                                                            <p className="mt-2 text-sm leading-7 text-foreground/90">
+                                                                {latestReviewedAsset.analysis?.critique
+                                                                    ?? latestReviewedAsset.analysis?.alt_text
+                                                                    ?? 'Curator has already attached notes to the latest reviewed frame.'}
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                )}
 
-                                                <p className="text-sm text-muted-foreground">
-                                                    {processing.expectation}
-                                                </p>
-                                            </div>
-                                        </div>
+                                                    <div className="rounded-xl border border-white/10 bg-background/55 p-4">
+                                                        <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                                                            Curator tags
+                                                        </p>
+                                                        <div className="mt-3 flex flex-wrap gap-2">
+                                                            {(latestReviewedAsset.analysis?.tags ?? []).length > 0 ? (
+                                                                (latestReviewedAsset.analysis?.tags ?? [])
+                                                                    .slice(0, 6)
+                                                                    .map((tag) => (
+                                                                        <Badge
+                                                                            key={tag}
+                                                                            variant="outline"
+                                                                            className="border-white/10 bg-background/70"
+                                                                        >
+                                                                            {tag}
+                                                                        </Badge>
+                                                                    ))
+                                                            ) : (
+                                                                <p className="text-sm text-muted-foreground">
+                                                                    Curator did not attach tags to this frame yet.
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                        <div className="rounded-xl border bg-background/70 px-4 py-3 text-sm sm:min-w-56">
-                                            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                                                Progress
-                                            </p>
-                                            <p className="mt-2 font-semibold">
-                                                {processing.coverage_percent}% reviewed
-                                            </p>
-                                            <p className="mt-1 text-sm text-muted-foreground">
-                                                {processing.reviewed_count} of {processing.total_count} images complete
-                                            </p>
-                                            <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
-                                                <div
-                                                    className="h-full rounded-full bg-primary transition-all duration-500"
-                                                    style={{ width: `${processing.coverage_percent}%` }}
-                                                />
+                                                <div className="mt-4 grid gap-3 md:grid-cols-3">
+                                                    <div className="rounded-xl border border-sky-400/15 bg-sky-400/5 p-4">
+                                                        <p className="text-[11px] uppercase tracking-[0.18em] text-sky-100/80">
+                                                            Alt text
+                                                        </p>
+                                                        <p className="mt-3 text-sm leading-7 text-foreground/90">
+                                                            {latestReviewedAsset.analysis?.alt_text ?? 'No alt text yet.'}
+                                                        </p>
+                                                    </div>
+                                                    <div className="rounded-xl border border-fuchsia-400/15 bg-fuchsia-400/5 p-4">
+                                                        <p className="text-[11px] uppercase tracking-[0.18em] text-fuchsia-100/80">
+                                                            Mood
+                                                        </p>
+                                                        <p className="mt-3 text-sm font-medium capitalize text-foreground">
+                                                            {latestReviewedAsset.analysis?.mood ?? 'Not set'}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        className={cn(
+                                                            'rounded-xl border p-4',
+                                                            latestReviewedAsset.analysis?.is_highlight
+                                                                ? 'border-amber-400/20 bg-amber-400/6'
+                                                                : 'border-emerald-400/15 bg-emerald-400/5',
+                                                        )}
+                                                    >
+                                                        <p
+                                                            className={cn(
+                                                                'text-[11px] uppercase tracking-[0.18em]',
+                                                                latestReviewedAsset.analysis?.is_highlight
+                                                                    ? 'text-amber-100/80'
+                                                                    : 'text-emerald-100/80',
+                                                            )}
+                                                        >
+                                                            Highlight status
+                                                        </p>
+                                                        <p className="mt-3 text-sm font-medium text-foreground">
+                                                            {latestReviewedAsset.analysis?.is_highlight
+                                                                ? 'Marked as a strong frame'
+                                                                : 'Supporting frame'}
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        ) : null}
                                     </div>
                                 </div>
                             </div>
@@ -458,13 +689,21 @@ export default function ShowProject({
                             sharePanel={sharePanel}
                         />
 
-                        <ProjectAiSidebar
-                            curator={curator}
-                            project={project}
-                            highlights={highlights}
-                        />
+                        <div id="curator-review">
+                            <ProjectAiSidebar
+                                curator={curator}
+                                project={project}
+                                highlights={highlights}
+                            />
+                        </div>
                     </div>
                 </div>
+
+                <ProjectCuratorPresence
+                    assistantName={curator.assistant_name}
+                    processing={processing}
+                    recentlyUploadedCount={recentlyUploadedAssetIds.length}
+                />
             </div>
         </>
     );

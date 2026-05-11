@@ -50,13 +50,13 @@ export default function ProjectUploadReview({
         <Card className="bg-card/60">
             <CardHeader>
                 <Badge variant="outline" className="w-fit">
-                    Step 1A
+                    Optional
                 </Badge>
-                <CardTitle>Name new uploads</CardTitle>
+                <CardTitle>Optional: name new uploads</CardTitle>
                 <CardDescription>
-                    Give the latest images clear titles while the set is still
-                    fresh. Once saved, they drop into the library below with
-                    the new title.
+                    Clear titles help you scan the library later, but Curator
+                    already reviewed these uploads. You can name them now or
+                    come back to them later without blocking the analysis.
                 </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

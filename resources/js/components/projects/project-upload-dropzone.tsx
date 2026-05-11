@@ -72,7 +72,7 @@ export default function ProjectUploadDropzone({
     return (
         <div className="rounded-xl border border-dashed bg-card/60 p-6">
             <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                     <div className="space-y-3">
                         <div className="flex items-center gap-3">
                             <div className="flex size-10 items-center justify-center rounded-lg bg-primary/12 text-primary">
@@ -99,7 +99,7 @@ export default function ProjectUploadDropzone({
                         </p>
                     </div>
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center xl:justify-end">
                         <input
                             ref={inputRef}
                             type="file"
@@ -118,6 +118,7 @@ export default function ProjectUploadDropzone({
                             variant="secondary"
                             disabled={form.processing}
                             onClick={() => inputRef.current?.click()}
+                            className="w-full sm:w-auto"
                         >
                             {form.processing ? (
                                 <LoaderCircle className="mr-2 size-4 animate-spin" />
@@ -129,7 +130,7 @@ export default function ProjectUploadDropzone({
                     </div>
                 </div>
 
-                <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem]">
+                <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_18rem]">
                     <div className="space-y-4 rounded-lg border bg-background/50 p-4">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                             <div>

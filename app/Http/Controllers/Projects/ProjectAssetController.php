@@ -28,9 +28,10 @@ class ProjectAssetController extends Controller
         $assets->each(function (ProjectAsset $asset) use ($dispatcher): void {
             $job = new AnalyzeProjectAssetJob($asset->id);
 
-            if (app()->environment(['local', 'testing'])) {
-                $job->onConnection('deferred');
+            if (app()->runningUnitTests()) {
+                $job->onConnection('sync');
             }
+
             $dispatcher->dispatch($job);
         });
 
