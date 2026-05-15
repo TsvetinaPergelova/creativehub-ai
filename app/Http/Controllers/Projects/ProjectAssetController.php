@@ -23,7 +23,6 @@ class ProjectAssetController extends Controller
         Dispatcher $dispatcher,
     ): RedirectResponse {
         $assets = $uploadProjectAssets->handle($project, $request->file('files', []));
-        $uploadedCount = $assets->count();
 
         $assets->each(function (ProjectAsset $asset) use ($dispatcher): void {
             $job = new AnalyzeProjectAssetJob($asset->id);
@@ -36,14 +35,6 @@ class ProjectAssetController extends Controller
         });
 
         Inertia::flash([
-            'toast' => [
-                'type' => 'success',
-                'message' => trans_choice(
-                    '{1} :count image uploaded and queued for analysis.|[2,*] :count images uploaded and queued for analysis.',
-                    $uploadedCount,
-                    ['count' => $uploadedCount],
-                ),
-            ],
             'uploaded_asset_ids' => $assets->pluck('id')->all(),
         ]);
 

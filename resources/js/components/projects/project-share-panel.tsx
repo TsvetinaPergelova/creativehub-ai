@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Check, ChevronDown, Copy, ExternalLink, Globe, Images, Link2, RadioTower } from 'lucide-react';
+import {
+    Check,
+    ChevronDown,
+    Copy,
+    ExternalLink,
+    Globe,
+    Images,
+    Link2,
+    RadioTower,
+} from 'lucide-react';
 import { store } from '@/actions/App/Http/Controllers/Projects/ProjectPublishController';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -35,23 +44,21 @@ function ShareLinkCard({
 
     return (
         <div className="rounded-lg border bg-background/70 p-4">
-            <div className="flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                    <p className="text-sm font-medium">
-                        {label}
-                    </p>
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">{label}</p>
                     {url ? (
                         <a
                             href={url}
                             target="_blank"
                             rel="noreferrer"
-                            className="mt-2 inline-flex max-w-full items-center gap-2 break-all font-mono text-xs leading-5 text-primary transition-colors hover:text-primary/80"
+                            className="mt-2 flex max-w-full flex-wrap items-center gap-2 font-mono text-xs leading-5 break-all text-primary transition-colors hover:text-primary/80"
                         >
                             <span className="break-all">{url}</span>
                             <ExternalLink className="size-3.5 shrink-0" />
                         </a>
                     ) : (
-                        <p className="mt-2 break-all font-mono text-xs leading-5 text-muted-foreground">
+                        <p className="mt-2 font-mono text-xs leading-5 break-all text-muted-foreground">
                             {label === 'Public portfolio link'
                                 ? 'Activate public portfolio mode to generate this link.'
                                 : 'Activate the client review flow to generate this link.'}
@@ -64,7 +71,7 @@ function ShareLinkCard({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="shrink-0 self-center"
+                        className="shrink-0 self-start sm:self-center"
                         onClick={() => onCopy(url)}
                     >
                         {isCopied ? (
@@ -95,7 +102,7 @@ export default function ProjectSharePanel({
 
     function publish(visibility: 'public' | 'client'): void {
         form.setData('visibility', visibility);
-        form.post(store(project.id), {
+        form.post(store(project.id).url, {
             preserveScroll: true,
         });
     }
@@ -106,9 +113,8 @@ export default function ProjectSharePanel({
     return (
         <Card className="overflow-hidden bg-card/60">
             <CardHeader className="space-y-4 border-b pb-5">
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-2">
-                        <Badge variant="outline">Step 3</Badge>
                         <CardTitle className="text-2xl tracking-tight">
                             Share this project
                         </CardTitle>
@@ -119,8 +125,8 @@ export default function ProjectSharePanel({
                         </CardDescription>
                     </div>
 
-                    <div className="rounded-xl border bg-background/60 px-4 py-3 text-right">
-                        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                    <div className="rounded-xl border bg-background/60 px-4 py-3 sm:self-start sm:text-right">
+                        <p className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
                             Sharing mode
                         </p>
                         <p className="mt-2 text-lg font-semibold capitalize">
@@ -134,7 +140,7 @@ export default function ProjectSharePanel({
                         <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary">
                             <RadioTower className="size-4" />
                         </div>
-                        <div className="space-y-1">
+                        <div className="min-w-0 space-y-1">
                             <p className="text-sm font-medium">
                                 {project.published_at
                                     ? 'This project is ready to be seen'
@@ -157,7 +163,7 @@ export default function ProjectSharePanel({
                         onClick={() => publish('public')}
                         disabled={form.processing}
                         className={cn(
-                            'w-full rounded-xl border p-4 text-left transition focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none',
+                            'w-full rounded-xl border p-4 text-left transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
                             isPublic
                                 ? 'border-primary bg-primary/10'
                                 : 'bg-background/50 hover:border-primary/40',
@@ -187,7 +193,7 @@ export default function ProjectSharePanel({
                         onClick={() => publish('client')}
                         disabled={form.processing}
                         className={cn(
-                            'w-full rounded-xl border p-4 text-left transition focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none',
+                            'w-full rounded-xl border p-4 text-left transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
                             isClient
                                 ? 'border-primary bg-primary/10'
                                 : 'bg-background/50 hover:border-primary/40',
@@ -222,16 +228,17 @@ export default function ProjectSharePanel({
                                 variant="ghost"
                                 className="h-auto w-full justify-between px-4 py-4"
                             >
-                                <div className="flex items-center gap-3 text-left">
+                                <div className="flex min-w-0 items-center gap-3 text-left">
                                     <div className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                                         <Link2 className="size-4" />
                                     </div>
-                                    <div>
+                                    <div className="min-w-0">
                                         <p className="font-medium">
                                             Live links
                                         </p>
                                         <p className="text-xs text-muted-foreground">
-                                            Open or copy the destinations people will use.
+                                            Open or copy the destinations people
+                                            will use.
                                         </p>
                                     </div>
                                 </div>
@@ -244,7 +251,7 @@ export default function ProjectSharePanel({
                             </Button>
                         </CollapsibleTrigger>
 
-                        <CollapsibleContent className="space-y-3 border-t px-4 pb-4 pt-3">
+                        <CollapsibleContent className="space-y-3 border-t px-4 pt-3 pb-4">
                             <ShareLinkCard
                                 label="Public portfolio link"
                                 url={sharePanel.public_url}
