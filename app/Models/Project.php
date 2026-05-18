@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectMode;
 use App\Enums\ProjectStatus;
 use App\Enums\ProjectVisibility;
 use Database\Factories\ProjectFactory;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'name',
     'slug',
     'category',
+    'mode',
     'description',
     'status',
     'visibility',
@@ -36,6 +38,7 @@ class Project extends Model
     protected function casts(): array
     {
         return [
+            'mode' => ProjectMode::class,
             'status' => ProjectStatus::class,
             'visibility' => ProjectVisibility::class,
             'published_at' => 'datetime',

@@ -35,7 +35,9 @@ class ProjectController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('projects/create');
+        return Inertia::render('projects/create', [
+            'categoryGroups' => $this->projectCategoryGroups(),
+        ]);
     }
 
     /**
@@ -111,6 +113,7 @@ class ProjectController extends Controller
                 'name' => $project->name,
                 'slug' => $project->slug,
                 'category' => $project->category,
+                'mode' => $project->mode->value,
                 'description' => $project->description,
                 'status' => $project->status->value,
                 'visibility' => $project->visibility->value,
@@ -139,11 +142,13 @@ class ProjectController extends Controller
         $this->authorize('update', $project);
 
         return Inertia::render('projects/create', [
+            'categoryGroups' => $this->projectCategoryGroups(),
             'project' => [
                 'id' => $project->id,
                 'name' => $project->name,
                 'slug' => $project->slug,
                 'category' => $project->category,
+                'mode' => $project->mode->value,
                 'description' => $project->description,
                 'status' => $project->status->value,
                 'visibility' => $project->visibility->value,
@@ -228,6 +233,59 @@ class ProjectController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, array{label: string, options: array<int, string>}>
+     */
+    private function projectCategoryGroups(): array
+    {
+        return [
+            [
+                'label' => 'Photography',
+                'options' => [
+                    'Weddings',
+                    'Engagements',
+                    'Baptisms',
+                    'Portraits',
+                    'Family',
+                    'Newborn',
+                    'Maternity',
+                ],
+            ],
+            [
+                'label' => 'Event Photography',
+                'options' => [
+                    'Events',
+                    'Corporate Events',
+                    'Concerts',
+                    'Festivals',
+                ],
+            ],
+            [
+                'label' => 'Art & Editorial Photography',
+                'options' => [
+                    'Landscapes',
+                    'Travel',
+                    'Street',
+                    'Architecture',
+                    'Interiors',
+                    'Editorial',
+                    'Fashion',
+                    'Fine Art Photography',
+                ],
+            ],
+            [
+                'label' => 'Design & Visual Work',
+                'options' => [
+                    'Branding',
+                    'Product Design',
+                    'UI / UX',
+                    'Illustration',
+                    'Mixed Media',
+                ],
+            ],
+        ];
+    }
+
     private function assetDisplayLabel(ProjectAsset $asset): string
     {
         return $asset->title ?: $asset->filename;
@@ -274,6 +332,7 @@ class ProjectController extends Controller
             'name' => $project->name,
             'slug' => $project->slug,
             'category' => $project->category,
+            'mode' => $project->mode->value,
             'description' => $project->description,
             'status' => $project->status->value,
             'visibility' => $project->visibility->value,

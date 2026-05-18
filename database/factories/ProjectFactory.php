@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProjectMode;
 use App\Enums\ProjectStatus;
 use App\Enums\ProjectVisibility;
 use App\Models\Project;
@@ -28,6 +29,7 @@ class ProjectFactory extends Factory
             'name' => Str::title($name),
             'slug' => Str::slug($name.'-'.fake()->unique()->numberBetween(100, 999)),
             'category' => fake()->randomElement(['Weddings', 'Portraits', 'Events', 'Travel']),
+            'mode' => ProjectMode::MixedExperimental,
             'description' => fake()->sentence(),
             'status' => ProjectStatus::Draft,
             'visibility' => ProjectVisibility::Private,

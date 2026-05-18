@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class CreateProjectAction
 {
     /**
-     * @param  array{name: string, category: string, description?: string|null}  $attributes
+     * @param  array{name: string, category: string, mode: string, description?: string|null}  $attributes
      */
     public function handle(User $user, array $attributes): Project
     {
@@ -26,6 +26,7 @@ class CreateProjectAction
             'name' => $attributes['name'],
             'slug' => $slug,
             'category' => $attributes['category'],
+            'mode' => $attributes['mode'],
             'description' => $attributes['description'] ?? null,
         ]);
     }

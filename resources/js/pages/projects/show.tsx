@@ -494,7 +494,7 @@ export default function ShowProject({
                 </section>
 
                 <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_28rem] xl:items-start">
-                    <div className="min-w-0 space-y-6">
+                    <div id="project-upload" className="min-w-0 space-y-6">
                         <section className="overflow-hidden rounded-xl border bg-card/50 p-4 sm:p-6">
                             <div className="min-w-0 space-y-2 border-b pb-5">
                                 <div className="min-w-0 space-y-2">
@@ -980,7 +980,7 @@ export default function ShowProject({
                         </Collapsible>
                     </div>
 
-                    <div className="hidden min-w-0 space-y-4 md:block xl:sticky xl:top-6">
+                        <div id="share-project" className="hidden min-w-0 space-y-4 md:block xl:sticky xl:top-6">
                         <ProjectSharePanel
                             project={project}
                             sharePanel={sharePanel}

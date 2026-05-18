@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Projects;
 
+use App\Enums\ProjectMode;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProjectRequest extends FormRequest
 {
@@ -25,6 +27,7 @@ class StoreProjectRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'category' => ['required', 'string', 'max:120'],
+            'mode' => ['required', Rule::enum(ProjectMode::class)],
             'description' => ['nullable', 'string', 'max:5000'],
         ];
     }

@@ -30,6 +30,7 @@ export type Project = {
     name: string;
     slug: string;
     category: string;
+    mode?: string;
     description: string | null;
     status: string;
     visibility: string;

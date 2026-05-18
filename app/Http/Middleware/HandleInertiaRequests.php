@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\ProjectStatus;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,6 +43,44 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'workspace' => $request->user() ? [
+                'project_search' => fn () => $request->user()
+                    ->projects()
+                    ->withCount([
+                        'assets as pending_assets_count' => fn ($query) => $query->doesntHave('analysis'),
+                    ])
+                    ->latest('updated_at')
+                    ->limit(40)
+                    ->get([
+                        'id',
+                        'name',
+                        'slug',
+                        'category',
+                        'status',
+                        'updated_at',
+                    ])
+                    ->map(fn ($project) => [
+                        'id' => $project->id,
+                        'name' => $project->name,
+                        'slug' => $project->slug,
+                        'category' => $project->category,
+                        'status' => $project->status->value,
+                        'updated_at' => $project->updated_at?->toISOString(),
+                        'pending_assets_count' => $project->pending_assets_count,
+                    ])
+                    ->values()
+                    ->all(),
+                'status' => fn () => [
+                    'draft_count' => $request->user()
+                        ->projects()
+                        ->where('status', ProjectStatus::Draft)
+                        ->count(),
+                    'in_review_count' => $request->user()
+                        ->projects()
+                        ->whereHas('assets', fn ($query) => $query->doesntHave('analysis'))
+                        ->count(),
+                ],
+            ] : null,
         ];
     }
 }

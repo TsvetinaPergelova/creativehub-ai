@@ -11,6 +11,11 @@ import {
     RadioTower,
 } from 'lucide-react';
 import { store } from '@/actions/App/Http/Controllers/Projects/ProjectPublishController';
+import {
+    ProjectIconBadge,
+    ProjectInsetPanel,
+    ProjectOptionCard,
+} from '@/components/projects/project-ui';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -43,7 +48,7 @@ function ShareLinkCard({
     const isCopied = copiedText !== null && copiedText === url;
 
     return (
-        <div className="rounded-lg border bg-background/70 p-4">
+        <ProjectInsetPanel className="bg-background/70">
             <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium">{label}</p>
@@ -83,7 +88,7 @@ function ShareLinkCard({
                     </Button>
                 )}
             </div>
-        </div>
+        </ProjectInsetPanel>
     );
 }
 
@@ -135,11 +140,9 @@ export default function ProjectSharePanel({
                     </div>
                 </div>
 
-                <div className="rounded-xl border bg-background/50 p-4">
+                <ProjectInsetPanel>
                     <div className="flex items-start gap-3">
-                        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary">
-                            <RadioTower className="size-4" />
-                        </div>
+                        <ProjectIconBadge icon={RadioTower} />
                         <div className="min-w-0 space-y-1">
                             <p className="text-sm font-medium">
                                 {project.published_at
@@ -153,75 +156,34 @@ export default function ProjectSharePanel({
                             </p>
                         </div>
                     </div>
-                </div>
+                </ProjectInsetPanel>
             </CardHeader>
 
             <CardContent className="space-y-4 p-6">
                 <div className="space-y-3">
-                    <button
-                        type="button"
+                    <ProjectOptionCard
+                        icon={Globe}
+                        title="Public portfolio page"
+                        description="Show the project on your public portfolio and make it eligible for Explore."
+                        selected={isPublic}
                         onClick={() => publish('public')}
                         disabled={form.processing}
-                        className={cn(
-                            'w-full rounded-xl border p-4 text-left transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
-                            isPublic
-                                ? 'border-primary bg-primary/10'
-                                : 'bg-background/50 hover:border-primary/40',
-                        )}
-                    >
-                        <div className="flex items-start gap-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-background/80">
-                                <Globe className="size-4" />
-                            </div>
-                            <div className="min-w-0 space-y-1">
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <p className="font-medium">
-                                        Public portfolio page
-                                    </p>
-                                    {isPublic && <Badge>Active</Badge>}
-                                </div>
-                                <p className="text-sm leading-6 text-muted-foreground">
-                                    Show the project on your public portfolio
-                                    and make it eligible for Explore.
-                                </p>
-                            </div>
-                        </div>
-                    </button>
+                        badge={isPublic ? <Badge>Active</Badge> : undefined}
+                    />
 
-                    <button
-                        type="button"
+                    <ProjectOptionCard
+                        icon={Images}
+                        title="Private client gallery"
+                        description="Generate a private gallery link and keep the conversation focused on feedback and selection."
+                        selected={isClient}
                         onClick={() => publish('client')}
                         disabled={form.processing}
-                        className={cn(
-                            'w-full rounded-xl border p-4 text-left transition focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
-                            isClient
-                                ? 'border-primary bg-primary/10'
-                                : 'bg-background/50 hover:border-primary/40',
-                        )}
-                    >
-                        <div className="flex items-start gap-3">
-                            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-background/80">
-                                <Images className="size-4" />
-                            </div>
-                            <div className="min-w-0 space-y-1">
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <p className="font-medium">
-                                        Private client gallery
-                                    </p>
-                                    {isClient && <Badge>Active</Badge>}
-                                </div>
-                                <p className="text-sm leading-6 text-muted-foreground">
-                                    Generate a private gallery link and keep the
-                                    conversation focused on feedback and
-                                    selection.
-                                </p>
-                            </div>
-                        </div>
-                    </button>
+                        badge={isClient ? <Badge>Active</Badge> : undefined}
+                    />
                 </div>
 
                 <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-                    <div className="rounded-xl border bg-background/50">
+                    <ProjectInsetPanel className="p-0">
                         <CollapsibleTrigger asChild>
                             <Button
                                 type="button"
@@ -266,7 +228,7 @@ export default function ProjectSharePanel({
                                 onCopy={copy}
                             />
                         </CollapsibleContent>
-                    </div>
+                    </ProjectInsetPanel>
                 </Collapsible>
             </CardContent>
         </Card>
