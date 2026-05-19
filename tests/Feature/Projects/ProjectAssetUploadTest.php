@@ -454,11 +454,59 @@ test('the project page exposes the selected cover image and cover asset state', 
         ->assertInertia(fn ($page) => $page
             ->where('project.name', 'Cover Story')
             ->where('project.cover_asset_id', $coverAsset->id)
+            ->where('project.has_explicit_cover', true)
             ->where('project.cover_image_url', asset('storage/'.$coverAsset->path))
             ->where('project.assets.0.is_cover', true)
             ->where('project.assets.1.is_cover', false)
             ->where('project.assets.0.title', 'Hero frame')
             ->where('project.assets.1.title', 'Detail frame')
+        );
+});
+
+test('the project page uses a smart fallback hero image when uploaded assets exist without an explicit cover', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create([
+        'name' => 'Fallback Hero Story',
+        'cover_asset_id' => null,
+    ]);
+
+    ProjectAsset::factory()->for($project)->create([
+        'title' => 'Supporting frame',
+        'path' => 'projects/'.$project->id.'/supporting-frame.jpg',
+        'sort_order' => 1,
+    ]);
+
+    $highlightAsset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Highlight frame',
+        'path' => 'projects/'.$project->id.'/highlight-frame.jpg',
+        'sort_order' => 2,
+    ]);
+
+    ProjectAssetAnalysis::query()->create([
+        'project_asset_id' => $highlightAsset->id,
+        'tags' => ['hero', 'portrait'],
+        'alt_text' => 'Highlight frame selected as a fallback hero image.',
+        'composition_score' => 9,
+        'focus_score' => 8,
+        'lighting_score' => 9,
+        'critique' => 'Strong fallback hero candidate.',
+        'mood' => 'minimalist',
+        'is_highlight' => true,
+        'is_near_duplicate' => false,
+        'meta' => [],
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('projects.show', $project))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('project.name', 'Fallback Hero Story')
+            ->where('project.cover_asset_id', null)
+            ->where('project.has_explicit_cover', false)
+            ->where(
+                'project.cover_image_url',
+                asset('storage/'.$highlightAsset->path),
+            )
         );
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Client\SubmitGalleryReviewRequest;
 use App\Http\Requests\Client\ToggleFavoriteRequest;
 use App\Models\ClientSelection;
 use App\Models\ProjectAsset;
@@ -19,6 +20,7 @@ class ClientGalleryController extends Controller
     {
         $share = $share->load(['project.assets.analysis', 'project.coverAsset', 'clientSelections']);
         $hasAccess = $this->hasAccess($share);
+        $displayCoverAsset = $share->project->resolveDisplayCoverAsset();
 
         return Inertia::render('projects/client', [
             'access' => [
@@ -29,8 +31,8 @@ class ClientGalleryController extends Controller
                 'token' => $share->token,
                 'project_name' => $share->project->name,
                 'project_description' => $share->project->description,
-                'cover_image_url' => $share->project->coverAsset
-                    ? asset('storage/'.$share->project->coverAsset->path)
+                'cover_image_url' => $displayCoverAsset
+                    ? asset('storage/'.$displayCoverAsset->path)
                     : null,
                 'assets' => $hasAccess
                     ? $share->project->assets
@@ -69,6 +71,11 @@ class ClientGalleryController extends Controller
                 'favorites_count' => $hasAccess
                     ? $share->clientSelections->where('is_favorite', true)->count()
                     : 0,
+                'review' => $hasAccess ? [
+                    'reviewer_name' => $share->reviewer_name,
+                    'reviewer_comment' => $share->reviewer_comment,
+                    'approved_at' => $share->approved_at?->toISOString(),
+                ] : null,
             ],
         ]);
     }
@@ -120,6 +127,38 @@ class ClientGalleryController extends Controller
                 'is_favorite' => $selection->is_favorite,
             ],
         ]);
+    }
+
+    public function submitReview(
+        SubmitGalleryReviewRequest $request,
+        ProjectShare $share,
+    ): RedirectResponse {
+        abort_unless($this->hasAccess($share), 403);
+
+        if (! $share->clientSelections()->where('is_favorite', true)->exists()) {
+            return back()->withErrors([
+                'review' => __('Choose at least one favorite before approving the shortlist.'),
+            ]);
+        }
+
+        $validated = $request->validated();
+
+        $share->update([
+            'reviewer_name' => filled($validated['reviewer_name'] ?? null)
+                ? trim((string) $validated['reviewer_name'])
+                : null,
+            'reviewer_comment' => filled($validated['reviewer_comment'] ?? null)
+                ? trim((string) $validated['reviewer_comment'])
+                : null,
+            'approved_at' => now(),
+        ]);
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('Shortlist approved.'),
+        ]);
+
+        return to_route('client-galleries.show', $share->token);
     }
 
     private function hasAccess(ProjectShare $share): bool

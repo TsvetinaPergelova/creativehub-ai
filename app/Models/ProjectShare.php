@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'token',
     'password',
     'expires_at',
+    'reviewer_name',
+    'reviewer_comment',
+    'approved_at',
 ])]
 #[Hidden(['password'])]
 class ProjectShare extends Model
@@ -32,6 +35,7 @@ class ProjectShare extends Model
     {
         return [
             'expires_at' => 'datetime',
+            'approved_at' => 'datetime',
         ];
     }
 

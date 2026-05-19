@@ -25,7 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $user = request()->user();
 
         $projects = $user->projects()
-            ->with('coverAsset')
+            ->with(['coverAsset', 'assets.analysis'])
             ->withCount([
                 'assets',
                 'assets as analyzed_assets_count' => fn ($query) => $query->has('analysis'),
@@ -48,23 +48,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'published_at',
             ]);
 
-        $mapProject = fn (Project $project): array => [
-            'id' => $project->id,
-            'name' => $project->name,
-            'slug' => $project->slug,
-            'category' => $project->category,
-            'mode' => $project->mode->value,
-            'description' => $project->description,
-            'status' => $project->status->value,
-            'visibility' => $project->visibility->value,
-            'cover_asset_id' => $project->cover_asset_id,
-            'cover_image_url' => $project->coverAsset
-                ? asset('storage/'.$project->coverAsset->path)
-                : null,
-            'asset_count' => $project->assets_count,
-            'created_at' => $project->created_at?->toISOString(),
-            'published_at' => $project->published_at?->toISOString(),
-        ];
+        $mapProject = function (Project $project): array {
+            $displayCoverAsset = $project->resolveDisplayCoverAsset();
+
+            return [
+                'id' => $project->id,
+                'name' => $project->name,
+                'slug' => $project->slug,
+                'category' => $project->category,
+                'mode' => $project->mode->value,
+                'description' => $project->description,
+                'status' => $project->status->value,
+                'visibility' => $project->visibility->value,
+                'cover_asset_id' => $project->cover_asset_id,
+                'cover_image_url' => $displayCoverAsset
+                    ? asset('storage/'.$displayCoverAsset->path)
+                    : null,
+                'asset_count' => $project->assets_count,
+                'created_at' => $project->created_at?->toISOString(),
+                'published_at' => $project->published_at?->toISOString(),
+            ];
+        };
 
         $draftCountsByCategory = $projects
             ->filter(fn (Project $project) => $project->status === ProjectStatus::Draft)
@@ -627,5 +631,7 @@ Route::post('/galleries/{share:token}/access', [ClientGalleryController::class, 
     ->name('client-galleries.access.store');
 Route::post('/galleries/{share:token}/favorites', [ClientGalleryController::class, 'toggleFavorite'])
     ->name('client-galleries.favorites.toggle');
+Route::post('/galleries/{share:token}/review', [ClientGalleryController::class, 'submitReview'])
+    ->name('client-galleries.review.store');
 
 require __DIR__.'/settings.php';

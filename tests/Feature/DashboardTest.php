@@ -21,6 +21,7 @@ test('authenticated users can visit the dashboard', function () {
         ->assertOk()
         ->assertInertia(fn ($page) => $page
             ->component('dashboard')
+            ->where('workspace.portfolio_url', route('portfolio.show', $user))
             ->has('primaryAction')
             ->has('attentionItems', 4)
             ->has('assistantPanel.primary')
@@ -67,6 +68,50 @@ test('dashboard recent projects include cover images when a project cover is sel
         ->assertInertia(fn ($page) => $page
             ->where('workflowProjects.0.name', 'Cover Ready Project')
             ->where('workflowProjects.0.cover_image_url', asset('storage/'.$asset->path))
+        );
+});
+
+test('dashboard recent projects use a highlight asset as fallback cover when no explicit cover is selected', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create([
+        'name' => 'Fallback Cover Dashboard Project',
+        'cover_asset_id' => null,
+    ]);
+
+    ProjectAsset::factory()->for($project)->create([
+        'path' => 'projects/'.$project->id.'/supporting-frame.jpg',
+        'sort_order' => 1,
+    ]);
+
+    $highlightAsset = ProjectAsset::factory()->for($project)->create([
+        'path' => 'projects/'.$project->id.'/highlight-frame.jpg',
+        'sort_order' => 2,
+    ]);
+
+    ProjectAssetAnalysis::query()->create([
+        'project_asset_id' => $highlightAsset->id,
+        'tags' => ['hero'],
+        'alt_text' => 'Highlight frame for dashboard fallback cover.',
+        'composition_score' => 9,
+        'focus_score' => 8,
+        'lighting_score' => 9,
+        'critique' => 'Strong hero frame.',
+        'mood' => 'minimalist',
+        'is_highlight' => true,
+        'is_near_duplicate' => false,
+        'meta' => [],
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('workflowProjects.0.name', 'Fallback Cover Dashboard Project')
+            ->where('workflowProjects.0.cover_asset_id', null)
+            ->where(
+                'workflowProjects.0.cover_image_url',
+                asset('storage/'.$highlightAsset->path),
+            )
         );
 });
 

@@ -35,6 +35,7 @@ export type Project = {
     status: string;
     visibility: string;
     cover_asset_id?: number | null;
+    has_explicit_cover?: boolean;
     assets?: ProjectAsset[];
     asset_count?: number | null;
     cover_image_url?: string | null;
@@ -49,6 +50,12 @@ export type ProjectSharePanel = {
     visibility: string;
     public_url: string | null;
     client_url: string | null;
+    client_review?: {
+        reviewer_name: string | null;
+        reviewer_comment: string | null;
+        approved_at: string | null;
+        favorites_count: number;
+    } | null;
 };
 
 export type ProjectProcessing = {

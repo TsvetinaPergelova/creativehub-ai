@@ -2,7 +2,10 @@
 
 use App\Enums\ProjectStatus;
 use App\Enums\ProjectVisibility;
+use App\Models\ClientSelection;
 use App\Models\Project;
+use App\Models\ProjectAsset;
+use App\Models\ProjectShare;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -75,4 +78,39 @@ test('a creator cannot publish another creators project', function () {
             'visibility' => ProjectVisibility::Public->value,
         ])
         ->assertForbidden();
+});
+
+test('project workspace shows client approval details when a shortlist is approved', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->published()->create([
+        'visibility' => ProjectVisibility::Client,
+    ]);
+    $asset = ProjectAsset::factory()->for($project)->create();
+    $share = ProjectShare::factory()->for($project)->create([
+        'type' => 'client',
+        'reviewer_name' => 'Maya Client',
+        'reviewer_comment' => 'Please keep this final shortlist for the delivery.',
+        'approved_at' => now(),
+    ]);
+
+    ClientSelection::query()->create([
+        'project_share_id' => $share->id,
+        'project_asset_id' => $asset->id,
+        'session_id' => 'approved-shortlist-session',
+        'is_favorite' => true,
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('projects.show', $project))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('projects/show')
+            ->where('sharePanel.client_review.reviewer_name', 'Maya Client')
+            ->where(
+                'sharePanel.client_review.reviewer_comment',
+                'Please keep this final shortlist for the delivery.',
+            )
+            ->where('sharePanel.client_review.favorites_count', 1)
+            ->where('sharePanel.client_review.approved_at', fn (?string $value) => filled($value))
+        );
 });

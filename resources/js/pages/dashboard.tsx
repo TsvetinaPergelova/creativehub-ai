@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
     ArrowRight,
     FolderOpen,
@@ -9,6 +9,7 @@ import {
     Sparkles,
 } from 'lucide-react';
 import { create, index as projects, show } from '@/actions/App/Http/Controllers/Projects/ProjectController';
+import PublicProfileActions from '@/components/public/public-profile-actions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -324,6 +325,7 @@ export default function Dashboard({
     workflowProjects: WorkflowProject[];
     assistantPanel: AssistantPanel;
 }) {
+    const { workspace } = usePage().props;
     const assistantPrimaryTone = recommendationToneClasses(
         assistantPanel.primary.tone,
     );
@@ -331,6 +333,10 @@ export default function Dashboard({
         assistantPanel.primary.tone,
     );
     const assistantFollowUps = assistantPanel.follow_ups.slice(0, 1);
+    const portfolioUrl =
+        typeof workspace?.portfolio_url === 'string'
+            ? workspace.portfolio_url
+            : null;
 
     return (
         <>
@@ -366,6 +372,8 @@ export default function Dashboard({
                                         {primaryAction.cta_label}
                                     </Link>
                                 </Button>
+
+                                <PublicProfileActions portfolioUrl={portfolioUrl} />
                             </div>
                         </div>
 

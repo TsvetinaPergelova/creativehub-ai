@@ -1,11 +1,15 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { useInitials } from '@/hooks/use-initials';
 import type { Project } from '@/types';
 
 type Creator = {
     id: number;
     name: string;
+    avatar: string | null;
+    specialization: string | null;
     profile_url: string;
 };
 
@@ -16,6 +20,8 @@ export default function PublicProject({
     creator: Creator;
     project: Project;
 }) {
+    const getInitials = useInitials();
+
     return (
         <>
             <Head title={project.name} />
@@ -35,9 +41,24 @@ export default function PublicProject({
                         <div className="rounded-xl border bg-card/85 p-8 shadow-sm backdrop-blur">
                             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                                 <div className="space-y-3">
-                                    <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
-                                        {creator.name}
-                                    </p>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar className="size-11 overflow-hidden rounded-2xl border border-white/10">
+                                            <AvatarImage src={creator.avatar ?? undefined} alt={creator.name} />
+                                            <AvatarFallback className="bg-white/[0.08] text-foreground">
+                                                {getInitials(creator.name)}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+                                                {creator.name}
+                                            </p>
+                                            {creator.specialization ? (
+                                                <p className="mt-1 text-sm text-muted-foreground">
+                                                    {creator.specialization}
+                                                </p>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                     <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
                                         {project.name}
                                     </h1>

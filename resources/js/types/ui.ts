@@ -24,6 +24,7 @@ export type WorkspaceProjectSearchItem = {
 };
 
 export type WorkspaceSharedData = {
+    portfolio_url: string;
     project_search: WorkspaceProjectSearchItem[];
     status: {
         draft_count: number;

@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Plus, Search, SlidersHorizontal, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { create, index } from '@/actions/App/Http/Controllers/Projects/ProjectController';
@@ -8,6 +8,7 @@ import {
     ProjectSection,
     ProjectSectionHeader,
 } from '@/components/projects/project-ui';
+import PublicProfileActions from '@/components/public/public-profile-actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -58,6 +59,7 @@ function compareProjects(a: Project, b: Project, sort: SortOption): number {
 }
 
 export default function ProjectsIndex({ projects }: { projects: Project[] }) {
+    const { workspace } = usePage().props;
     const [query, setQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
     const [visibilityFilter, setVisibilityFilter] =
@@ -119,6 +121,10 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
         visibilityFilter !== 'all' ||
         modeFilter !== 'all' ||
         sort !== 'latest';
+    const portfolioUrl =
+        typeof workspace?.portfolio_url === 'string'
+            ? workspace.portfolio_url
+            : null;
     const libraryDescription = hasActiveFilters
         ? 'A focused slice of the workspace based on the current search and filters.'
         : 'A compact grid of the whole workspace, sorted so it is easier to scan and compare projects.';
@@ -154,12 +160,16 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                 </p>
                             </div>
 
-                            <Button className="rounded-full px-4" size="sm" asChild>
-                                <Link href={create()} prefetch>
-                                    <Plus className="mr-2 size-4" />
-                                    New project
-                                </Link>
-                            </Button>
+                            <div className="flex flex-wrap items-center gap-2.5">
+                                <Button className="rounded-full px-4" size="sm" asChild>
+                                    <Link href={create()} prefetch>
+                                        <Plus className="mr-2 size-4" />
+                                        New project
+                                    </Link>
+                                </Button>
+
+                                <PublicProfileActions portfolioUrl={portfolioUrl} />
+                            </div>
                         </div>
 
                         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">

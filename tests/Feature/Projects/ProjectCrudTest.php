@@ -2,6 +2,8 @@
 
 use App\Enums\ProjectMode;
 use App\Models\Project;
+use App\Models\ProjectAsset;
+use App\Models\ProjectAssetAnalysis;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -129,6 +131,7 @@ test('an authenticated creator can view only their own projects', function () {
         ->assertOk()
         ->assertInertia(fn ($page) => $page
             ->component('projects/index')
+            ->where('workspace.portfolio_url', route('portfolio.show', $user))
             ->where('projects.0.name', $ownProject->name)
             ->where('projects.0.mode', ProjectMode::MixedExperimental->value)
             ->where('projects.0.asset_count', 0)
@@ -151,6 +154,52 @@ test('projects index serializes design case study mode values consistently', fun
             ->component('projects/index')
             ->where('projects.0.name', $project->name)
             ->where('projects.0.mode', ProjectMode::DesignCaseStudy->value)
+        );
+});
+
+test('projects index uses a highlight asset as the visual fallback cover when no explicit cover is set', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create([
+        'name' => 'Quiet Portraits',
+        'cover_asset_id' => null,
+    ]);
+
+    ProjectAsset::factory()->for($project)->create([
+        'path' => 'projects/'.$project->id.'/supporting-frame.jpg',
+        'sort_order' => 1,
+    ]);
+
+    $highlightAsset = ProjectAsset::factory()->for($project)->create([
+        'path' => 'projects/'.$project->id.'/highlight-frame.jpg',
+        'sort_order' => 2,
+    ]);
+
+    ProjectAssetAnalysis::query()->create([
+        'project_asset_id' => $highlightAsset->id,
+        'tags' => ['portrait', 'hero'],
+        'alt_text' => 'Highlight frame for the project card.',
+        'composition_score' => 9,
+        'focus_score' => 8,
+        'lighting_score' => 9,
+        'critique' => 'Strong visual candidate.',
+        'mood' => 'minimalist',
+        'is_highlight' => true,
+        'is_near_duplicate' => false,
+        'meta' => [],
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('projects.index'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('projects/index')
+            ->where('projects.0.name', 'Quiet Portraits')
+            ->where('projects.0.cover_asset_id', null)
+            ->where('projects.0.has_explicit_cover', false)
+            ->where(
+                'projects.0.cover_image_url',
+                asset('storage/'.$highlightAsset->path),
+            )
         );
 });
 

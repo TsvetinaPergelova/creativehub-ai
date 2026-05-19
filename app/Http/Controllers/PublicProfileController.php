@@ -13,7 +13,8 @@ class PublicProfileController extends Controller
     public function __invoke(User $user): Response
     {
         $projects = $user->projects()
-            ->with(['coverAsset', 'assets'])
+            ->with(['coverAsset', 'assets.analysis'])
+            ->withCount('assets')
             ->published()
             ->where('visibility', ProjectVisibility::Public)
             ->latest('published_at')
@@ -23,24 +24,35 @@ class PublicProfileController extends Controller
             'creator' => [
                 'id' => $user->id,
                 'name' => $user->name,
+                'avatar' => $user->avatarUrl(),
+                'specialization' => $user->specialization,
+                'location' => $user->location,
+                'bio' => $user->bio,
+                'website_url' => $user->website_url,
+                'instagram_url' => $user->instagram_url,
+                'contact_email' => $user->contact_email,
+                'profile_cover_style' => $user->profile_cover_style?->value,
                 'profile_url' => route('portfolio.show', $user),
             ],
-            'projects' => $projects->map(fn (Project $project) => [
-                'id' => $project->id,
-                'name' => $project->name,
-                'slug' => $project->slug,
-                'category' => $project->category,
-                'description' => $project->description,
-                'status' => $project->status->value,
-                'visibility' => $project->visibility->value,
-                'published_at' => $project->published_at?->toISOString(),
-                'cover_image_url' => $project->coverAsset
-                    ? asset('storage/'.$project->coverAsset->path)
-                    : ($project->assets->first()
-                        ? asset('storage/'.$project->assets->first()->path)
-                        : null),
-                'public_url' => route('portfolio.project.show', [$user, $project]),
-            ])->values(),
+            'projects' => $projects->map(function (Project $project) use ($user): array {
+                $displayCoverAsset = $project->resolveDisplayCoverAsset();
+
+                return [
+                    'id' => $project->id,
+                    'name' => $project->name,
+                    'slug' => $project->slug,
+                    'category' => $project->category,
+                    'description' => $project->description,
+                    'status' => $project->status->value,
+                    'visibility' => $project->visibility->value,
+                    'published_at' => $project->published_at?->toISOString(),
+                    'asset_count' => $project->assets_count,
+                    'cover_image_url' => $displayCoverAsset
+                        ? asset('storage/'.$displayCoverAsset->path)
+                        : null,
+                    'public_url' => route('portfolio.project.show', [$user, $project]),
+                ];
+            })->values(),
         ]);
     }
 }

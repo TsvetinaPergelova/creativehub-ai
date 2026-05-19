@@ -22,7 +22,7 @@ class ProjectController extends Controller
         return Inertia::render('projects/index', [
             'projects' => auth()->user()
                 ->projects()
-                ->with('coverAsset')
+                ->with(['coverAsset', 'assets.analysis'])
                 ->withCount('assets')
                 ->latest()
                 ->get()
@@ -65,6 +65,7 @@ class ProjectController extends Controller
         $this->authorize('view', $project);
 
         $project->load(['assets.analysis', 'shares', 'coverAsset']);
+        $displayCoverAsset = $project->resolveDisplayCoverAsset();
         $highlights = $project->assets
             ->filter(fn (ProjectAsset $asset) => $asset->analysis?->is_highlight)
             ->sortBy('sort_order')
@@ -107,6 +108,14 @@ class ProjectController extends Controller
                 'client_url' => $clientShare
                     ? url('/galleries/'.$clientShare->token)
                     : null,
+                'client_review' => $clientShare ? [
+                    'reviewer_name' => $clientShare->reviewer_name,
+                    'reviewer_comment' => $clientShare->reviewer_comment,
+                    'approved_at' => $clientShare->approved_at?->toISOString(),
+                    'favorites_count' => $clientShare->clientSelections
+                        ->where('is_favorite', true)
+                        ->count(),
+                ] : null,
             ],
             'project' => [
                 'id' => $project->id,
@@ -118,8 +127,9 @@ class ProjectController extends Controller
                 'status' => $project->status->value,
                 'visibility' => $project->visibility->value,
                 'cover_asset_id' => $project->cover_asset_id,
-                'cover_image_url' => $project->coverAsset
-                    ? asset('storage/'.$project->coverAsset->path)
+                'has_explicit_cover' => $project->cover_asset_id !== null,
+                'cover_image_url' => $displayCoverAsset
+                    ? asset('storage/'.$displayCoverAsset->path)
                     : null,
                 'created_at' => $project->created_at?->toISOString(),
                 'published_at' => $project->published_at?->toISOString(),
@@ -327,6 +337,8 @@ class ProjectController extends Controller
      */
     private function mapProjectSummary(Project $project): array
     {
+        $displayCoverAsset = $project->resolveDisplayCoverAsset();
+
         return [
             'id' => $project->id,
             'name' => $project->name,
@@ -337,8 +349,9 @@ class ProjectController extends Controller
             'status' => $project->status->value,
             'visibility' => $project->visibility->value,
             'cover_asset_id' => $project->cover_asset_id,
-            'cover_image_url' => $project->coverAsset
-                ? asset('storage/'.$project->coverAsset->path)
+            'has_explicit_cover' => $project->cover_asset_id !== null,
+            'cover_image_url' => $displayCoverAsset
+                ? asset('storage/'.$displayCoverAsset->path)
                 : null,
             'asset_count' => $project->assets_count ?? null,
             'created_at' => $project->created_at?->toISOString(),

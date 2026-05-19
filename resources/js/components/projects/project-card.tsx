@@ -19,7 +19,7 @@ export default function ProjectCard({ project }: { project: Project }) {
     const modeLabel = getProjectModeLabel(project.mode);
     const attentionFlags = [
         assetCount === 0 ? 'No assets yet' : null,
-        !project.cover_image_url ? 'Needs cover' : null,
+        !project.has_explicit_cover ? 'Needs cover' : null,
         !project.description ? 'Needs description' : null,
     ].filter(Boolean) as string[];
     const statusToneClass =
@@ -49,7 +49,6 @@ export default function ProjectCard({ project }: { project: Project }) {
                             </div>
                         </div>
                     )}
-                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                     <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
                         <Badge
                             variant="outline"
@@ -100,7 +99,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                         <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
                             {project.published_at ? 'Published' : 'Workspace'}
                         </span>
-                        {project.cover_image_url ? (
+                        {project.has_explicit_cover ? (
                             <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
                                 Has cover
                             </span>

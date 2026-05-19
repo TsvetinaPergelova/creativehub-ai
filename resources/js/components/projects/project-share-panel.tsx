@@ -114,6 +114,12 @@ export default function ProjectSharePanel({
 
     const isPublic = sharePanel.visibility === 'public';
     const isClient = sharePanel.visibility === 'client';
+    const approvalDate = sharePanel.client_review?.approved_at
+        ? new Intl.DateTimeFormat('en', {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+          }).format(new Date(sharePanel.client_review.approved_at))
+        : null;
 
     return (
         <Card className="overflow-hidden bg-card/60">
@@ -230,6 +236,41 @@ export default function ProjectSharePanel({
                         </CollapsibleContent>
                     </ProjectInsetPanel>
                 </Collapsible>
+
+                {sharePanel.client_review?.approved_at ? (
+                    <ProjectInsetPanel className="bg-background/70">
+                        <div className="flex items-start gap-3">
+                            <ProjectIconBadge icon={Check} />
+                            <div className="min-w-0 space-y-2">
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <p className="text-sm font-medium">
+                                        Client shortlist approved
+                                    </p>
+                                    {approvalDate ? (
+                                        <Badge variant="outline">
+                                            {approvalDate}
+                                        </Badge>
+                                    ) : null}
+                                </div>
+                                <p className="text-sm leading-6 text-muted-foreground">
+                                    {sharePanel.client_review.favorites_count} favorite
+                                    {sharePanel.client_review.favorites_count === 1
+                                        ? ''
+                                        : 's'}{' '}
+                                    saved by the client
+                                    {sharePanel.client_review.reviewer_name
+                                        ? ` as ${sharePanel.client_review.reviewer_name}`
+                                        : ''}.
+                                </p>
+                                {sharePanel.client_review.reviewer_comment ? (
+                                    <p className="text-sm leading-6 text-muted-foreground">
+                                        “{sharePanel.client_review.reviewer_comment}”
+                                    </p>
+                                ) : null}
+                            </div>
+                        </div>
+                    </ProjectInsetPanel>
+                ) : null}
             </CardContent>
         </Card>
     );

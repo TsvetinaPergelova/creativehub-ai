@@ -2,6 +2,7 @@
 
 namespace App\Concerns;
 
+use App\Enums\ProfileCoverStyle;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
@@ -18,6 +19,15 @@ trait ProfileValidationRules
         return [
             'name' => $this->nameRules(),
             'email' => $this->emailRules($userId),
+            'specialization' => ['nullable', 'string', 'max:120'],
+            'location' => ['nullable', 'string', 'max:120'],
+            'bio' => ['nullable', 'string', 'max:1200'],
+            'website_url' => ['nullable', 'url', 'max:255'],
+            'instagram_url' => ['nullable', 'url', 'max:255'],
+            'contact_email' => ['nullable', 'email', 'max:255'],
+            'avatar' => ['nullable', 'image', 'max:2048'],
+            'profile_cover_style' => ['nullable', Rule::enum(ProfileCoverStyle::class)],
+            'remove_avatar' => ['nullable', 'boolean'],
         ];
     }
 

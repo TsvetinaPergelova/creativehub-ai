@@ -36,14 +36,32 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatar' => $user->avatarUrl(),
+                    'specialization' => $user->specialization,
+                    'location' => $user->location,
+                    'bio' => $user->bio,
+                    'website_url' => $user->website_url,
+                    'instagram_url' => $user->instagram_url,
+                    'contact_email' => $user->contact_email,
+                    'profile_cover_style' => $user->profile_cover_style?->value,
+                    'email_verified_at' => $user->email_verified_at?->toISOString(),
+                    'created_at' => $user->created_at?->toISOString(),
+                    'updated_at' => $user->updated_at?->toISOString(),
+                ] : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'workspace' => $request->user() ? [
+            'workspace' => $user ? [
+                'portfolio_url' => route('portfolio.show', $user),
                 'project_search' => fn () => $request->user()
                     ->projects()
                     ->withCount([

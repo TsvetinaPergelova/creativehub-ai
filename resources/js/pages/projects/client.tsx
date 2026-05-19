@@ -1,8 +1,9 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, useForm, usePage } from '@inertiajs/react';
 import { ChevronLeft, ChevronRight, Expand, Heart, LockKeyhole } from 'lucide-react';
 import { useState } from 'react';
 import {
     storeAccess,
+    submitReview as submitReviewRoute,
     toggleFavorite as toggleFavoriteRoute,
 } from '@/actions/App/Http/Controllers/ClientGalleryController';
 import ClientFavoritesPanel from '@/components/client/client-favorites-panel';
@@ -36,6 +37,11 @@ type GalleryData = {
     cover_image_url: string | null;
     assets: (ProjectAsset & { is_favorite?: boolean })[];
     favorites_count: number;
+    review: {
+        reviewer_name: string | null;
+        reviewer_comment: string | null;
+        approved_at: string | null;
+    } | null;
 };
 
 export default function ClientGallery({
@@ -45,13 +51,20 @@ export default function ClientGallery({
     access: GalleryAccess;
     gallery: GalleryData;
 }) {
+    const page = usePage<{ errors?: Record<string, string> }>();
     const [assets, setAssets] = useState(gallery.assets);
     const [pendingFavoriteAssetId, setPendingFavoriteAssetId] = useState<number | null>(null);
     const [favoriteError, setFavoriteError] = useState<string | null>(null);
     const [selectedAssetIndex, setSelectedAssetIndex] = useState<number | null>(null);
+    const reviewForm = useForm({
+        reviewer_name: gallery.review?.reviewer_name ?? '',
+        reviewer_comment: gallery.review?.reviewer_comment ?? '',
+    });
     const favoritesCount = assets.filter((asset) => asset.is_favorite).length;
     const highlightedAssets = assets.filter((asset) => asset.analysis?.is_highlight).length;
     const selectedAsset = selectedAssetIndex === null ? null : assets[selectedAssetIndex] ?? null;
+    const shortlistApproved = gallery.review?.approved_at ?? null;
+    const reviewSubmissionError = page.props.errors?.review ?? null;
 
     const toggleFavorite = async (
         asset: ProjectAsset & { is_favorite?: boolean },
@@ -128,6 +141,12 @@ export default function ClientGallery({
         }
 
         setSelectedAssetIndex((selectedAssetIndex + 1) % assets.length);
+    }
+
+    function submitReview(): void {
+        reviewForm.post(submitReviewRoute(gallery.token).url, {
+            preserveScroll: true,
+        });
     }
 
     return (
@@ -344,7 +363,97 @@ export default function ClientGallery({
                                 <ClientFavoritesPanel
                                     favoritesCount={favoritesCount}
                                     totalAssets={assets.length}
+                                    approvedAt={shortlistApproved}
                                 />
+
+                                <Card className="border-white/10 bg-card/85 shadow-sm backdrop-blur">
+                                    <CardHeader>
+                                        <CardTitle>Finalize shortlist</CardTitle>
+                                        <CardDescription>
+                                            Save one overall note for the creator and confirm that this shortlist is the set you want to discuss or move forward with.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="grid gap-2">
+                                            <label
+                                                htmlFor="reviewer_name"
+                                                className="text-sm font-medium"
+                                            >
+                                                Your name
+                                            </label>
+                                            <Input
+                                                id="reviewer_name"
+                                                value={reviewForm.data.reviewer_name}
+                                                onChange={(event) =>
+                                                    reviewForm.setData(
+                                                        'reviewer_name',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                placeholder="Optional"
+                                            />
+                                            {reviewForm.errors.reviewer_name ? (
+                                                <p className="text-sm text-rose-300">
+                                                    {reviewForm.errors.reviewer_name}
+                                                </p>
+                                            ) : null}
+                                        </div>
+
+                                        <div className="grid gap-2">
+                                            <label
+                                                htmlFor="reviewer_comment"
+                                                className="text-sm font-medium"
+                                            >
+                                                Project note
+                                            </label>
+                                            <textarea
+                                                id="reviewer_comment"
+                                                value={reviewForm.data.reviewer_comment}
+                                                onChange={(event) =>
+                                                    reviewForm.setData(
+                                                        'reviewer_comment',
+                                                        event.target.value,
+                                                    )
+                                                }
+                                                rows={5}
+                                                placeholder="Optional overall feedback for the creator."
+                                                className="flex min-h-28 w-full rounded-xl border border-white/10 bg-background/60 px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40"
+                                            />
+                                            {reviewForm.errors.reviewer_comment ? (
+                                                <p className="text-sm text-rose-300">
+                                                    {reviewForm.errors.reviewer_comment}
+                                                </p>
+                                            ) : null}
+                                        </div>
+
+                                        {reviewSubmissionError ? (
+                                            <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+                                                {reviewSubmissionError}
+                                            </div>
+                                        ) : null}
+
+                                        {shortlistApproved ? (
+                                            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
+                                                This shortlist has already been approved. You can update the note and submit it again if needed.
+                                            </div>
+                                        ) : null}
+
+                                        <Button
+                                            type="button"
+                                            className="w-full"
+                                            disabled={favoritesCount === 0 || reviewForm.processing}
+                                            onClick={submitReview}
+                                        >
+                                            {reviewForm.processing
+                                                ? 'Saving shortlist...'
+                                                : 'Approve shortlist'}
+                                        </Button>
+
+                                        <p className="text-xs leading-5 text-muted-foreground">
+                                            The creator will use your saved favorites and note as the final review direction for this gallery.
+                                        </p>
+                                    </CardContent>
+                                </Card>
 
                                 <Card className="border-white/10 bg-card/85 shadow-sm backdrop-blur">
                                     <CardHeader>

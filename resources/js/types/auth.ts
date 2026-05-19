@@ -3,6 +3,13 @@ export type User = {
     name: string;
     email: string;
     avatar?: string;
+    specialization?: string | null;
+    location?: string | null;
+    bio?: string | null;
+    website_url?: string | null;
+    instagram_url?: string | null;
+    contact_email?: string | null;
+    profile_cover_style?: string | null;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
     created_at: string;
@@ -11,7 +18,7 @@ export type User = {
 };
 
 export type Auth = {
-    user: User;
+    user: User | null;
 };
 
 export type TwoFactorSetupData = {

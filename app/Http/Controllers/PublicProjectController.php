@@ -14,16 +14,20 @@ class PublicProjectController extends Controller
     public function __invoke(User $user, Project $project): Response
     {
         $project = $user->projects()
-            ->with('assets.analysis')
+            ->with(['assets.analysis', 'coverAsset'])
             ->whereKey($project->getKey())
             ->published()
             ->where('visibility', ProjectVisibility::Public)
             ->firstOrFail();
 
+        $displayCoverAsset = $project->resolveDisplayCoverAsset();
+
         return Inertia::render('public/project', [
             'creator' => [
                 'id' => $user->id,
                 'name' => $user->name,
+                'avatar' => $user->avatarUrl(),
+                'specialization' => $user->specialization,
                 'profile_url' => route('portfolio.show', $user),
             ],
             'project' => [
@@ -35,6 +39,9 @@ class PublicProjectController extends Controller
                 'status' => $project->status->value,
                 'visibility' => $project->visibility->value,
                 'published_at' => $project->published_at?->toISOString(),
+                'cover_image_url' => $displayCoverAsset
+                    ? asset('storage/'.$displayCoverAsset->path)
+                    : null,
                 'assets' => $project->assets
                     ->sortBy('sort_order')
                     ->values()
