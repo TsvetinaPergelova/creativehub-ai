@@ -17,8 +17,18 @@ class PublicProfileController extends Controller
             ->withCount('assets')
             ->published()
             ->where('visibility', ProjectVisibility::Public)
-            ->latest('published_at')
-            ->get();
+            ->latest('published_at');
+
+        if (request()->user() !== null) {
+            $projects->withExists([
+                'savedProjects as is_saved_by_auth_user' => fn ($query) => $query->where(
+                    'user_id',
+                    request()->user()->id,
+                ),
+            ]);
+        }
+
+        $projects = $projects->get();
 
         return Inertia::render('public/profile', [
             'creator' => [
@@ -47,10 +57,14 @@ class PublicProfileController extends Controller
                     'visibility' => $project->visibility->value,
                     'published_at' => $project->published_at?->toISOString(),
                     'asset_count' => $project->assets_count,
+                    'creator_id' => $user->id,
                     'cover_image_url' => $displayCoverAsset
                         ? asset('storage/'.$displayCoverAsset->path)
                         : null,
                     'public_url' => route('portfolio.project.show', [$user, $project]),
+                    'creator_name' => $user->name,
+                    'creator_profile_url' => route('portfolio.show', $user),
+                    'is_saved_by_auth_user' => (bool) ($project->is_saved_by_auth_user ?? false),
                 ];
             })->values(),
         ]);

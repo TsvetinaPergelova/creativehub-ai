@@ -83,7 +83,7 @@ export default function ProjectCoverPicker({
                     disabled={!hasAssets}
                 >
                     <ImagePlus className="mr-2 size-4" />
-                    {coverAssetId ? 'Change cover image' : 'Set cover image'}
+                    {coverAssetId ? 'Change cover' : 'Choose cover'}
                 </Button>
 
                 {coverAssetId && (
@@ -99,7 +99,7 @@ export default function ProjectCoverPicker({
                         ) : (
                             <Trash2 className="mr-2 size-4" />
                         )}
-                        Remove cover
+                        Use auto-picked preview
                     </Button>
                 )}
 
@@ -111,7 +111,7 @@ export default function ProjectCoverPicker({
 
                 {form.recentlySuccessful && (
                     <p className="text-sm font-medium text-primary">
-                        {coverAssetId ? 'Cover saved.' : 'Cover removed.'}
+                        {coverAssetId ? 'Cover saved.' : 'Auto-picked preview restored.'}
                     </p>
                 )}
             </div>
@@ -121,8 +121,9 @@ export default function ProjectCoverPicker({
                     <DialogHeader className="border-b px-6 py-5">
                         <DialogTitle>Choose a project cover</DialogTitle>
                         <DialogDescription>
-                            Pick one of your uploaded images to anchor the
-                            project hero and dashboard card.
+                            Pick one of your uploaded images if you want more
+                            control over how the project appears across the
+                            workspace.
                         </DialogDescription>
                     </DialogHeader>
 
@@ -135,12 +136,12 @@ export default function ProjectCoverPicker({
                                 <p className="text-sm font-medium">
                                     {selectedAsset
                                         ? `Selected cover: ${getAssetDisplayTitle(selectedAsset)}`
-                                        : 'No cover selected yet'}
+                                        : 'Using auto-picked preview'}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
                                     {selectedAsset
-                                        ? 'Press Save cover to apply this image to the project hero and dashboard card.'
-                                        : 'Pick one image below, or keep the styled fallback.'}
+                                        ? 'Press Save cover to use this image in the project hero and cards.'
+                                        : 'Pick one image below, or keep the auto-picked preview.'}
                                 </p>
                             </div>
                         </div>
@@ -167,21 +168,22 @@ export default function ProjectCoverPicker({
                                     )}
                                     <div className="space-y-2 text-center">
                                         <p className="text-sm font-medium">
-                                            Use styled fallback
+                                            Keep auto-picked preview
                                         </p>
                                         <p className="text-xs leading-5 text-muted-foreground">
-                                            Keep the hero clean without a cover
-                                            image.
+                                            Curator will keep using the
+                                            strongest uploaded frame until you
+                                            choose a specific cover.
                                         </p>
                                     </div>
                                 </div>
                                 <div className="p-4">
                                     <p className="text-sm font-medium">
-                                        No cover image
+                                        No custom cover
                                     </p>
                                     <p className="mt-1 text-xs text-muted-foreground">
-                                        The project uses the built-in editorial
-                                        background.
+                                        The project keeps its current preview
+                                        automatically.
                                     </p>
                                 </div>
                             </button>
@@ -248,7 +250,7 @@ export default function ProjectCoverPicker({
                     <div className="sticky bottom-0 flex flex-col gap-3 border-t bg-background/95 px-6 py-4 backdrop-blur sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-sm text-muted-foreground">
                             {selectedCoverId === null
-                                ? 'Styled fallback is selected. Press Save cover to keep the project without a cover image.'
+                                ? 'Curator will keep using the auto-picked preview until you choose a specific cover.'
                                 : 'This image will appear in the project hero and on your dashboard project card.'}
                         </p>
                         <div className="flex gap-3">

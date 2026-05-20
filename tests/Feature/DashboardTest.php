@@ -23,7 +23,7 @@ test('authenticated users can visit the dashboard', function () {
             ->component('dashboard')
             ->where('workspace.portfolio_url', route('portfolio.show', $user))
             ->has('primaryAction')
-            ->has('attentionItems', 4)
+            ->has('attentionItems', 3)
             ->has('assistantPanel.primary')
             ->has('workflowProjects')
         );
@@ -112,6 +112,52 @@ test('dashboard recent projects use a highlight asset as fallback cover when no 
                 'workflowProjects.0.cover_image_url',
                 asset('storage/'.$highlightAsset->path),
             )
+        );
+});
+
+test('dashboard does not treat missing explicit covers as a primary blocker when assets already exist', function () {
+    $user = User::factory()->create();
+    $project = Project::factory()->for($user)->create([
+        'name' => 'Preview-led Draft',
+        'category' => 'Portraits',
+        'mode' => ProjectMode::Photography,
+        'status' => ProjectStatus::Draft,
+        'cover_asset_id' => null,
+        'description' => 'A portrait project still being shaped.',
+    ]);
+
+    $fallbackAsset = ProjectAsset::factory()->for($project)->create([
+        'title' => 'Preview frame',
+        'path' => 'projects/'.$project->id.'/preview-led-draft.jpg',
+        'sort_order' => 1,
+    ]);
+
+    ProjectAssetAnalysis::query()->create([
+        'project_asset_id' => $fallbackAsset->id,
+        'tags' => ['portrait'],
+        'alt_text' => 'Preview-led draft frame.',
+        'composition_score' => 8,
+        'focus_score' => 8,
+        'lighting_score' => 8,
+        'critique' => 'Strong draft frame.',
+        'mood' => 'warm',
+        'is_highlight' => true,
+        'is_near_duplicate' => false,
+        'meta' => [],
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('workflowProjects.0.name', 'Preview-led Draft')
+            ->where('workflowProjects.0.dashboard_status', 'Draft set')
+            ->where('workflowProjects.0.dashboard_action_label', 'Open draft')
+            ->where(
+                'workflowProjects.0.dashboard_action_note',
+                'Curator is using one of the uploaded frames as a preview for now. Open the project to refine the set and lock in a cover when you want.',
+            )
+            ->where('assistantPanel.primary.title', 'Deepen your Portraits story')
         );
 });
 

@@ -9,14 +9,27 @@ export function useClipboard(): UseClipboardReturn {
     const [copiedText, setCopiedText] = useState<CopiedValue>(null);
 
     const copy: CopyFn = async (text) => {
-        if (!navigator?.clipboard) {
-            console.warn('Clipboard not supported');
-
-            return false;
-        }
-
         try {
-            await navigator.clipboard.writeText(text);
+            if (navigator?.clipboard?.writeText) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'absolute';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                textarea.setSelectionRange(0, textarea.value.length);
+
+                const copied = document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                if (!copied) {
+                    throw new Error('execCommand copy failed');
+                }
+            }
+
             setCopiedText(text);
 
             return true;

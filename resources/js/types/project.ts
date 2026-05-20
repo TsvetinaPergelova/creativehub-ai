@@ -34,6 +34,7 @@ export type Project = {
     description: string | null;
     status: string;
     visibility: string;
+    creator_id?: number | null;
     cover_asset_id?: number | null;
     has_explicit_cover?: boolean;
     assets?: ProjectAsset[];
@@ -42,6 +43,7 @@ export type Project = {
     public_url?: string | null;
     creator_name?: string | null;
     creator_profile_url?: string | null;
+    is_saved_by_auth_user?: boolean;
     created_at?: string | null;
     published_at?: string | null;
 };

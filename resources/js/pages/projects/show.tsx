@@ -305,30 +305,24 @@ export default function ShowProject({
                                                 variant="outline"
                                                 className="border-white/15 bg-background/70 text-foreground shadow-sm backdrop-blur-md"
                                             >
-                                                {pulseStatus}
+                                                {project.has_explicit_cover
+                                                    ? 'Custom cover'
+                                                    : project.cover_image_url
+                                                      ? 'Auto-picked preview'
+                                                      : 'Default preview'}
                                             </Badge>
                                         </div>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <p className="text-sm leading-6 text-muted-foreground">
-                                            {project.has_explicit_cover
-                                                ? 'Cover image selected from your asset library.'
-                                                : project.cover_image_url
-                                                  ? 'Curator surfaced a fallback hero from your uploaded set. Choose a cover anytime to lock it in.'
-                                                  : 'Choose a cover image to personalize this project.'}
-                                        </p>
-                                        <div className="flex flex-wrap gap-2">
-                                            <Badge
-                                                variant="outline"
-                                                className="hidden border-white/15 bg-background/70 text-foreground shadow-sm backdrop-blur-md sm:inline-flex"
-                                            >
+                                    <div className="space-y-1.5">
+                                        <div className="flex items-start gap-4">
+                                            <span className="max-w-xl text-sm leading-6 text-muted-foreground">
                                                 {project.has_explicit_cover
-                                                    ? 'Hero customized'
+                                                    ? 'Custom cover selected from your asset library.'
                                                     : project.cover_image_url
-                                                      ? 'Using smart fallback'
-                                                      : 'Using default hero'}
-                                            </Badge>
+                                                      ? 'Curator is using an auto-picked preview from your uploaded set. You can change it anytime.'
+                                                      : 'Upload images to give this project a visual preview.'}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

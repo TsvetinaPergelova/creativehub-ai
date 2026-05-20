@@ -194,119 +194,116 @@ function AttentionCard({ item }: { item: DashboardAttentionItem }) {
     );
 }
 
-function WorkflowProjectStats({
-    project,
-}: {
-    project: WorkflowProject;
-}) {
-    return (
-        <div className="grid gap-3 text-sm sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-black/[0.15] px-4 py-3">
-                <p className="text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
-                    Assets
-                </p>
-                <p className="mt-2 font-semibold text-foreground">
-                    {project.asset_count ?? 0}
-                </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-black/[0.15] px-4 py-3">
-                <p className="text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
-                    Analyzed
-                </p>
-                <p className="mt-2 font-semibold text-foreground">
-                    {project.analyzed_assets_count}
-                </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-black/[0.15] px-4 py-3">
-                <p className="text-[11px] tracking-[0.2em] text-muted-foreground uppercase">
-                    Needs attention
-                </p>
-                <p className="mt-2 font-semibold text-foreground">
-                    {project.pending_assets_count + project.unnamed_assets_count}
-                </p>
-            </div>
-        </div>
-    );
-}
-
 function WorkflowProjectCard({ project }: { project: WorkflowProject }) {
     const tone = toneClasses(project.dashboard_tone);
     const Icon = workflowIcon(project.dashboard_tone);
 
     return (
         <Link href={show(project.id)} className="group block h-full" prefetch>
-            <Card className="h-full gap-0 rounded-[1.75rem] border-white/10 bg-white/[0.04] py-0 shadow-none transition hover:border-primary/20 hover:bg-white/[0.05]">
-            <CardHeader className="space-y-4 px-5 pt-5 pb-0">
-                <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
-                        {project.category}
-                    </p>
-                    <Badge
-                        variant="outline"
-                        className="border-white/10 bg-white/[0.05] text-[10px] tracking-[0.14em] uppercase text-white/80"
-                    >
-                        {project.dashboard_mode_label}
-                    </Badge>
+            <Card className="h-full gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/20 hover:bg-card">
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                    {project.cover_image_url ? (
+                        <img
+                            src={project.cover_image_url}
+                            alt={project.name}
+                            className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
+                    ) : (
+                        <div className="flex size-full items-end justify-start bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.18),transparent_34%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.14),transparent_30%),radial-gradient(circle_at_bottom,rgba(248,113,113,0.14),transparent_38%),rgba(255,255,255,0.02)] p-5">
+                            <div>
+                                <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
+                                    Workspace preview
+                                </p>
+                                <p className="mt-2 text-lg font-semibold">
+                                    {project.name}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 px-4 pt-4">
+                        <div className="flex flex-wrap items-center gap-2">
+                            <p className="text-xs tracking-[0.2em] text-white/85 uppercase">
+                                {project.category}
+                            </p>
+                            <Badge
+                                variant="outline"
+                                className="border-white/15 bg-black/25 px-2.5 text-[10px] tracking-[0.08em] uppercase text-white/85 backdrop-blur-sm"
+                            >
+                                {project.dashboard_mode_label}
+                            </Badge>
+                        </div>
+                        <Badge variant="outline" className={tone.badge}>
+                            {project.dashboard_status}
+                        </Badge>
+                    </div>
                 </div>
 
-                <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0 space-y-2">
-                        <CardTitle className="text-xl tracking-tight">
+                <CardHeader className="flex min-h-[9.75rem] flex-col justify-between space-y-3 px-5 pt-5 pb-0">
+                    <div className="min-w-0 space-y-1.5">
+                        <CardTitle className="line-clamp-2 min-h-[3.5rem] text-xl leading-tight tracking-tight">
                             {project.name}
                         </CardTitle>
                         <CardDescription className="hidden">
                             {project.category} · {project.dashboard_mode_label}
                         </CardDescription>
-                        <p className="text-sm leading-6 text-muted-foreground">
+                        <p className="line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-muted-foreground">
                             {project.description ??
                                 'Add a short description to give this project a clearer point of view.'}
                         </p>
                     </div>
-                    <Badge variant="outline" className={tone.badge}>
-                        {project.dashboard_status}
-                    </Badge>
-                </div>
-            </CardHeader>
-            <CardContent className="flex flex-1 flex-col justify-between gap-5 px-5 py-5">
-                <WorkflowProjectStats project={project} />
+                </CardHeader>
+                <CardContent className="flex min-h-[15.25rem] flex-1 flex-col px-5 py-5">
+                    <div className="space-y-4">
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                            <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                                {project.asset_count ?? 0} assets
+                            </span>
+                            <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                                {project.analyzed_assets_count} analyzed
+                            </span>
+                            <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                                {project.pending_assets_count + project.unnamed_assets_count} need attention
+                            </span>
+                        </div>
 
-                <div className="space-y-4 rounded-[1.5rem] border border-white/10 bg-black/[0.2] p-4">
-                    <div className="flex items-center gap-3">
-                        <div
-                            className={cn(
-                                'flex size-10 items-center justify-center rounded-full',
-                                tone.iconWrap,
-                            )}
-                        >
-                            <Icon
+                        <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
+                            {project.dashboard_action_note}
+                        </p>
+                    </div>
+
+                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+                        <div className="flex items-center gap-3">
+                            <div
                                 className={cn(
-                                    'size-4',
-                                    project.dashboard_tone === 'review'
-                                        ? 'animate-spin'
-                                        : '',
+                                    'flex size-10 items-center justify-center rounded-full',
+                                    tone.iconWrap,
                                 )}
-                            />
+                            >
+                                <Icon
+                                    className={cn(
+                                        'size-4',
+                                        project.dashboard_tone === 'review'
+                                            ? 'animate-spin'
+                                            : '',
+                                    )}
+                                />
+                            </div>
+                            <div className="min-w-0">
+                                <p className="text-sm font-medium">
+                                    {project.dashboard_action_label}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                    {project.dashboard_status}
+                                </p>
+                            </div>
                         </div>
-                        <div className="min-w-0">
-                            <p className="text-sm font-medium">
-                                {project.dashboard_action_label}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                {project.dashboard_status}
-                            </p>
+                        <div className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-foreground transition group-hover:text-primary">
+                            Open
+                            <ArrowRight className="size-4" />
                         </div>
                     </div>
-
-                    <p className="text-sm leading-6 text-muted-foreground">
-                        {project.dashboard_action_note}
-                    </p>
-
-                    <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition group-hover:text-primary">
-                        {project.dashboard_action_label}
-                        <ArrowRight className="size-4" />
-                    </div>
-                </div>
-            </CardContent>
+                </CardContent>
             </Card>
         </Link>
     );
@@ -337,13 +334,39 @@ export default function Dashboard({
         typeof workspace?.portfolio_url === 'string'
             ? workspace.portfolio_url
             : null;
+    const heroProject =
+        primaryAction.target === 'project' && primaryAction.project_id !== null
+            ? workflowProjects.find(
+                  (project) => project.id === primaryAction.project_id,
+              ) ?? null
+            : null;
+    const heroUsesImage = Boolean(heroProject?.cover_image_url);
 
     return (
         <>
             <Head title="Dashboard" />
 
             <div className="flex h-full min-w-0 flex-1 flex-col gap-6 overflow-x-clip p-3 sm:gap-8 sm:p-6">
-                <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.1),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.18),transparent_34%),rgba(255,255,255,0.03)] px-5 py-5 shadow-[0_30px_120px_rgba(0,0,0,0.24)] sm:px-7 sm:py-6">
+                <section
+                    className={cn(
+                        'relative overflow-hidden rounded-[2rem] border border-white/10 px-5 py-5 shadow-[0_30px_120px_rgba(0,0,0,0.24)] sm:px-7 sm:py-6',
+                        heroUsesImage
+                            ? 'bg-card'
+                            : 'bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.1),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.18),transparent_34%),rgba(255,255,255,0.03)]',
+                    )}
+                >
+                    {heroProject?.cover_image_url ? (
+                        <>
+                            <img
+                                src={heroProject.cover_image_url}
+                                alt={heroProject.name}
+                                className="absolute inset-0 size-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(7,9,20,0.92)_0%,rgba(7,9,20,0.82)_38%,rgba(7,9,20,0.72)_58%,rgba(7,9,20,0.82)_100%)]" />
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_34%)]" />
+                        </>
+                    ) : null}
+
                     <div className="relative grid gap-5 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
                         <div className="space-y-4">
                             <div className="space-y-3">
@@ -377,7 +400,7 @@ export default function Dashboard({
                             </div>
                         </div>
 
-                        <Card className="gap-3 rounded-[1.75rem] border-white/10 bg-black/[0.25] py-4 shadow-none">
+                        <Card className="gap-3 rounded-[1.75rem] border-white/10 bg-black/65 py-4 shadow-none backdrop-blur-md">
                             <CardHeader className="space-y-2.5 px-4">
                                 <div className="flex items-center gap-2 text-sm text-foreground">
                                     <Sparkles className="size-4 text-primary" />
@@ -388,7 +411,7 @@ export default function Dashboard({
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-3.5 px-4">
-                                <div className="space-y-3 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-3.5">
+                                <div className="space-y-3 rounded-[1.5rem] border border-white/10 bg-black/30 p-3.5">
                                     <div className="flex items-start gap-3">
                                         <div
                                             className={cn(
@@ -449,7 +472,7 @@ export default function Dashboard({
                                                                 recommendation.target,
                                                                 recommendation.project_id,
                                                             )}
-                                                            className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2.5 transition hover:border-primary/20 hover:bg-white/[0.05]"
+                                                            className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/25 px-3 py-2.5 transition hover:border-primary/20 hover:bg-black/35"
                                                             prefetch
                                                         >
                                                             <div
@@ -499,7 +522,7 @@ export default function Dashboard({
                         </p>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {attentionItems.map((item) => (
                             <AttentionCard key={item.label} item={item} />
                         ))}
@@ -553,7 +576,7 @@ export default function Dashboard({
                     </div>
 
                     {workflowProjects.length > 0 ? (
-                        <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+                        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                             {workflowProjects.map((project) => (
                                 <WorkflowProjectCard
                                     key={project.id}

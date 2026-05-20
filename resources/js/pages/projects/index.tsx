@@ -364,7 +364,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                             description={libraryDescription}
                         />
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 min-[1120px]:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
                             {filteredProjects.map((project) => (
                                 <ProjectCard key={project.id} project={project} />
                             ))}

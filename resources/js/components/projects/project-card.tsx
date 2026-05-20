@@ -19,9 +19,13 @@ export default function ProjectCard({ project }: { project: Project }) {
     const modeLabel = getProjectModeLabel(project.mode);
     const attentionFlags = [
         assetCount === 0 ? 'No assets yet' : null,
-        !project.has_explicit_cover ? 'Needs cover' : null,
         !project.description ? 'Needs description' : null,
     ].filter(Boolean) as string[];
+    const previewLabel = project.has_explicit_cover
+        ? 'Custom cover'
+        : project.cover_image_url
+          ? 'Auto-picked preview'
+          : null;
     const statusToneClass =
         project.status === 'published'
             ? 'border-emerald-400/30 bg-emerald-400/12 text-emerald-100'
@@ -29,8 +33,8 @@ export default function ProjectCard({ project }: { project: Project }) {
 
     return (
         <Link href={show(project.id)} className="group block h-full" prefetch>
-            <Card className="h-full gap-0 overflow-hidden rounded-[1.25rem] border-white/10 bg-white/[0.04] shadow-none transition hover:border-primary/20 hover:bg-white/[0.05]">
-                <div className="relative aspect-[1.95/1] overflow-hidden bg-muted">
+            <Card className="h-full gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/20 hover:bg-card">
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                     {project.cover_image_url ? (
                         <img
                             src={project.cover_image_url}
@@ -38,22 +42,22 @@ export default function ProjectCard({ project }: { project: Project }) {
                             className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                     ) : (
-                        <div className="flex size-full items-end justify-start bg-[linear-gradient(135deg,rgba(56,189,248,0.16),rgba(250,204,21,0.12),rgba(255,255,255,0.04))] p-3">
+                        <div className="flex size-full items-end justify-start bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(250,204,21,0.12),transparent_40%),rgba(255,255,255,0.04)] p-5">
                             <div>
-                                <p className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+                                <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
                                     Library entry
                                 </p>
-                                <p className="mt-1 text-sm font-semibold">
+                                <p className="mt-2 text-lg font-semibold">
                                     {project.name}
                                 </p>
                             </div>
                         </div>
                     )}
-                    <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+                    <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                         <Badge
                             variant="outline"
                             className={cn(
-                                'h-6 px-2 text-[10px] capitalize backdrop-blur-sm',
+                                'border-white/15 bg-black/25 capitalize text-white backdrop-blur-sm',
                                 statusToneClass,
                             )}
                         >
@@ -61,47 +65,47 @@ export default function ProjectCard({ project }: { project: Project }) {
                         </Badge>
                         <Badge
                             variant="outline"
-                            className="h-6 border-white/15 bg-black/30 px-2 text-[10px] capitalize text-white backdrop-blur-sm"
+                            className="border-white/15 bg-black/25 capitalize text-white backdrop-blur-sm"
                         >
                             {project.visibility}
                         </Badge>
                     </div>
                 </div>
 
-                <CardHeader className="space-y-1.5 px-3 pt-3 pb-0">
+                <CardHeader className="space-y-3 px-5 pt-5 pb-0">
                     <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
+                        <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
                             {project.category}
                         </p>
                         <Badge
                             variant="outline"
-                            className="border-white/10 bg-white/[0.05] px-2 text-[9px] tracking-[0.08em] uppercase text-white/80"
+                            className="border-white/10 bg-white/[0.05] px-2.5 text-[10px] tracking-[0.08em] uppercase text-white/80"
                         >
                             {modeLabel}
                         </Badge>
                     </div>
 
-                    <div className="space-y-1">
-                        <CardTitle className="line-clamp-2 text-[1.15rem] leading-tight tracking-tight">
+                    <div className="space-y-1.5">
+                        <CardTitle className="line-clamp-2 text-xl leading-tight tracking-tight">
                             {project.name}
                         </CardTitle>
-                        <CardDescription className="line-clamp-2 min-h-[3.25rem] text-[13px] leading-6">
+                        <CardDescription className="line-clamp-3 min-h-[4.5rem] text-sm leading-6">
                             {project.description ?? 'Add a short description to give this project a clearer point of view.'}
                         </CardDescription>
                     </div>
                 </CardHeader>
 
-                <CardContent className="space-y-2 px-3 py-3">
-                    <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
+                <CardContent className="space-y-4 px-5 py-5">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                         <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
                             {assetCount} asset{assetCount === 1 ? '' : 's'}
                         </span>
                         <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
                             {project.published_at ? 'Published' : 'Workspace'}
                         </span>
-                        {project.has_explicit_cover ? (
+                        {previewLabel ? (
                             <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
-                                Has cover
+                                {previewLabel}
                             </span>
                         ) : null}
                     </div>
@@ -124,10 +128,10 @@ export default function ProjectCard({ project }: { project: Project }) {
                     )}
                 </CardContent>
 
-                <CardFooter className="px-3 pb-3 pt-0">
-                    <div className="inline-flex items-center gap-1.5 text-[13px] font-medium text-foreground transition-colors group-hover:text-primary">
+                <CardFooter className="px-5 pb-5 pt-0">
+                    <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors group-hover:text-primary">
                         Open project
-                        <ArrowRight className="size-3.5" />
+                        <ArrowRight className="size-4" />
                     </div>
                 </CardFooter>
             </Card>

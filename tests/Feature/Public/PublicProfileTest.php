@@ -89,10 +89,16 @@ test('public project page resolves a published public project by slug', function
 });
 
 test('explore shows published public projects', function () {
-    $project = Project::factory()->published()->create([
+    $user = User::factory()->create([
+        'name' => 'Radina Valeva',
+    ]);
+
+    $project = Project::factory()->for($user)->published()->create([
         'name' => 'Mountain Storytelling',
         'visibility' => ProjectVisibility::Public,
     ]);
+
+    ProjectAsset::factory()->for($project)->count(2)->create();
 
     $this->get(route('explore.index'))
         ->assertOk()
@@ -100,6 +106,8 @@ test('explore shows published public projects', function () {
             ->component('explore/index')
             ->where('projects.0.slug', $project->slug)
             ->where('projects.0.name', 'Mountain Storytelling')
+            ->where('projects.0.asset_count', 2)
+            ->where('projects.0.creator_name', 'Radina Valeva')
         );
 });
 

@@ -10,7 +10,9 @@ use App\Http\Controllers\Projects\ProjectController;
 use App\Http\Controllers\Projects\ProjectCoverController;
 use App\Http\Controllers\Projects\ProjectPublishController;
 use App\Http\Controllers\PublicProfileController;
+use App\Http\Controllers\PublicProjectCommentController;
 use App\Http\Controllers\PublicProjectController;
+use App\Http\Controllers\PublicProjectSaveController;
 use App\Models\Project;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -87,12 +89,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ProjectMode::ArtSeries => 'Ready as a series',
             ProjectMode::MixedExperimental => 'Ready to publish',
         };
-        $coverLabel = fn (ProjectMode $mode): string => match ($mode) {
-            ProjectMode::Photography => 'Needs cover',
-            ProjectMode::DesignCaseStudy => 'Needs hero',
-            ProjectMode::ArtSeries => 'Needs cover',
-            ProjectMode::MixedExperimental => 'Needs cover',
-        };
         $draftLabel = fn (ProjectMode $mode): string => match ($mode) {
             ProjectMode::Photography => 'Draft set',
             ProjectMode::DesignCaseStudy => 'Draft case study',
@@ -115,7 +111,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $projectInsights = $projects
             ->map(function (Project $project) use (
                 $mapProject,
-                $coverLabel,
                 $draftLabel,
                 $projectModeSummary,
                 $publishActionLabel,
@@ -155,20 +150,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     );
                     $priority = 400;
                     $actionType = 'publish';
-                } elseif ($needsCover) {
-                    $dashboardStatus = $coverLabel($mode);
-                    $dashboardTone = 'cover';
-                    $dashboardActionLabel = $mode === ProjectMode::DesignCaseStudy
-                        ? 'Pick hero'
-                        : 'Pick cover';
-                    $dashboardActionNote = match ($mode) {
-                        ProjectMode::Photography => 'Add a cover image so the set reads strongly at a glance in both the workspace and your portfolio.',
-                        ProjectMode::DesignCaseStudy => 'Choose a hero image so the case study has a clear entry point everywhere it appears.',
-                        ProjectMode::ArtSeries => 'Choose a cover to frame the tone of the series before people enter the full sequence.',
-                        ProjectMode::MixedExperimental => 'Add a cover image so the project reads stronger in the workspace and portfolio.',
-                    };
-                    $priority = 300;
-                    $actionType = 'cover';
                 } elseif ($hasUnnamedUploads) {
                     $dashboardStatus = 'Needs titles';
                     $dashboardTone = 'naming';
@@ -187,9 +168,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
                         ? 'Open case study'
                         : ($mode === ProjectMode::ArtSeries ? 'Open series' : 'Open draft');
                     $dashboardActionNote = match ($mode) {
-                        ProjectMode::Photography => 'Keep shaping this set until the selects, cover, and sequence feel tight enough to publish.',
-                        ProjectMode::DesignCaseStudy => 'Keep sharpening the hero, narrative, and supporting frames until the case study reads clearly.',
-                        ProjectMode::ArtSeries => 'Keep refining the statement, cover, and sequence so the series feels intentional.',
+                        ProjectMode::Photography => $needsCover
+                            ? 'Curator is using one of the uploaded frames as a preview for now. Open the project to refine the set and lock in a cover when you want.'
+                            : 'Keep shaping this set until the selects and sequence feel tight enough to publish.',
+                        ProjectMode::DesignCaseStudy => $needsCover
+                            ? 'The case study already has a smart preview from your uploads. Open it to refine the narrative and choose a hero when you want tighter control.'
+                            : 'Keep sharpening the narrative and supporting frames until the case study reads clearly.',
+                        ProjectMode::ArtSeries => $needsCover
+                            ? 'A smart preview is carrying the series for now. Open it to refine the statement and lock in a dedicated cover when the tone feels right.'
+                            : 'Keep refining the statement and sequence so the series feels intentional.',
                         ProjectMode::MixedExperimental => 'Keep shaping this collection and move it closer to publishing.',
                     };
                     $priority = 100;
@@ -226,9 +213,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         )->values();
         $projectsReadyToPublish = $projectInsights->filter(
             fn (array $project) => $project['dashboard_action_type'] === 'publish',
-        )->values();
-        $projectsNeedingCover = $projectInsights->filter(
-            fn (array $project) => $project['dashboard_action_type'] === 'cover',
         )->values();
         $projectsNeedingTitles = $projectInsights->filter(
             fn (array $project) => $project['dashboard_action_type'] === 'naming',
@@ -279,21 +263,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     $primaryProject['name'],
                 ),
                 'cta_label' => 'Open publish-ready project',
-                'target' => 'project',
-                'project_id' => $primaryProject['id'],
-            ];
-        } elseif ($primaryProject['dashboard_action_type'] === 'cover') {
-            $primaryAction = [
-                'eyebrow' => 'Next best action',
-                'title' => $primaryProject['mode'] === ProjectMode::DesignCaseStudy->value
-                    ? 'Add a hero image where it matters most'
-                    : 'Add a cover where it matters most',
-                'description' => sprintf(
-                    '"%s" already has assets in place. The next best improvement is tightening how this %s presents itself.',
-                    $primaryProject['name'],
-                    $primaryProject['mode'] === ProjectMode::ArtSeries->value ? 'series' : 'project',
-                ),
-                'cta_label' => 'Open cover picker',
                 'target' => 'project',
                 'project_id' => $primaryProject['id'],
             ];
@@ -365,16 +334,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'project_id' => $projectsReadyToPublish->first()['id'] ?? null,
             ],
             [
-                'label' => 'Needs cover',
-                'count' => $projectsNeedingCover->count(),
-                'hint' => $projectsNeedingCover->isNotEmpty()
-                    ? 'Projects with assets in place but no chosen cover yet.'
-                    : 'Every active project already has a cover or no assets yet.',
-                'cta_label' => $projectsNeedingCover->isNotEmpty() ? 'Pick next cover' : 'Browse projects',
-                'target' => $projectsNeedingCover->isNotEmpty() ? 'project' : 'projects',
-                'project_id' => $projectsNeedingCover->first()['id'] ?? null,
-            ],
-            [
                 'label' => 'Need titles',
                 'count' => $projectsNeedingTitles->count(),
                 'hint' => $projectsNeedingTitles->isNotEmpty()
@@ -416,25 +375,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'review',
             );
             $assistantSummary = 'When analysis is about to land, the best use of attention is staying close to the project that will change soonest.';
-        } elseif ($projectsNeedingCover->isNotEmpty()) {
-            $assistantPrimary = $makeAssistantRecommendation(
-                'Best move now',
-                sprintf(
-                    '%s "%s"',
-                    $projectsNeedingCover->first()['mode'] === ProjectMode::DesignCaseStudy->value
-                        ? 'Add a hero to'
-                        : 'Add a cover to',
-                    $projectsNeedingCover->first()['name'],
-                ),
-                $projectsNeedingCover->first()['mode'] === ProjectMode::ArtSeries->value
-                    ? 'A cover helps frame the concept before people move through the full series.'
-                    : 'A cover is one of the quickest upgrades to both the workspace and the public portfolio presentation.',
-                'Open cover picker',
-                'project',
-                $projectsNeedingCover->first()['id'],
-                'cover',
-            );
-            $assistantSummary = 'When nothing urgent is blocked, the highest-leverage improvement is often tightening how a project presents itself.';
         } elseif ($projectsNeedingTitles->isNotEmpty()) {
             $assistantPrimary = $makeAssistantRecommendation(
                 'Best move now',
@@ -488,17 +428,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                     'review',
                 )
                 : null,
-            $projectsNeedingCover->isNotEmpty() && $assistantPrimary['tone'] !== 'cover'
-                ? $makeAssistantRecommendation(
-                    'Also worth doing',
-                    sprintf('Choose a cover for "%s"', $projectsNeedingCover->first()['name']),
-                    'That one change will sharpen how the project reads everywhere else.',
-                    'Pick cover',
-                    'project',
-                    $projectsNeedingCover->first()['id'],
-                    'cover',
-                )
-                : null,
             $projectsNeedingTitles->isNotEmpty() && $assistantPrimary['tone'] !== 'naming'
                 ? $makeAssistantRecommendation(
                     'Also worth doing',
@@ -533,12 +462,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'You have %d project%s that already satisfy the chosen project mode. Shipping one now would strengthen your public portfolio immediately.',
                 $projectsReadyToPublish->count(),
                 $projectsReadyToPublish->count() === 1 ? '' : 's',
-            );
-        } elseif ($projectsNeedingCover->isNotEmpty()) {
-            $adviceTitle = 'Curator recommends';
-            $adviceMessage = sprintf(
-                'Add a cover to "%s" next. It is one of the fastest ways to make the workspace and portfolio feel more intentional.',
-                $projectsNeedingCover->first()['name'],
             );
         } elseif ($projectsInReview->isNotEmpty()) {
             $adviceTitle = 'Curator recommends';
@@ -625,6 +548,14 @@ Route::get('/portfolio/{user}/{project:slug}', PublicProjectController::class)
     ->name('portfolio.project.show');
 Route::get('/explore', ExploreController::class)
     ->name('explore.index');
+Route::middleware('auth')->group(function () {
+    Route::post('/portfolio/{user}/{project:slug}/save', [PublicProjectSaveController::class, 'store'])
+        ->name('portfolio.project.save.store');
+    Route::delete('/portfolio/{user}/{project:slug}/save', [PublicProjectSaveController::class, 'destroy'])
+        ->name('portfolio.project.save.destroy');
+    Route::post('/portfolio/{user}/{project:slug}/comments', [PublicProjectCommentController::class, 'store'])
+        ->name('portfolio.project.comments.store');
+});
 Route::get('/galleries/{share:token}', [ClientGalleryController::class, 'show'])
     ->name('client-galleries.show');
 Route::post('/galleries/{share:token}/access', [ClientGalleryController::class, 'storeAccess'])

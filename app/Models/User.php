@@ -8,6 +8,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,6 +51,22 @@ class User extends Authenticatable
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function savedProjectEntries(): HasMany
+    {
+        return $this->hasMany(SavedProject::class);
+    }
+
+    public function savedProjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'saved_projects')
+            ->withTimestamps();
+    }
+
+    public function projectComments(): HasMany
+    {
+        return $this->hasMany(ProjectComment::class);
     }
 
     public function avatarUrl(): ?string

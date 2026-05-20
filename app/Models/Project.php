@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
@@ -64,6 +65,22 @@ class Project extends Model
     public function shares(): HasMany
     {
         return $this->hasMany(ProjectShare::class);
+    }
+
+    public function savedProjects(): HasMany
+    {
+        return $this->hasMany(SavedProject::class);
+    }
+
+    public function savedByUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'saved_projects')
+            ->withTimestamps();
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ProjectComment::class);
     }
 
     public function scopePublished(Builder $query): Builder

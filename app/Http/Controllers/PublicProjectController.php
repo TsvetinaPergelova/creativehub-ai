@@ -14,10 +14,24 @@ class PublicProjectController extends Controller
     public function __invoke(User $user, Project $project): Response
     {
         $project = $user->projects()
-            ->with(['assets.analysis', 'coverAsset'])
+            ->with([
+                'assets.analysis',
+                'coverAsset',
+                'comments' => fn ($query) => $query->latest('updated_at'),
+                'comments.user',
+            ])
             ->whereKey($project->getKey())
             ->published()
             ->where('visibility', ProjectVisibility::Public)
+            ->when(
+                request()->user() !== null,
+                fn ($query) => $query->withExists([
+                    'savedProjects as is_saved_by_auth_user' => fn ($savedProjectsQuery) => $savedProjectsQuery->where(
+                        'user_id',
+                        request()->user()->id,
+                    ),
+                ]),
+            )
             ->firstOrFail();
 
         $displayCoverAsset = $project->resolveDisplayCoverAsset();
@@ -38,6 +52,10 @@ class PublicProjectController extends Controller
                 'description' => $project->description,
                 'status' => $project->status->value,
                 'visibility' => $project->visibility->value,
+                'creator_id' => $user->id,
+                'creator_name' => $user->name,
+                'creator_profile_url' => route('portfolio.show', $user),
+                'is_saved_by_auth_user' => (bool) ($project->is_saved_by_auth_user ?? false),
                 'published_at' => $project->published_at?->toISOString(),
                 'cover_image_url' => $displayCoverAsset
                     ? asset('storage/'.$displayCoverAsset->path)
@@ -67,6 +85,16 @@ class PublicProjectController extends Controller
                             'is_near_duplicate' => $asset->analysis->is_near_duplicate,
                         ] : null,
                     ]),
+                'comments' => $project->comments->map(fn ($comment) => [
+                    'id' => $comment->id,
+                    'body' => $comment->body,
+                    'created_at' => $comment->created_at?->toISOString(),
+                    'author' => [
+                        'id' => $comment->user->id,
+                        'name' => $comment->user->name,
+                        'avatar' => $comment->user->avatarUrl(),
+                    ],
+                ])->values(),
             ],
         ]);
     }
