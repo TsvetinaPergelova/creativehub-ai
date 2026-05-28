@@ -160,7 +160,7 @@ export default function ExploreIndex({
                         </div>
 
                         <div className="grid gap-2 sm:grid-cols-3">
-                            <ProjectInsetPanel className="rounded-[1.1rem] bg-black/[0.16] px-3 py-3">
+                            <ProjectInsetPanel className="rounded-[1.1rem] border-primary/18 bg-black/[0.16] px-3 py-3">
                                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                                     Live projects
                                 </p>
@@ -168,7 +168,7 @@ export default function ExploreIndex({
                                     {projects.length}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="rounded-[1.1rem] bg-black/[0.16] px-3 py-3">
+                            <ProjectInsetPanel className="rounded-[1.1rem] border-primary/18 bg-black/[0.16] px-3 py-3">
                                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                                     Categories
                                 </p>
@@ -176,7 +176,7 @@ export default function ExploreIndex({
                                     {categories.length}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="rounded-[1.1rem] bg-black/[0.16] px-3 py-3">
+                            <ProjectInsetPanel className="rounded-[1.1rem] border-primary/18 bg-black/[0.16] px-3 py-3">
                                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                                     Creators
                                 </p>

@@ -83,10 +83,7 @@ function resolveWorkspaceContext(
                 title: 'Project overview',
                 description:
                     'Browse every collection, create a new one quickly, and keep your portfolio workspace tidy.',
-                actions: [
-                    { label: 'New project', kind: 'link', href: create() },
-                    { label: 'Open dashboard', kind: 'link', href: dashboard() },
-                ],
+                actions: [],
             };
         case 'projects/create':
             return {
@@ -267,14 +264,16 @@ export function AppSidebarHeader({
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-2">
-                            {workspaceContext.actions.map((action) => (
-                                <ContextActionLink
-                                    key={`${action.kind}:${action.label}`}
-                                    action={action}
-                                />
-                            ))}
-                        </div>
+                        {workspaceContext.actions.length > 0 ? (
+                            <div className="flex flex-wrap items-center gap-2">
+                                {workspaceContext.actions.map((action) => (
+                                    <ContextActionLink
+                                        key={`${action.kind}:${action.label}`}
+                                        action={action}
+                                    />
+                                ))}
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             ) : null}

@@ -18,7 +18,9 @@ export default function AuthSplitLayout({
                     href={home()}
                     className="relative z-20 flex items-center text-lg font-medium"
                 >
-                    <AppLogoIcon className="mr-2 size-8 fill-current text-white" />
+                    <div className="mr-3 flex size-16 items-center justify-center rounded-full border border-primary/35 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01)),radial-gradient(circle_at_top_left,rgba(99,102,241,0.34),transparent_60%),#151728] text-white shadow-[0_12px_32px_rgba(79,70,229,0.16)] ring-1 ring-primary/18">
+                        <AppLogoIcon className="size-7 text-white" />
+                    </div>
                     {name}
                 </Link>
             </div>
@@ -28,7 +30,9 @@ export default function AuthSplitLayout({
                         href={home()}
                         className="relative z-20 flex items-center justify-center lg:hidden"
                     >
-                        <AppLogoIcon className="h-10 fill-current text-black sm:h-12" />
+                        <div className="flex size-16 items-center justify-center rounded-full border border-primary/35 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01)),radial-gradient(circle_at_top_left,rgba(99,102,241,0.34),transparent_60%),#151728] text-white shadow-[0_12px_32px_rgba(79,70,229,0.16)] ring-1 ring-primary/18">
+                            <AppLogoIcon className="size-7 text-white" />
+                        </div>
                     </Link>
                     <div className="flex flex-col items-start gap-2 text-left sm:items-center sm:text-center">
                         <h1 className="text-xl font-medium">{title}</h1>

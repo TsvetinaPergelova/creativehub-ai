@@ -2,7 +2,6 @@ import { router } from '@inertiajs/react';
 import { type PointerEvent, useEffect, useMemo, useRef, useState } from 'react';
 import {
     AlertTriangle,
-    ChevronDown,
     ChevronLeft,
     ChevronRight,
     Expand,
@@ -15,11 +14,6 @@ import ProjectAssetTitleForm from '@/components/projects/project-asset-title-for
 import type { ProjectAsset } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 import {
     Dialog,
     DialogContent,
@@ -63,7 +57,6 @@ export default function ProjectAssetGrid({
     const [isDragging, setIsDragging] = useState(false);
     const [isDeletingAsset, setIsDeletingAsset] = useState(false);
     const [isDeleteConfirming, setIsDeleteConfirming] = useState(false);
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [pan, setPan] = useState({ x: 0, y: 0 });
     const imageViewportRef = useRef<HTMLDivElement | null>(null);
     const imageRef = useRef<HTMLImageElement | null>(null);
@@ -89,25 +82,9 @@ export default function ProjectAssetGrid({
         setPan({ x: 0, y: 0 });
         setIsDragging(false);
         setIsDeleteConfirming(false);
-        setIsDetailsOpen(false);
         dragStateRef.current = null;
         suppressToggleRef.current = false;
     }, [selectedAssetIndex]);
-
-    useEffect(() => {
-        const mediaQuery = window.matchMedia('(min-width: 1024px)');
-
-        const syncDetailsState = (): void => {
-            setIsDetailsOpen(mediaQuery.matches);
-        };
-
-        syncDetailsState();
-        mediaQuery.addEventListener('change', syncDetailsState);
-
-        return () => {
-            mediaQuery.removeEventListener('change', syncDetailsState);
-        };
-    }, []);
 
     function openAsset(index: number): void {
         setSelectedAssetIndex(index);
@@ -119,7 +96,6 @@ export default function ProjectAssetGrid({
             setIsDragging(false);
             setPan({ x: 0, y: 0 });
             setIsDeleteConfirming(false);
-            setIsDetailsOpen(false);
             dragStateRef.current = null;
             suppressToggleRef.current = false;
             setSelectedAssetIndex(null);
@@ -380,7 +356,7 @@ export default function ProjectAssetGrid({
 
             <Dialog open={selectedAsset !== null} onOpenChange={closeAsset}>
                 {selectedAsset && (
-                    <DialogContent className="max-h-[calc(100vh-1rem)] w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-background p-0 sm:max-h-[92vh] sm:max-w-[min(94vw,88rem)] sm:rounded-lg">
+                    <DialogContent className="top-0 right-0 bottom-0 left-0 z-[60] h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-hidden rounded-none border-0 bg-background p-0 sm:top-[50%] sm:left-[50%] sm:h-[96vh] sm:max-h-[96vh] sm:w-full sm:max-w-[min(92vw,92rem)] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-lg sm:border sm:border-white/10">
                         <DialogTitle className="sr-only">
                             {getAssetDisplayTitle(selectedAsset)}
                         </DialogTitle>
@@ -389,11 +365,11 @@ export default function ProjectAssetGrid({
                             asset.
                         </DialogDescription>
 
-                        <div className="flex max-h-[calc(100vh-1rem)] min-h-0 flex-col lg:grid lg:max-h-[92vh] lg:grid-cols-[minmax(0,1.35fr)_26rem] xl:grid-cols-[minmax(0,1.45fr)_30rem]">
+                        <div className="flex h-full min-h-0 flex-col lg:grid lg:h-full lg:max-h-[96vh] lg:grid-cols-[minmax(0,1fr)_34rem] xl:grid-cols-[minmax(0,1.05fr)_38rem]">
                             <div
                                 ref={imageViewportRef}
                                 className={cn(
-                                    'relative flex min-h-[19rem] flex-1 items-center justify-center overflow-hidden bg-black/95 px-3 pt-10 pb-3 sm:min-h-[18rem] sm:p-6 xl:p-8',
+                                    'relative h-[42svh] shrink-0 items-center justify-center overflow-hidden bg-black/95 px-3 pt-12 pb-3 sm:min-h-[18rem] sm:h-auto sm:p-6 lg:flex lg:min-h-[84vh] lg:flex-1 xl:min-h-[88vh] xl:p-8',
                                     isZoomed ? 'select-none' : '',
                                 )}
                             >
@@ -407,11 +383,11 @@ export default function ProjectAssetGrid({
                                     onPointerMove={handlePreviewPointerMove}
                                     onPointerUp={handlePreviewPointerEnd}
                                     onPointerCancel={handlePreviewPointerEnd}
-                                    className={cn(
-                                        'flex h-full w-full items-center justify-center focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
-                                        isZoomed
-                                            ? isDragging
-                                                ? 'cursor-grabbing touch-none'
+                                        className={cn(
+                                            'flex h-full w-full items-center justify-center focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
+                                            isZoomed
+                                                ? isDragging
+                                                    ? 'cursor-grabbing touch-none'
                                                 : 'cursor-grab touch-none'
                                             : 'cursor-zoom-in',
                                     )}
@@ -425,7 +401,7 @@ export default function ProjectAssetGrid({
                                             getAssetDisplayTitle(selectedAsset)
                                         }
                                         className={cn(
-                                            'pointer-events-none max-h-[min(58vh,32rem)] w-auto max-w-full rounded-[1.15rem] object-contain transition duration-300 will-change-transform select-none sm:max-h-[72vh] sm:rounded-lg',
+                                            'pointer-events-none max-h-[min(46svh,30rem)] w-auto max-w-full rounded-[1.15rem] object-contain transition duration-300 will-change-transform select-none sm:max-h-[82vh] lg:max-h-[88vh] sm:rounded-lg xl:max-h-[92vh]',
                                             isZoomed ? 'cursor-grab' : '',
                                         )}
                                         style={{
@@ -470,42 +446,49 @@ export default function ProjectAssetGrid({
                                 </div>
                                 <div className="absolute right-3 bottom-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full bg-background/85 px-3 py-1.5 text-[11px] text-foreground shadow-sm backdrop-blur-sm sm:right-4 sm:bottom-4 sm:max-w-none sm:rounded-md sm:px-3 sm:py-2 sm:text-xs">
                                     <Search className="size-3.5" />
-                                    {isZoomed
-                                        ? 'Drag to pan, click to zoom out'
-                                        : 'Click image to zoom in'}
+                                    <span className="sm:hidden">
+                                        {isZoomed
+                                            ? 'Drag to pan'
+                                            : 'Tap to zoom'}
+                                    </span>
+                                    <span className="hidden sm:inline">
+                                        {isZoomed
+                                            ? 'Drag to pan, click to zoom out'
+                                            : 'Click image to zoom in'}
+                                    </span>
                                 </div>
                             </div>
 
-                            <div className="flex min-h-0 flex-col border-t bg-background lg:max-h-[92vh] lg:border-t-0 lg:border-l">
+                            <div className="flex min-h-0 flex-1 flex-col border-t bg-background lg:h-full lg:max-h-[96vh] lg:border-t-0 lg:border-l">
                                 <div className="border-b bg-background/95 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-5">
-                                    <div className="space-y-2.5 pr-10 sm:space-y-3">
-                                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                            {selectedAsset.is_cover && (
-                                                <Badge className="px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-xs">
-                                                    Cover
-                                                </Badge>
-                                            )}
-                                            {selectedAsset.analysis
-                                                ?.is_highlight && (
-                                                <Badge className="bg-amber-400 px-2 py-0.5 text-[10px] text-amber-950 hover:bg-amber-300 sm:px-2.5 sm:py-1 sm:text-xs">
-                                                    Highlight
-                                                </Badge>
-                                            )}
-                                            {!selectedAsset.analysis && (
-                                                <Badge
-                                                    variant="outline"
-                                                    className="px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-xs"
-                                                >
-                                                    Analyzing
-                                                </Badge>
-                                            )}
-                                        </div>
-                                        <div>
-                                            <h3 className="line-clamp-2 text-base leading-tight font-semibold tracking-tight break-words sm:line-clamp-3 sm:text-2xl">
+                                    <div className="mx-auto w-full max-w-[22rem] space-y-2.5 pr-10 sm:max-w-none sm:space-y-3">
+                                        <div className="flex min-w-0 items-start gap-2">
+                                            <h3 className="min-w-0 flex-1 truncate pt-0.5 text-base leading-tight font-semibold tracking-tight sm:line-clamp-3 sm:truncate-none sm:whitespace-normal sm:pt-0 sm:text-2xl">
                                                 {getAssetDisplayTitle(
                                                     selectedAsset,
                                                 )}
                                             </h3>
+                                            <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+                                                {selectedAsset.is_cover && (
+                                                    <Badge className="px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-xs">
+                                                        Cover
+                                                    </Badge>
+                                                )}
+                                                {selectedAsset.analysis
+                                                    ?.is_highlight && (
+                                                    <Badge className="bg-amber-400 px-2 py-0.5 text-[10px] text-amber-950 hover:bg-amber-300 sm:px-2.5 sm:py-1 sm:text-xs">
+                                                        Highlight
+                                                    </Badge>
+                                                )}
+                                                {!selectedAsset.analysis && (
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="px-2 py-0.5 text-[10px] sm:px-2.5 sm:py-1 sm:text-xs"
+                                                    >
+                                                        Analyzing
+                                                    </Badge>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="hidden flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground sm:flex">
                                             <span>
@@ -528,90 +511,77 @@ export default function ProjectAssetGrid({
                                     </div>
                                 </div>
 
-                                <div className="min-h-0 flex-1 overflow-y-auto">
-                                    <div className="space-y-4 px-4 py-4 sm:px-6 sm:py-5">
-                                        <Collapsible
-                                            open={isDetailsOpen}
-                                            onOpenChange={setIsDetailsOpen}
-                                        >
-                                            <div className="rounded-2xl border bg-card/45">
-                                                <CollapsibleTrigger asChild>
-                                                    <button
-                                                        type="button"
-                                                        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-white/[0.03] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none sm:px-4 sm:py-4"
-                                                    >
-                                                        <div className="min-w-0">
+                                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                                    <div className="mx-auto w-full max-w-[22rem] space-y-4 py-4 pb-28 sm:max-w-none sm:px-6 sm:py-5 sm:pb-5">
+                                        <div className="rounded-2xl border bg-card/45">
+                                            <div className="border-b px-3 py-3 sm:px-4 sm:py-4">
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-medium">
+                                                        Image details
+                                                    </p>
+                                                    <p className="text-xs leading-5 text-muted-foreground">
+                                                        File info, AI notes and
+                                                        scores.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="px-2 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
+                                                <div className="space-y-5">
+                                                    <section className="space-y-3 px-1 py-1 sm:px-0 sm:py-0">
+                                                        <div className="space-y-1">
                                                             <p className="text-sm font-medium">
-                                                                Image details
+                                                                File info
                                                             </p>
                                                             <p className="text-xs leading-5 text-muted-foreground">
-                                                                File info, AI
-                                                                notes and
-                                                                scores.
+                                                                Original file
+                                                                name and image
+                                                                metadata.
                                                             </p>
                                                         </div>
-                                                        <ChevronDown
-                                                            className={cn(
-                                                                'size-4 shrink-0 text-muted-foreground transition-transform',
-                                                                isDetailsOpen &&
-                                                                    'rotate-180',
-                                                            )}
-                                                        />
-                                                    </button>
-                                                </CollapsibleTrigger>
 
-                                                <CollapsibleContent className="border-t px-4 pt-4 pb-4">
-                                                    <div className="space-y-5">
-                                                        <section className="space-y-3 rounded-xl border bg-card/50 p-4">
-                                                            <div className="space-y-1">
-                                                                <p className="text-sm font-medium">
-                                                                    File info
+                                                        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+                                                            <div className="min-w-0 space-y-1">
+                                                                <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
+                                                                    Size
                                                                 </p>
-                                                                <p className="text-xs leading-5 text-muted-foreground">
+                                                                <p className="truncate font-medium">
+                                                                    {formatBytes(
+                                                                        selectedAsset.size,
+                                                                    )}
+                                                                </p>
+                                                            </div>
+                                                            <div className="min-w-0 space-y-1">
+                                                                <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
+                                                                    Dimensions
+                                                                </p>
+                                                                <p className="truncate font-medium">
+                                                                    {selectedAsset.width &&
+                                                                    selectedAsset.height
+                                                                        ? `${selectedAsset.width} x ${selectedAsset.height}`
+                                                                        : 'Not available'}
+                                                                </p>
+                                                            </div>
+                                                            <div className="col-span-2 min-w-0 space-y-1 sm:col-span-3">
+                                                                <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
                                                                     Original
-                                                                    file name
-                                                                    and image
-                                                                    metadata.
+                                                                    file
+                                                                </p>
+                                                                <p
+                                                                    className="truncate text-xs leading-5 text-muted-foreground/90 sm:whitespace-normal sm:break-all"
+                                                                    title={
+                                                                        selectedAsset.filename
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        selectedAsset.filename
+                                                                    }
                                                                 </p>
                                                             </div>
+                                                        </div>
+                                                    </section>
 
-                                                            <div className="grid gap-3 text-sm sm:grid-cols-3">
-                                                                <div className="space-y-1">
-                                                                    <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
-                                                                        Size
-                                                                    </p>
-                                                                    <p className="font-medium">
-                                                                        {formatBytes(
-                                                                            selectedAsset.size,
-                                                                        )}
-                                                                    </p>
-                                                                </div>
-                                                                <div className="space-y-1">
-                                                                    <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
-                                                                        Dimensions
-                                                                    </p>
-                                                                    <p className="font-medium">
-                                                                        {selectedAsset.width &&
-                                                                        selectedAsset.height
-                                                                            ? `${selectedAsset.width} x ${selectedAsset.height}`
-                                                                            : 'Not available'}
-                                                                    </p>
-                                                                </div>
-                                                                <div className="space-y-1 sm:col-span-3">
-                                                                    <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
-                                                                        Original
-                                                                        file
-                                                                    </p>
-                                                                    <p className="text-xs leading-5 break-all text-muted-foreground/90">
-                                                                        {
-                                                                            selectedAsset.filename
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </section>
-
-                                                        <section className="space-y-4 rounded-xl border bg-card/50 p-4">
+                                                    <section className="space-y-4 rounded-xl border bg-card/50 p-3 sm:p-4">
                                                             <div className="space-y-1">
                                                                 <p className="text-sm font-medium">
                                                                     Naming
@@ -635,9 +605,9 @@ export default function ProjectAssetGrid({
                                                                 }
                                                                 mode="panel"
                                                             />
-                                                        </section>
+                                                    </section>
 
-                                                        <section className="space-y-3">
+                                                    <section className="space-y-3">
                                                             <div className="space-y-1">
                                                                 <p className="text-sm font-medium">
                                                                     Quick read
@@ -655,8 +625,8 @@ export default function ProjectAssetGrid({
                                                             </div>
 
                                                             <div className="grid grid-cols-3 gap-3">
-                                                                <div className="rounded-xl border bg-card/70 p-3">
-                                                                    <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
+                                                                <div className="min-w-0 rounded-xl border bg-card/70 p-3">
+                                                                    <p className="truncate text-[10px] tracking-[0.1em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.18em]">
                                                                         Composition
                                                                     </p>
                                                                     <p className="mt-2 text-lg font-semibold">
@@ -668,8 +638,8 @@ export default function ProjectAssetGrid({
                                                                         )}
                                                                     </p>
                                                                 </div>
-                                                                <div className="rounded-xl border bg-card/70 p-3">
-                                                                    <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
+                                                                <div className="min-w-0 rounded-xl border bg-card/70 p-3">
+                                                                    <p className="truncate text-[10px] tracking-[0.1em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.18em]">
                                                                         Focus
                                                                     </p>
                                                                     <p className="mt-2 text-lg font-semibold">
@@ -681,8 +651,8 @@ export default function ProjectAssetGrid({
                                                                         )}
                                                                     </p>
                                                                 </div>
-                                                                <div className="rounded-xl border bg-card/70 p-3">
-                                                                    <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
+                                                                <div className="min-w-0 rounded-xl border bg-card/70 p-3">
+                                                                    <p className="truncate text-[10px] tracking-[0.1em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.18em]">
                                                                         Lighting
                                                                     </p>
                                                                     <p className="mt-2 text-lg font-semibold">
@@ -695,9 +665,9 @@ export default function ProjectAssetGrid({
                                                                     </p>
                                                                 </div>
                                                             </div>
-                                                        </section>
+                                                    </section>
 
-                                                        <section className="space-y-4 rounded-xl border bg-card/50 p-4">
+                                                    <section className="space-y-4 rounded-xl border bg-card/50 p-3 sm:p-4">
                                                             <div className="space-y-1">
                                                                 <p className="text-sm font-medium">
                                                                     AI readout
@@ -786,16 +756,15 @@ export default function ProjectAssetGrid({
                                                                     </p>
                                                                 </div>
                                                             )}
-                                                        </section>
-                                                    </div>
-                                                </CollapsibleContent>
+                                                    </section>
+                                                </div>
                                             </div>
-                                        </Collapsible>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="border-t bg-background/95 px-4 py-4 backdrop-blur-sm sm:px-6">
-                                    <div className="space-y-4">
+                                    <div className="mx-auto w-full max-w-[22rem] space-y-4 sm:max-w-none">
                                         {isDeleteConfirming && (
                                             <div className="rounded-2xl border border-destructive/35 bg-destructive/10 px-4 py-4">
                                                 <div className="space-y-3">
@@ -835,7 +804,7 @@ export default function ProjectAssetGrid({
                                             </div>
                                         )}
 
-                                        <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
+                                        <div className="grid grid-cols-2 gap-3">
                                             {isDeleteConfirming ? (
                                                 <>
                                                     <Button
@@ -849,7 +818,7 @@ export default function ProjectAssetGrid({
                                                         disabled={
                                                             isDeletingAsset
                                                         }
-                                                        className="w-full sm:flex-1 sm:flex-none"
+                                                        className="w-full justify-center px-3 text-sm sm:text-base"
                                                     >
                                                         Cancel
                                                     </Button>
@@ -862,7 +831,7 @@ export default function ProjectAssetGrid({
                                                         disabled={
                                                             isDeletingAsset
                                                         }
-                                                        className="w-full sm:flex-1 sm:flex-none"
+                                                        className="w-full justify-center px-3 text-sm sm:text-base"
                                                     >
                                                         <Trash2 className="mr-2 size-4" />
                                                         {isDeletingAsset
@@ -881,14 +850,14 @@ export default function ProjectAssetGrid({
                                                         disabled={
                                                             isDeletingAsset
                                                         }
-                                                        className="w-full sm:flex-1 sm:flex-none"
+                                                        className="w-full justify-center px-3 text-sm sm:text-base"
                                                     >
                                                         <Trash2 className="mr-2 size-4" />
                                                         Delete image
                                                     </Button>
                                                     <Button
                                                         asChild
-                                                        className="w-full sm:flex-1 sm:flex-none"
+                                                        className="w-full justify-center px-3 text-sm sm:text-base"
                                                     >
                                                         <a
                                                             href={
@@ -897,7 +866,12 @@ export default function ProjectAssetGrid({
                                                             target="_blank"
                                                             rel="noreferrer"
                                                         >
-                                                            Open full image
+                                                            <span className="sm:hidden">
+                                                                Open image
+                                                            </span>
+                                                            <span className="hidden sm:inline">
+                                                                Open full image
+                                                            </span>
                                                         </a>
                                                     </Button>
                                                 </>

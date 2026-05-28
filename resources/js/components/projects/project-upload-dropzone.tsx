@@ -107,70 +107,66 @@ export default function ProjectUploadDropzone({
     return (
         <div className="flex min-w-0 flex-col gap-6">
             <div className="flex min-w-0 flex-col gap-4">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-3">
+                <div className="flex items-center gap-3">
                     <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/12 text-primary">
                         <ImagePlus className="size-4" />
                     </div>
+                    <h2 className="text-lg font-semibold">Add images</h2>
+                </div>
 
-                    <div className="min-w-0 flex-1 space-y-4">
-                        <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-10 xl:gap-14">
-                            <div className="min-w-0 lg:max-w-2xl">
-                                <h2 className="text-lg font-semibold">
-                                    Add images
-                                </h2>
-                                <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
-                                    Pick the frames you want in this project.
-                                    CreativeHub uploads them and starts AI
-                                    analysis automatically.
-                                </p>
-                            </div>
-
-                            <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center lg:shrink-0 lg:justify-end lg:pl-4 xl:pl-6">
-                                <input
-                                    ref={inputRef}
-                                    type="file"
-                                    multiple
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={(event) =>
-                                        handleFilesSelection(
-                                            Array.from(
-                                                event.target.files ?? [],
-                                            ),
-                                        )
-                                    }
-                                />
-
-                                <Button
-                                    type="button"
-                                    disabled={form.processing}
-                                    onClick={() => inputRef.current?.click()}
-                                    className="h-auto w-full rounded-2xl border-2 border-primary/45 bg-primary/8 px-4 py-3 text-sm text-foreground shadow-[0_20px_40px_-28px_rgba(99,91,255,0.95)] ring-1 ring-primary/10 backdrop-blur transition hover:border-primary/70 hover:bg-primary/12 hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-primary/25 sm:w-auto"
-                                >
-                                    <span className="flex items-center justify-center gap-3">
-                                        <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm ring-1 ring-primary/35">
-                                            {form.processing ? (
-                                                <LoaderCircle className="size-4 animate-spin" />
-                                            ) : (
-                                                <ImagePlus className="size-4" />
-                                            )}
-                                        </span>
-                                        <span className="text-center font-semibold">
-                                            {form.processing
-                                                ? 'Uploading...'
-                                                : 'Upload images'}
-                                        </span>
-                                    </span>
-                                </Button>
-                            </div>
+                <div className="min-w-0 space-y-4">
+                    <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-10 xl:gap-14">
+                        <div className="min-w-0 lg:max-w-2xl">
+                            <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
+                                Pick the frames you want in this project.
+                                CreativeHub uploads them and starts AI analysis
+                                automatically.
+                            </p>
                         </div>
 
-                        <p className="max-w-full text-[11px] leading-5 tracking-[0.14em] break-words text-muted-foreground uppercase sm:text-xs sm:tracking-[0.24em]">
-                            {selectedFiles.length === 0
-                                ? 'Choose a set to begin curation'
-                                : `${selectedFiles.length} file${selectedFiles.length === 1 ? '' : 's'} selected`}
-                        </p>
+                        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center lg:shrink-0 lg:justify-end lg:pl-4 xl:pl-6">
+                            <input
+                                ref={inputRef}
+                                type="file"
+                                multiple
+                                accept="image/*"
+                                className="hidden"
+                                onChange={(event) =>
+                                    handleFilesSelection(
+                                        Array.from(event.target.files ?? []),
+                                    )
+                                }
+                            />
+
+                            <Button
+                                type="button"
+                                disabled={form.processing}
+                                onClick={() => inputRef.current?.click()}
+                                className="h-auto w-full rounded-2xl border-2 border-primary/45 bg-primary/8 px-4 py-3 text-sm text-foreground transition hover:border-primary/70 hover:bg-primary/12 hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-primary/25 sm:w-auto"
+                            >
+                                <span className="flex items-center justify-center gap-3">
+                                    <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                                        {form.processing ? (
+                                            <LoaderCircle className="size-4 animate-spin" />
+                                        ) : (
+                                            <ImagePlus className="size-4" />
+                                        )}
+                                    </span>
+                                    <span className="text-center font-semibold">
+                                        {form.processing
+                                            ? 'Uploading...'
+                                            : 'Upload images'}
+                                    </span>
+                                </span>
+                            </Button>
+                        </div>
                     </div>
+
+                    <p className="max-w-full text-[11px] leading-5 tracking-[0.14em] break-words text-muted-foreground uppercase sm:text-xs sm:tracking-[0.24em]">
+                        {selectedFiles.length === 0
+                            ? 'Choose a set to begin curation'
+                            : `${selectedFiles.length} file${selectedFiles.length === 1 ? '' : 's'} selected`}
+                    </p>
                 </div>
             </div>
 
@@ -224,7 +220,7 @@ export default function ProjectUploadDropzone({
                         </div>
                     )}
 
-                    <dl className="grid gap-3 border-t pt-4 text-sm sm:grid-cols-3">
+                    <dl className="grid grid-cols-3 gap-3 border-t pt-4 text-sm">
                         <div className="min-w-0 space-y-1">
                             <dt className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
                                 Files

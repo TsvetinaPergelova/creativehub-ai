@@ -1,5 +1,5 @@
 // Credit: https://usehooks-ts.com/
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type CopiedValue = string | null;
 export type CopyFn = (text: string) => Promise<boolean>;
@@ -7,6 +7,18 @@ export type UseClipboardReturn = [CopiedValue, CopyFn];
 
 export function useClipboard(): UseClipboardReturn {
     const [copiedText, setCopiedText] = useState<CopiedValue>(null);
+
+    useEffect(() => {
+        if (!copiedText) {
+            return;
+        }
+
+        const timeout = window.setTimeout(() => {
+            setCopiedText(null);
+        }, 1800);
+
+        return () => window.clearTimeout(timeout);
+    }, [copiedText]);
 
     const copy: CopyFn = async (text) => {
         try {

@@ -2,6 +2,7 @@
 
 use App\Enums\ProjectMode;
 use App\Enums\ProjectStatus;
+use App\Enums\ProjectVisibility;
 use App\Http\Controllers\ClientGalleryController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\Projects\ProjectAssetController;
@@ -14,13 +15,51 @@ use App\Http\Controllers\PublicProjectCommentController;
 use App\Http\Controllers\PublicProjectController;
 use App\Http\Controllers\PublicProjectSaveController;
 use App\Models\Project;
+use App\Models\ProjectAsset;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
-Route::inertia('/', 'welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+Route::get('/', function () {
+    $landingPreviewFrames = ProjectAsset::query()
+        ->with(['project.user', 'analysis'])
+        ->whereHas('project', function ($query) {
+            $query->published()->where(
+                'visibility',
+                ProjectVisibility::Public,
+            );
+        })
+        ->leftJoin(
+            'project_asset_analyses',
+            'project_asset_analyses.project_asset_id',
+            '=',
+            'project_assets.id',
+        )
+        ->leftJoin('projects', 'projects.id', '=', 'project_assets.project_id')
+        ->orderByDesc('project_asset_analyses.is_highlight')
+        ->orderByDesc('projects.published_at')
+        ->orderBy('project_assets.sort_order')
+        ->orderBy('project_assets.id')
+        ->select('project_assets.*')
+        ->take(8)
+        ->get()
+        ->map(function (ProjectAsset $asset): array {
+            return [
+                'id' => $asset->id,
+                'title' => $asset->title ?: $asset->project->name,
+                'project_name' => $asset->project->name,
+                'category' => $asset->project->category,
+                'creator_name' => $asset->project->user->name,
+                'image_url' => asset('storage/'.$asset->path),
+            ];
+        })
+        ->values();
+
+    return Inertia::render('welcome', [
+        'canRegister' => Features::enabled(Features::registration()),
+        'landingPreviewFrames' => $landingPreviewFrames,
+    ]);
+})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

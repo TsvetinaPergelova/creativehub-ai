@@ -23,13 +23,15 @@ export default function PublicProjectGrid({
         month: 'short',
         year: 'numeric',
     });
+    const imageBadgeClass =
+        'border-white/20 bg-black/65 px-3 py-1.5 text-sm font-medium text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-md';
 
     return (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {projects.map((project) => (
                 <Card
                     key={project.id}
-                    className="h-full gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/20 hover:bg-card"
+                    className="h-full gap-0 overflow-hidden rounded-[1.75rem] border-primary/18 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/24 hover:bg-card"
                 >
                     <Link
                         href={project.public_url ?? '#'}
@@ -57,14 +59,14 @@ export default function PublicProjectGrid({
                             <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                                 <Badge
                                     variant="outline"
-                                    className="border-white/15 bg-black/25 backdrop-blur-sm"
+                                    className={imageBadgeClass}
                                 >
                                     {project.category}
                                 </Badge>
                                 {project.published_at ? (
                                     <Badge
                                         variant="outline"
-                                        className="border-white/15 bg-black/25 backdrop-blur-sm"
+                                        className={imageBadgeClass}
                                     >
                                         {publishedDateFormatter.format(
                                             new Date(project.published_at),

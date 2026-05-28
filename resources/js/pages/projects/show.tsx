@@ -78,25 +78,27 @@ function MobileWorkspaceLauncher({
         <button
             type="button"
             onClick={onClick}
-            className="rounded-2xl border bg-card/50 p-4 text-left transition hover:border-primary/35 hover:bg-card/70 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+            className="w-[min(21rem,calc(100vw-3.5rem))] min-w-[19.5rem] shrink-0 snap-start rounded-2xl border bg-card/50 p-4 text-left transition hover:border-primary/35 hover:bg-card/70 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none sm:w-auto sm:min-w-0"
         >
-            <div className="flex items-start justify-between gap-3">
-                <div className="flex min-w-0 items-start gap-3">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary">
-                        <Icon className="size-4" />
+            <div className="space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
+                        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary">
+                            <Icon className="size-4" />
+                        </div>
+                        <p className="min-w-0 text-sm font-medium">{title}</p>
                     </div>
-                    <div className="min-w-0 space-y-1">
-                        <p className="text-sm font-medium">{title}</p>
-                        <p className="text-xs leading-5 text-muted-foreground">
-                            {description}
-                        </p>
-                    </div>
+                    {badge ? (
+                        <Badge variant="outline" className="shrink-0">
+                            {badge}
+                        </Badge>
+                    ) : null}
                 </div>
-                {badge ? (
-                    <Badge variant="outline" className="shrink-0">
-                        {badge}
-                    </Badge>
-                ) : null}
+                <div>
+                    <p className="text-xs leading-5 text-muted-foreground">
+                        {description}
+                    </p>
+                </div>
             </div>
         </button>
     );
@@ -117,12 +119,12 @@ function MobileWorkspaceDialog({
 }) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-h-[calc(100vh-1rem)] w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-background p-0 sm:max-h-[92vh] sm:max-w-3xl sm:rounded-lg">
+            <DialogContent className="top-0 right-0 bottom-0 left-0 h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-y-auto rounded-none border-0 bg-background p-0 sm:inset-auto sm:h-auto sm:max-h-[92vh] sm:w-full sm:max-w-3xl sm:translate-x-[-50%] sm:translate-y-[-50%] sm:overflow-hidden sm:rounded-lg sm:border sm:border-white/10">
                 <DialogHeader className="border-b px-4 py-4 text-left sm:px-6 sm:py-5">
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
-                <div className="min-h-0 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
+                <div className="px-4 py-4 sm:min-h-0 sm:overflow-y-auto sm:px-6 sm:py-5">
                     {children}
                 </div>
             </DialogContent>
@@ -252,8 +254,8 @@ export default function ShowProject({
         <>
             <Head title={project.name} />
 
-            <div className="min-w-0 space-y-5 overflow-x-clip p-3 sm:space-y-6 sm:p-6">
-                <section className="relative overflow-hidden rounded-xl border bg-card/70 px-4 py-6 shadow-sm sm:px-8 sm:py-12">
+            <div className="min-w-0 space-y-4 overflow-x-clip p-2.5 sm:space-y-6 sm:p-6">
+                <section className="relative overflow-hidden rounded-xl border bg-card/70 px-3.5 py-4 shadow-sm sm:px-8 sm:py-12">
                     {project.cover_image_url ? (
                         <>
                             <img
@@ -270,14 +272,14 @@ export default function ShowProject({
                             <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.03),transparent)]" />
                         </>
                     )}
-                    <div className="relative grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_34rem] xl:items-stretch">
-                        <div className="flex min-w-0 flex-col gap-5 sm:gap-8">
-                            <div className="space-y-5 sm:space-y-6">
+                    <div className="relative grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_34rem] xl:items-stretch">
+                        <div className="flex min-w-0 flex-col gap-4 sm:gap-8">
+                            <div className="space-y-4 sm:space-y-6">
                                 <div className="space-y-3">
                                     <p className="text-xs tracking-[0.34em] text-muted-foreground uppercase">
                                         {project.category}
                                     </p>
-                                    <h1 className="max-w-4xl text-3xl font-semibold tracking-tight text-foreground sm:text-5xl xl:text-6xl">
+                                    <h1 className="max-w-4xl text-2xl font-semibold tracking-tight text-foreground sm:text-5xl xl:text-6xl">
                                         {project.name}
                                     </h1>
                                     <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-lg sm:leading-7">
@@ -286,7 +288,7 @@ export default function ShowProject({
                                     </p>
                                 </div>
 
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                     <div className="space-y-2">
                                         <p className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
                                             Project state
@@ -315,7 +317,7 @@ export default function ShowProject({
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <div className="flex items-start gap-4">
+                                        <div className="flex items-start gap-3">
                                             <span className="max-w-xl text-sm leading-6 text-muted-foreground">
                                                 {project.has_explicit_cover
                                                     ? 'Custom cover selected from your asset library.'
@@ -341,12 +343,12 @@ export default function ShowProject({
                                         className="w-full text-left transition hover:bg-white/[0.03] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
                                     >
                                         <CardHeader className="px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-5">
-                                            <div className="space-y-4 sm:space-y-5">
+                                            <div className="space-y-3 sm:space-y-5">
                                                 <div className="space-y-2">
                                                     <CardTitle className="text-xl tracking-tight sm:text-2xl">
                                                         Project pulse
                                                     </CardTitle>
-                                                    <CardDescription className="hidden max-w-sm text-sm leading-6 sm:block">
+                                                    <CardDescription className="hidden max-w-sm text-sm leading-6 md:block">
                                                         Your working set,
                                                         condensed into the
                                                         numbers and readiness
@@ -357,9 +359,9 @@ export default function ShowProject({
 
                                                 <div className="rounded-xl border bg-background/45 px-3 py-3 backdrop-blur-sm sm:px-4">
                                                     <div className="grid gap-3">
-                                                        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3 sm:gap-4">
+                                                        <div className="grid grid-cols-3 gap-2 text-sm sm:gap-4">
                                                             <div>
-                                                                <p className="text-[10px] tracking-[0.18em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.22em]">
+                                                                <p className="text-[9px] tracking-[0.12em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.22em]">
                                                                     Assets
                                                                 </p>
                                                                 <p className="mt-1 font-semibold">
@@ -369,7 +371,7 @@ export default function ShowProject({
                                                                 </p>
                                                             </div>
                                                             <div>
-                                                                <p className="text-[10px] tracking-[0.18em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.22em]">
+                                                                <p className="text-[9px] tracking-[0.12em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.22em]">
                                                                     Analyzed
                                                                 </p>
                                                                 <p className="mt-1 font-semibold">
@@ -378,8 +380,8 @@ export default function ShowProject({
                                                                     }
                                                                 </p>
                                                             </div>
-                                                            <div className="max-sm:col-span-2">
-                                                                <p className="text-[10px] tracking-[0.18em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.22em]">
+                                                            <div>
+                                                                <p className="text-[9px] tracking-[0.12em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.22em]">
                                                                     Highlights
                                                                 </p>
                                                                 <p className="mt-1 font-semibold">
@@ -493,7 +495,7 @@ export default function ShowProject({
 
                 <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_28rem] xl:items-start">
                     <div id="project-upload" className="min-w-0 space-y-6">
-                        <section className="overflow-hidden rounded-xl border bg-card/50 p-4 sm:p-6">
+                        <>
                             <div className="min-w-0 space-y-2 border-b pb-5">
                                 <div className="min-w-0 space-y-2">
                                     <p className="text-[11px] tracking-[0.22em] text-muted-foreground uppercase sm:text-xs sm:tracking-[0.28em]">
@@ -660,79 +662,86 @@ export default function ShowProject({
                                             Workspace panels
                                         </p>
                                         <p className="text-sm text-muted-foreground">
-                                            Open the longer review, library, and
-                                            sharing sections only when you need
-                                            them.
+                                            Swipe through the heavy workspace
+                                            panels and open only what you need.
                                         </p>
                                     </div>
 
-                                    <div className="grid gap-3 sm:grid-cols-2">
-                                        {latestReviewedAsset ? (
+                                    <div className="-mx-4 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                                        <div className="flex snap-x snap-mandatory gap-3 pr-4 scroll-px-4">
+                                            {latestReviewedAsset ? (
+                                                <MobileWorkspaceLauncher
+                                                    icon={Sparkles}
+                                                    title="Latest review"
+                                                    description="Curator notes, tags, and the strongest signals from the newest reviewed frame."
+                                                    badge={`${
+                                                        latestReviewedAsset.analysis
+                                                            ?.is_highlight
+                                                            ? 'Highlight'
+                                                            : '1 frame'
+                                                    }`}
+                                                    onClick={() =>
+                                                        setActiveMobilePanel(
+                                                            'results',
+                                                        )
+                                                    }
+                                                />
+                                            ) : null}
+
+                                            <MobileWorkspaceLauncher
+                                                icon={FolderOpen}
+                                                title="Asset library"
+                                                description="Browse all uploaded images without leaving the project page."
+                                                badge={`${assets.length}`}
+                                                onClick={() =>
+                                                    setActiveMobilePanel(
+                                                        'library',
+                                                    )
+                                                }
+                                            />
+
+                                            <MobileWorkspaceLauncher
+                                                icon={Share2}
+                                                title="Share project"
+                                                description="Switch visibility and copy the live destinations for this project."
+                                                badge={sharePanel.visibility}
+                                                onClick={() =>
+                                                    setActiveMobilePanel(
+                                                        'share',
+                                                    )
+                                                }
+                                            />
+
                                             <MobileWorkspaceLauncher
                                                 icon={Sparkles}
-                                                title="Latest review"
-                                                description="Curator notes, tags, and the strongest signals from the newest reviewed frame."
-                                                badge={`${
-                                                    latestReviewedAsset.analysis
-                                                        ?.is_highlight
-                                                        ? 'Highlight'
-                                                        : '1 frame'
-                                                }`}
+                                                title="Curator summary"
+                                                description="Highlights, top tags, and the broader read of the whole set."
+                                                badge={`${highlights.length} highlights`}
                                                 onClick={() =>
                                                     setActiveMobilePanel(
-                                                        'results',
+                                                        'curator',
                                                     )
                                                 }
                                             />
-                                        ) : null}
 
-                                        <MobileWorkspaceLauncher
-                                            icon={FolderOpen}
-                                            title="Asset library"
-                                            description="Browse all uploaded images without leaving the project page."
-                                            badge={`${assets.length}`}
-                                            onClick={() =>
-                                                setActiveMobilePanel('library')
-                                            }
-                                        />
-
-                                        <MobileWorkspaceLauncher
-                                            icon={Share2}
-                                            title="Share project"
-                                            description="Switch visibility and copy the live destinations for this project."
-                                            badge={sharePanel.visibility}
-                                            onClick={() =>
-                                                setActiveMobilePanel('share')
-                                            }
-                                        />
-
-                                        <MobileWorkspaceLauncher
-                                            icon={Sparkles}
-                                            title="Curator summary"
-                                            description="Highlights, top tags, and the broader read of the whole set."
-                                            badge={`${highlights.length} highlights`}
-                                            onClick={() =>
-                                                setActiveMobilePanel('curator')
-                                            }
-                                        />
-
-                                        {uploadReviewAssets.length > 0 ? (
-                                            <MobileWorkspaceLauncher
-                                                icon={PencilLine}
-                                                title="Name uploads"
-                                                description="Add clear titles to the latest uploaded frames without keeping the form open inline."
-                                                badge={`${uploadReviewAssets.length}`}
-                                                onClick={() =>
-                                                    setActiveMobilePanel(
-                                                        'upload-review',
-                                                    )
-                                                }
-                                            />
-                                        ) : null}
+                                            {uploadReviewAssets.length > 0 ? (
+                                                <MobileWorkspaceLauncher
+                                                    icon={PencilLine}
+                                                    title="Name uploads"
+                                                    description="Add clear titles to the latest uploaded frames without keeping the form open inline."
+                                                    badge={`${uploadReviewAssets.length}`}
+                                                    onClick={() =>
+                                                        setActiveMobilePanel(
+                                                            'upload-review',
+                                                        )
+                                                    }
+                                                />
+                                            ) : null}
+                                        </div>
                                     </div>
                                 </section>
                             </div>
-                        </section>
+                        </>
 
                         {latestReviewedAsset ? (
                             <section

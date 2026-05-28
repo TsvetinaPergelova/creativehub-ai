@@ -45,8 +45,8 @@ export default function ProjectAssetTitleForm({
 
     if (mode === 'panel') {
         return (
-            <form className="space-y-3" onSubmit={submit}>
-                <div className="space-y-2">
+            <form className="min-w-0 space-y-3" onSubmit={submit}>
+                <div className="min-w-0 space-y-2">
                     <p className="text-sm font-medium">Title</p>
                     <Input
                         value={form.data.title}
@@ -54,9 +54,15 @@ export default function ProjectAssetTitleForm({
                         placeholder="Give this image a clear title"
                         maxLength={120}
                     />
-                    <p className="text-xs text-muted-foreground">
-                        File: {asset.filename}
-                    </p>
+                    <div
+                        className="flex min-w-0 items-baseline gap-1 text-xs text-muted-foreground"
+                        title={asset.filename}
+                    >
+                        <span className="shrink-0">File:</span>
+                        <span className="min-w-0 flex-1 truncate">
+                            {asset.filename}
+                        </span>
+                    </div>
                     <InputError message={form.errors.title} />
                 </div>
 
