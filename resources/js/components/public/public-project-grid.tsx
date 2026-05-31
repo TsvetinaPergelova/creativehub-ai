@@ -27,11 +27,11 @@ export default function PublicProjectGrid({
         'border-white/20 bg-black/65 px-3 py-1.5 text-sm font-medium text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-md';
 
     return (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
             {projects.map((project) => (
                 <Card
                     key={project.id}
-                    className="h-full gap-0 overflow-hidden rounded-[1.75rem] border-primary/18 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/24 hover:bg-card"
+                    className="h-full gap-0 overflow-hidden rounded-[1.5rem] border-primary/18 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/24 hover:bg-card xl:rounded-[1.75rem]"
                 >
                     <Link
                         href={project.public_url ?? '#'}
@@ -56,7 +56,7 @@ export default function PublicProjectGrid({
                                     </div>
                                 </div>
                             )}
-                            <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                            <div className="absolute left-3 top-3 flex flex-wrap gap-2 sm:left-4 sm:top-4">
                                 <Badge
                                     variant="outline"
                                     className={imageBadgeClass}
@@ -77,7 +77,7 @@ export default function PublicProjectGrid({
                         </div>
                     </Link>
 
-                    <CardHeader className="flex min-h-[9.25rem] flex-col justify-between px-5 pt-5 pb-0">
+                    <CardHeader className="flex min-h-[7.75rem] flex-col justify-between px-4 pt-4 pb-0 sm:min-h-[9.25rem] sm:px-5 sm:pt-5">
                         <div className="space-y-2">
                             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                                 {project.creator_name ? (
@@ -104,7 +104,7 @@ export default function PublicProjectGrid({
                             </div>
 
                             <div className="space-y-1.5">
-                                <CardTitle className="line-clamp-2 min-h-[3.5rem] text-xl leading-tight">
+                                <CardTitle className="line-clamp-2 text-lg leading-tight sm:min-h-[3.5rem] sm:text-xl">
                                     <Link
                                         href={project.public_url ?? '#'}
                                         className="transition hover:text-primary"
@@ -112,7 +112,7 @@ export default function PublicProjectGrid({
                                         {project.name}
                                     </Link>
                                 </CardTitle>
-                                <CardDescription className="line-clamp-3 min-h-[4.5rem] text-sm leading-6">
+                                <CardDescription className="line-clamp-2 text-sm leading-6 sm:min-h-[4.5rem] sm:line-clamp-3">
                                     {project.description ??
                                         'Open the project to see the full published sequence and presentation.'}
                                 </CardDescription>
@@ -120,7 +120,7 @@ export default function PublicProjectGrid({
                         </div>
                     </CardHeader>
 
-                    <CardContent className="flex min-h-[7rem] flex-1 flex-col px-5 py-5">
+                    <CardContent className="flex min-h-[6rem] flex-1 flex-col px-4 py-4 sm:min-h-[7rem] sm:px-5 sm:py-5">
                         <div className="flex min-h-[1.5rem] flex-wrap items-center gap-2 text-xs text-muted-foreground">
                             <span>Published project</span>
                             {project.creator_name ? (
@@ -131,7 +131,7 @@ export default function PublicProjectGrid({
                             ) : null}
                         </div>
 
-                        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-white/10 pt-4 text-sm font-medium">
+                        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-white/10 pt-3 text-sm font-medium sm:pt-4">
                             <Link
                                 href={project.public_url ?? '#'}
                                 className="inline-flex items-center gap-2 text-foreground transition hover:text-primary"

@@ -277,14 +277,14 @@ export default function ProjectAssetGrid({
 
     return (
         <>
-            <div className="grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+            <div className="mx-auto grid w-full max-w-[38rem] justify-items-center gap-4 md:max-w-none md:grid-cols-2 md:justify-items-stretch 2xl:grid-cols-3">
                 {assets.map((asset, index) => (
                     <button
                         key={asset.id}
                         type="button"
                         onClick={() => openAsset(index)}
                         className={cn(
-                            'overflow-hidden rounded-xl border bg-card/80 text-left shadow-sm transition hover:bg-card focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
+                            'w-full overflow-hidden rounded-xl border bg-card/80 text-left shadow-sm transition hover:bg-card focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
                             asset.analysis?.is_highlight
                                 ? 'border-amber-400/45 shadow-[0_0_0_1px_rgba(251,191,36,0.12)] hover:border-amber-400/65'
                                 : 'hover:border-primary/40',
@@ -356,7 +356,7 @@ export default function ProjectAssetGrid({
 
             <Dialog open={selectedAsset !== null} onOpenChange={closeAsset}>
                 {selectedAsset && (
-                    <DialogContent className="top-0 right-0 bottom-0 left-0 z-[60] h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-hidden rounded-none border-0 bg-background p-0 sm:top-[50%] sm:left-[50%] sm:h-[96vh] sm:max-h-[96vh] sm:w-full sm:max-w-[min(92vw,92rem)] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-lg sm:border sm:border-white/10">
+                    <DialogContent className="top-0 right-0 bottom-0 left-0 z-[60] h-dvh w-screen max-w-none translate-x-0 translate-y-0 gap-0 overflow-hidden rounded-none border-0 bg-background p-0 sm:top-[50%] sm:left-[50%] sm:h-[96vh] sm:max-h-[96vh] sm:w-full sm:max-w-[min(84vw,78rem)] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:rounded-lg sm:border sm:border-white/10">
                         <DialogTitle className="sr-only">
                             {getAssetDisplayTitle(selectedAsset)}
                         </DialogTitle>
@@ -365,11 +365,11 @@ export default function ProjectAssetGrid({
                             asset.
                         </DialogDescription>
 
-                        <div className="flex h-full min-h-0 flex-col lg:grid lg:h-full lg:max-h-[96vh] lg:grid-cols-[minmax(0,1fr)_34rem] xl:grid-cols-[minmax(0,1.05fr)_38rem]">
+                        <div className="flex h-full min-h-0 flex-col lg:grid lg:h-full lg:max-h-[96vh] lg:grid-cols-[minmax(0,1fr)_27rem] xl:grid-cols-[minmax(0,1.02fr)_31rem]">
                             <div
                                 ref={imageViewportRef}
                                 className={cn(
-                                    'relative h-[42svh] shrink-0 items-center justify-center overflow-hidden bg-black/95 px-3 pt-12 pb-3 sm:min-h-[18rem] sm:h-auto sm:p-6 lg:flex lg:min-h-[84vh] lg:flex-1 xl:min-h-[88vh] xl:p-8',
+                                    'relative h-[42svh] shrink-0 items-center justify-center overflow-hidden bg-black/95 px-3 pt-12 pb-3 sm:min-h-[18rem] sm:h-auto sm:p-6 lg:flex lg:min-h-[88vh] lg:flex-1 lg:px-5 lg:py-4 xl:min-h-[90vh] xl:px-6 xl:py-5',
                                     isZoomed ? 'select-none' : '',
                                 )}
                             >
@@ -401,7 +401,7 @@ export default function ProjectAssetGrid({
                                             getAssetDisplayTitle(selectedAsset)
                                         }
                                         className={cn(
-                                            'pointer-events-none max-h-[min(46svh,30rem)] w-auto max-w-full rounded-[1.15rem] object-contain transition duration-300 will-change-transform select-none sm:max-h-[82vh] lg:max-h-[88vh] sm:rounded-lg xl:max-h-[92vh]',
+                                            'pointer-events-none max-h-[min(46svh,30rem)] w-auto max-w-full rounded-[1.15rem] object-contain transition duration-300 will-change-transform select-none sm:max-h-[82vh] lg:max-h-[88vh] sm:rounded-lg xl:max-h-[90vh]',
                                             isZoomed ? 'cursor-grab' : '',
                                         )}
                                         style={{

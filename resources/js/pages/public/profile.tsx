@@ -1,12 +1,5 @@
 import { Head } from '@inertiajs/react';
-import {
-    Check,
-    Copy,
-    Globe,
-    Instagram,
-    Mail,
-    Sparkles,
-} from 'lucide-react';
+import { Check, Copy, Globe, Instagram, Mail } from 'lucide-react';
 import PublicProjectGrid from '@/components/public/public-project-grid';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -64,12 +57,6 @@ export default function PublicProfile({
         icon: typeof Globe;
     }>;
     const coverStyle = resolveProfileCoverStyle(creator.profile_cover_style);
-    const featuredProject = projects[0] ?? null;
-    const remainingProjects = featuredProject ? projects.slice(1) : [];
-    const publishedDateFormatter = new Intl.DateTimeFormat('en', {
-        month: 'long',
-        year: 'numeric',
-    });
     const creatorFacts = [
         creator.specialization
             ? {
@@ -240,115 +227,11 @@ export default function PublicProfile({
                         </div>
                     </section>
 
-                    {featuredProject ? (
-                        <section className="space-y-4">
-                            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                                <div>
-                                    <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-                                        Featured work
-                                    </p>
-                                    <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                                        Start with a stronger first impression
-                                    </h2>
-                                </div>
-                                <p className="max-w-md text-sm leading-6 text-muted-foreground sm:text-right">
-                                    A lead project that helps visitors
-                                    understand the tone, quality, and direction
-                                    of the portfolio right away.
-                                </p>
-                            </div>
-
-                            <a
-                                href={featuredProject.public_url ?? '#'}
-                                className="group block overflow-hidden rounded-[2rem] border border-white/10 bg-card/85 shadow-none transition hover:border-primary/20"
-                            >
-                                <div className="grid gap-0 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.95fr)]">
-                                    <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-                                        {featuredProject.cover_image_url ? (
-                                            <img
-                                                src={
-                                                    featuredProject.cover_image_url
-                                                }
-                                                alt={featuredProject.name}
-                                                className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                                            />
-                                        ) : (
-                                            <div className="flex size-full items-end bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_40%)] p-8">
-                                                <p className="text-2xl font-semibold">
-                                                    {featuredProject.name}
-                                                </p>
-                                            </div>
-                                        )}
-                                        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5" />
-                                    </div>
-
-                                    <div className="flex flex-col justify-between gap-6 p-6 sm:p-8">
-                                        <div className="space-y-4">
-                                            <div className="flex flex-wrap gap-2">
-                                                <Badge variant="outline">
-                                                    Featured
-                                                </Badge>
-                                                <Badge variant="outline">
-                                                    {featuredProject.category}
-                                                </Badge>
-                                                {featuredProject.published_at ? (
-                                                    <Badge variant="outline">
-                                                        {publishedDateFormatter.format(
-                                                            new Date(
-                                                                featuredProject.published_at,
-                                                            ),
-                                                        )}
-                                                    </Badge>
-                                                ) : null}
-                                            </div>
-
-                                            <div className="space-y-3">
-                                                <h3 className="text-3xl font-semibold tracking-tight">
-                                                    {featuredProject.name}
-                                                </h3>
-                                                <p className="text-base leading-7 text-muted-foreground">
-                                                    {featuredProject.description ??
-                                                        'Open the project to see the full published sequence and presentation.'}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-4">
-                                            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                                                <span>
-                                                    {featuredProject.asset_count ?? 0}{' '}
-                                                    selected image
-                                                    {(featuredProject.asset_count ??
-                                                        0) === 1
-                                                        ? ''
-                                                        : 's'}
-                                                </span>
-                                                <span className="opacity-40">
-                                                    /
-                                                </span>
-                                                <span>
-                                                    Published portfolio entry
-                                                </span>
-                                            </div>
-
-                                            <div className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition group-hover:text-primary">
-                                                Open featured project
-                                                <Sparkles className="size-4" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </section>
-                    ) : null}
-
                     <section className="space-y-4">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                             <div>
                                 <h2 className="text-2xl font-semibold">
-                                    {remainingProjects.length > 0
-                                        ? 'More selected work'
-                                        : 'Published projects'}
+                                    Published projects
                                 </h2>
                                 <p className="text-sm text-muted-foreground">
                                     {projects.length} project
@@ -362,14 +245,8 @@ export default function PublicProfile({
                             <div className="rounded-[1.5rem] border border-dashed bg-card/70 p-10 text-center text-sm text-muted-foreground">
                                 No public projects yet.
                             </div>
-                        ) : remainingProjects.length > 0 ? (
-                            <PublicProjectGrid projects={remainingProjects} />
                         ) : (
-                            <div className="rounded-[1.5rem] border border-dashed bg-card/70 p-10 text-center text-sm text-muted-foreground">
-                                This portfolio currently features one published
-                                lead project. More public work will appear here
-                                as it is released.
-                            </div>
+                            <PublicProjectGrid projects={projects} />
                         )}
                     </section>
                 </div>

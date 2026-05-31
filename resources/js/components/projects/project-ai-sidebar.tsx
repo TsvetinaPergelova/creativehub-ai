@@ -42,7 +42,7 @@ export default function ProjectAiSidebar({
 
     return (
         <Card className="overflow-hidden bg-card/60">
-            <CardHeader className="space-y-4 border-b pb-5">
+            <CardHeader className="space-y-4 border-b px-4 py-5 sm:px-6 sm:pb-5">
                 <div className="space-y-2">
                     <div className="flex items-center gap-3">
                         <div className="flex size-10 items-center justify-center rounded-full bg-primary/12 text-primary">
@@ -61,7 +61,7 @@ export default function ProjectAiSidebar({
                 </div>
             </CardHeader>
 
-            <CardContent className="space-y-5 p-6">
+            <CardContent className="space-y-5 p-4 sm:p-6">
                 <p className="text-sm leading-6 text-muted-foreground">
                     {curator.summary}
                 </p>

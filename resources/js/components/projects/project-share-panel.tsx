@@ -3,8 +3,6 @@ import { useForm } from '@inertiajs/react';
 import {
     Check,
     ChevronDown,
-    Copy,
-    ExternalLink,
     Globe,
     Images,
     Link2,
@@ -30,62 +28,35 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { useClipboard } from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import type { Project, ProjectSharePanel } from '@/types';
 
 function ShareLinkCard({
     label,
     url,
-    copiedText,
-    onCopy,
 }: {
     label: string;
     url: string | null;
-    copiedText: string | null;
-    onCopy: (url: string) => void;
 }) {
-    const isCopied = copiedText !== null && copiedText === url;
-
     return (
         <ProjectInsetPanel className="bg-background/70">
-            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">{label}</p>
-                    {url ? (
-                        <a
-                            href={url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="mt-2 flex max-w-full flex-wrap items-center gap-2 font-mono text-xs leading-5 break-all text-primary transition-colors hover:text-primary/80"
-                        >
-                            <span className="break-all">{url}</span>
-                            <ExternalLink className="size-3.5 shrink-0" />
-                        </a>
-                    ) : (
-                        <p className="mt-2 font-mono text-xs leading-5 break-all text-muted-foreground">
-                            {label === 'Public portfolio link'
-                                ? 'Activate public portfolio mode to generate this link.'
-                                : 'Activate the client review flow to generate this link.'}
-                        </p>
-                    )}
-                </div>
-
-                {url && (
-                    <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        className="shrink-0 self-start sm:self-center"
-                        onClick={() => onCopy(url)}
+            <div className="min-w-0">
+                <p className="text-sm font-medium">{label}</p>
+                {url ? (
+                    <a
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 block max-w-full font-mono text-xs leading-5 break-all text-primary transition-colors hover:text-primary/80"
                     >
-                        {isCopied ? (
-                            <Check className="size-4" />
-                        ) : (
-                            <Copy className="size-4" />
-                        )}
-                        <span className="sr-only">Copy {label}</span>
-                    </Button>
+                        {url}
+                    </a>
+                ) : (
+                    <p className="mt-2 font-mono text-xs leading-5 break-all text-muted-foreground">
+                        {label === 'Public portfolio link'
+                            ? 'Activate public portfolio mode to generate this link.'
+                            : 'Activate the client review flow to generate this link.'}
+                    </p>
                 )}
             </div>
         </ProjectInsetPanel>
@@ -100,7 +71,6 @@ export default function ProjectSharePanel({
     sharePanel: ProjectSharePanel;
 }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [copiedText, copy] = useClipboard();
     const form = useForm({
         visibility: project.visibility === 'client' ? 'client' : 'public',
     });
@@ -123,7 +93,7 @@ export default function ProjectSharePanel({
 
     return (
         <Card className="overflow-hidden bg-card/60">
-            <CardHeader className="space-y-4 border-b pb-5">
+            <CardHeader className="space-y-4 border-b px-4 py-5 sm:px-6 sm:pb-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-2">
                         <CardTitle className="text-2xl tracking-tight">
@@ -165,7 +135,7 @@ export default function ProjectSharePanel({
                 </ProjectInsetPanel>
             </CardHeader>
 
-            <CardContent className="space-y-4 p-6">
+            <CardContent className="space-y-4 p-4 sm:p-6">
                 <div className="space-y-3">
                     <ProjectOptionCard
                         icon={Globe}
@@ -205,8 +175,8 @@ export default function ProjectSharePanel({
                                             Live links
                                         </p>
                                         <p className="text-xs text-muted-foreground">
-                                            Open or copy the destinations people
-                                            will use.
+                                            Open the destinations people will
+                                            use.
                                         </p>
                                     </div>
                                 </div>
@@ -223,15 +193,11 @@ export default function ProjectSharePanel({
                             <ShareLinkCard
                                 label="Public portfolio link"
                                 url={sharePanel.public_url}
-                                copiedText={copiedText}
-                                onCopy={copy}
                             />
 
                             <ShareLinkCard
                                 label="Client gallery link"
                                 url={sharePanel.client_url}
-                                copiedText={copiedText}
-                                onCopy={copy}
                             />
                         </CollapsibleContent>
                     </ProjectInsetPanel>

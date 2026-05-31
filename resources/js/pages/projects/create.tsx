@@ -28,7 +28,7 @@ export default function CreateProject({
                     description="Set the foundation for a new collection before you upload and curate its imagery."
                 />
 
-                <div className="rounded-xl border p-6">
+                <div className="max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0 sm:rounded-xl sm:border sm:p-6">
                     <ProjectForm
                         project={project}
                         categoryGroups={categoryGroups}

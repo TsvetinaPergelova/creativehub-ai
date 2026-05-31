@@ -8,6 +8,7 @@ import {
 } from '@/components/projects/project-ui';
 import PublicProjectGrid from '@/components/public/public-project-grid';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import {
     Select,
@@ -135,14 +136,18 @@ export default function ExploreIndex({
         setSort('newest');
     };
 
+    const filterSummaryLabel = hasActiveFilters
+        ? `${filteredProjects.length} visible`
+        : `${filteredProjects.length} live`;
+
     return (
         <>
             <Head title="Explore" />
 
-            <div className="space-y-6 p-4 sm:space-y-7 sm:p-6">
+            <div className="space-y-5 p-4 sm:space-y-7 sm:p-6">
                 <ProjectSection className="relative overflow-hidden rounded-[1.5rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.02))] px-4 py-4 sm:px-5 sm:py-5">
                     <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] xl:items-center">
-                        <div className="space-y-3">
+                        <div className="space-y-2.5">
                             <div className="space-y-1.5">
                                 <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
                                     Discovery
@@ -150,7 +155,11 @@ export default function ExploreIndex({
                                 <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
                                     Explore public portfolios
                                 </h1>
-                                <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+                                <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:hidden">
+                                    Find published work and creators worth
+                                    following.
+                                </p>
+                                <p className="hidden max-w-2xl text-sm leading-6 text-muted-foreground sm:block">
                                     Browse published work across categories,
                                     find creators worth following, and open the
                                     projects that best match the style or
@@ -159,28 +168,28 @@ export default function ExploreIndex({
                             </div>
                         </div>
 
-                        <div className="grid gap-2 sm:grid-cols-3">
-                            <ProjectInsetPanel className="rounded-[1.1rem] border-primary/18 bg-black/[0.16] px-3 py-3">
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                        <div className="grid grid-cols-3 gap-2">
+                            <ProjectInsetPanel className="flex min-h-[7rem] flex-col rounded-[1.05rem] border-primary/18 bg-black/[0.16] px-3 py-2.5 sm:min-h-[7.25rem] sm:rounded-[1.1rem] sm:py-3">
+                                <p className="text-[9px] leading-5 uppercase tracking-[0.14em] text-muted-foreground sm:text-[10px] sm:tracking-[0.2em]">
                                     Live projects
                                 </p>
-                                <p className="mt-2 text-2xl font-semibold tracking-tight">
+                                <p className="mt-auto self-start text-xl font-semibold tracking-tight sm:text-2xl">
                                     {projects.length}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="rounded-[1.1rem] border-primary/18 bg-black/[0.16] px-3 py-3">
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                            <ProjectInsetPanel className="flex min-h-[7rem] flex-col rounded-[1.05rem] border-primary/18 bg-black/[0.16] px-3 py-2.5 sm:min-h-[7.25rem] sm:rounded-[1.1rem] sm:py-3">
+                                <p className="text-[9px] leading-5 uppercase tracking-[0.14em] text-muted-foreground sm:text-[10px] sm:tracking-[0.2em]">
                                     Categories
                                 </p>
-                                <p className="mt-2 text-2xl font-semibold tracking-tight">
+                                <p className="mt-auto self-start text-xl font-semibold tracking-tight sm:text-2xl">
                                     {categories.length}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="rounded-[1.1rem] border-primary/18 bg-black/[0.16] px-3 py-3">
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                            <ProjectInsetPanel className="flex min-h-[7rem] flex-col rounded-[1.05rem] border-primary/18 bg-black/[0.16] px-3 py-2.5 sm:min-h-[7.25rem] sm:rounded-[1.1rem] sm:py-3">
+                                <p className="text-[9px] leading-5 uppercase tracking-[0.14em] text-muted-foreground sm:text-[10px] sm:tracking-[0.2em]">
                                     Creators
                                 </p>
-                                <p className="mt-2 text-2xl font-semibold tracking-tight">
+                                <p className="mt-auto self-start text-xl font-semibold tracking-tight sm:text-2xl">
                                     {creators.length}
                                 </p>
                             </ProjectInsetPanel>
@@ -207,78 +216,134 @@ export default function ExploreIndex({
                         }
                     />
 
-                    <div className="grid gap-3 xl:grid-cols-[minmax(0,1.5fr)_repeat(3,minmax(0,0.75fr))]">
-                        <div className="relative xl:col-span-1">
+                    <div className="space-y-3">
+                        <div className="relative">
                             <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
                             <Input
                                 value={query}
                                 onChange={(event) => setQuery(event.target.value)}
-                                placeholder="Search by project title, category, or creator..."
+                                placeholder="Search projects, creators, categories..."
                                 className="h-11 rounded-full border-white/10 bg-background/60 pr-4 pl-11"
                             />
                         </div>
 
-                        <Select
-                            value={categoryFilter}
-                            onValueChange={setCategoryFilter}
-                        >
-                            <SelectTrigger className="h-11 rounded-full border-white/10 bg-background/60">
-                                <SelectValue placeholder="Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All categories</SelectItem>
-                                {categories.map((category) => (
-                                    <SelectItem key={category} value={category}>
-                                        {category}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        <div className="-mx-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden xl:hidden">
+                            <div className="flex min-w-max gap-2 pr-4">
+                                <Select
+                                    value={categoryFilter}
+                                    onValueChange={setCategoryFilter}
+                                >
+                                    <SelectTrigger className="h-10 min-w-[11rem] rounded-full border-white/10 bg-background/60">
+                                        <SelectValue placeholder="Category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All categories</SelectItem>
+                                        {categories.map((category) => (
+                                            <SelectItem key={category} value={category}>
+                                                {category}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
 
-                        <Select value={creatorFilter} onValueChange={setCreatorFilter}>
-                            <SelectTrigger className="h-11 rounded-full border-white/10 bg-background/60">
-                                <SelectValue placeholder="Creator" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All creators</SelectItem>
-                                {creators.map((creator) => (
-                                    <SelectItem key={creator} value={creator}>
-                                        {creator}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                                <Select
+                                    value={creatorFilter}
+                                    onValueChange={setCreatorFilter}
+                                >
+                                    <SelectTrigger className="h-10 min-w-[11rem] rounded-full border-white/10 bg-background/60">
+                                        <SelectValue placeholder="Creator" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All creators</SelectItem>
+                                        {creators.map((creator) => (
+                                            <SelectItem key={creator} value={creator}>
+                                                {creator}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
 
-                        <Select
-                            value={sort}
-                            onValueChange={(value) => setSort(value as SortOption)}
-                        >
-                            <SelectTrigger className="h-11 rounded-full border-white/10 bg-background/60">
-                                <SlidersHorizontal className="size-4 text-muted-foreground" />
-                                <SelectValue placeholder="Sort" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="newest">Newest first</SelectItem>
-                                <SelectItem value="oldest">Oldest first</SelectItem>
-                                <SelectItem value="title">Title A-Z</SelectItem>
-                                <SelectItem value="creator">Creator A-Z</SelectItem>
-                            </SelectContent>
-                        </Select>
+                                <Select
+                                    value={sort}
+                                    onValueChange={(value) => setSort(value as SortOption)}
+                                >
+                                    <SelectTrigger className="h-10 min-w-[10rem] rounded-full border-white/10 bg-background/60">
+                                        <SlidersHorizontal className="size-4 text-muted-foreground" />
+                                        <SelectValue placeholder="Sort" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="newest">Newest first</SelectItem>
+                                        <SelectItem value="oldest">Oldest first</SelectItem>
+                                        <SelectItem value="title">Title A-Z</SelectItem>
+                                        <SelectItem value="creator">Creator A-Z</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="hidden gap-3 xl:grid xl:grid-cols-[repeat(3,minmax(0,0.75fr))]">
+                            <Select
+                                value={categoryFilter}
+                                onValueChange={setCategoryFilter}
+                            >
+                                <SelectTrigger className="h-11 rounded-full border-white/10 bg-background/60">
+                                    <SelectValue placeholder="Category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All categories</SelectItem>
+                                    {categories.map((category) => (
+                                        <SelectItem key={category} value={category}>
+                                            {category}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            <Select value={creatorFilter} onValueChange={setCreatorFilter}>
+                                <SelectTrigger className="h-11 rounded-full border-white/10 bg-background/60">
+                                    <SelectValue placeholder="Creator" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All creators</SelectItem>
+                                    {creators.map((creator) => (
+                                        <SelectItem key={creator} value={creator}>
+                                            {creator}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            <Select
+                                value={sort}
+                                onValueChange={(value) => setSort(value as SortOption)}
+                            >
+                                <SelectTrigger className="h-11 rounded-full border-white/10 bg-background/60">
+                                    <SlidersHorizontal className="size-4 text-muted-foreground" />
+                                    <SelectValue placeholder="Sort" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="newest">Newest first</SelectItem>
+                                    <SelectItem value="oldest">Oldest first</SelectItem>
+                                    <SelectItem value="title">Title A-Z</SelectItem>
+                                    <SelectItem value="creator">Creator A-Z</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                        <span>{filteredProjects.length} projects visible</span>
-                        {hasActiveFilters ? (
-                            <>
-                                <span className="opacity-40">/</span>
-                                <span>Filtered view</span>
-                            </>
-                        ) : (
-                            <>
-                                <span className="opacity-40">/</span>
-                                <span>Full public feed</span>
-                            </>
-                        )}
+                        <Badge
+                            variant="outline"
+                            className="rounded-full border-white/10 bg-background/60 font-normal text-muted-foreground"
+                        >
+                            {filterSummaryLabel}
+                        </Badge>
+                        <Badge
+                            variant="outline"
+                            className="rounded-full border-white/10 bg-background/60 font-normal text-muted-foreground"
+                        >
+                            {hasActiveFilters ? 'Filtered view' : 'Full public feed'}
+                        </Badge>
                     </div>
                 </ProjectSection>
 

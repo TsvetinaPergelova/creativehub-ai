@@ -667,8 +667,8 @@ export default function ShowProject({
                                         </p>
                                     </div>
 
-                                    <div className="-mx-4 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                                        <div className="flex snap-x snap-mandatory gap-3 pr-4 scroll-px-4">
+                                    <div className="-mx-4 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [scroll-padding-inline:1rem] [&::-webkit-scrollbar]:hidden">
+                                        <div className="flex snap-x snap-mandatory gap-3 pr-6">
                                             {latestReviewedAsset ? (
                                                 <MobileWorkspaceLauncher
                                                     icon={Sparkles}
@@ -737,6 +737,10 @@ export default function ShowProject({
                                                     }
                                                 />
                                             ) : null}
+                                            <div
+                                                aria-hidden="true"
+                                                className="w-1 shrink-0 snap-none"
+                                            />
                                         </div>
                                     </div>
                                 </section>
