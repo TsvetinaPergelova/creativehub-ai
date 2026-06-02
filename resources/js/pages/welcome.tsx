@@ -127,16 +127,16 @@ function LandingFeatureCard({
     description: string;
 }) {
     return (
-        <ProjectInsetPanel className="rounded-[1.5rem] border-primary/18 bg-black/[0.18] p-5 sm:p-6">
+        <ProjectInsetPanel className="rounded-[1.5rem] border-primary/16 bg-white/92 p-5 shadow-[0_18px_44px_rgba(99,102,241,0.08)] sm:p-6 dark:border-primary/18 dark:bg-black/[0.18] dark:shadow-none">
             <div className="space-y-4">
-                <div className="flex size-11 items-center justify-center rounded-full bg-primary/14 text-primary">
+                <div className="flex size-11 items-center justify-center rounded-full bg-primary/12 text-primary dark:bg-primary/14">
                     <Icon className="size-5" />
                 </div>
                 <div className="space-y-2">
                     <h3 className="text-lg font-semibold tracking-tight">
                         {title}
                     </h3>
-                    <p className="text-sm leading-6 text-muted-foreground">
+                    <p className="text-sm leading-6 text-foreground/72 dark:text-muted-foreground">
                         {description}
                     </p>
                 </div>
@@ -198,20 +198,20 @@ export default function Welcome({
         <>
             <Head title="CreativeHub" />
 
-            <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.12),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.08),transparent_26%)]" />
+            <div className="relative min-h-screen overflow-x-hidden bg-[linear-gradient(180deg,#f8f9ff_0%,#f6f7fd_52%,#fbfbff_100%)] text-foreground dark:bg-[linear-gradient(180deg,#09090b_0%,#111827_55%,#09090b_100%)]">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.09),transparent_28%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.05),transparent_24%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.03),transparent_24%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.12),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.08),transparent_26%)]" />
 
                 <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-                    <header className="flex flex-col gap-3 rounded-[1.75rem] border border-white/10 bg-card/65 px-4 py-4 backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:rounded-full sm:px-5 sm:py-3">
+                    <header className="flex flex-col gap-3 rounded-[1.75rem] border border-primary/12 bg-white/92 px-4 py-4 shadow-[0_20px_60px_rgba(99,102,241,0.08)] backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:rounded-full sm:px-5 sm:py-3 dark:border-white/10 dark:bg-card/65 dark:shadow-none">
                         <div className="flex items-center gap-3">
-                            <div className="flex size-10 items-center justify-center rounded-full border border-primary/16 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)),radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_58%),#151728] text-white shadow-[0_10px_28px_rgba(79,70,229,0.12)]">
-                                <AppLogoIcon className="size-4.5 text-white" />
+                            <div className="flex size-10 items-center justify-center rounded-full border border-primary/28 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_58%),#ffffff] text-primary ring-1 ring-primary/12 dark:border-primary/16 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)),radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_58%),#151728] dark:text-white dark:ring-0">
+                                <AppLogoIcon className="size-4.5 text-primary dark:text-white" />
                             </div>
                             <div>
                                 <p className="text-sm font-semibold tracking-tight">
                                     CreativeHub
                                 </p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-xs text-foreground/72 dark:text-muted-foreground">
                                     Curate. Present. Share.
                                 </p>
                             </div>
@@ -220,7 +220,7 @@ export default function Welcome({
                         <nav className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-3">
                             <Link
                                 href={explore()}
-                                className="flex-1 rounded-full border border-white/10 bg-black/10 px-3 py-2 text-center text-sm text-muted-foreground transition hover:border-primary/20 hover:text-foreground sm:flex-none sm:border-transparent sm:bg-transparent sm:text-left"
+                                className="flex-1 rounded-full border border-primary/14 bg-white/72 px-3 py-2 text-center text-sm text-foreground/74 transition hover:border-primary/26 hover:bg-white hover:text-foreground sm:flex-none sm:border-transparent sm:bg-transparent sm:text-left dark:border-white/10 dark:bg-black/10 dark:text-muted-foreground dark:hover:border-primary/20 dark:hover:bg-transparent dark:hover:text-foreground"
                             >
                                 Explore
                             </Link>
@@ -238,7 +238,7 @@ export default function Welcome({
                                 <>
                                     <Link
                                         href={login()}
-                                        className="flex-1 rounded-full border border-white/10 bg-black/10 px-3 py-2 text-center text-sm text-muted-foreground transition hover:border-primary/20 hover:text-foreground sm:flex-none sm:border-transparent sm:bg-transparent sm:text-left"
+                                        className="flex-1 rounded-full border border-primary/14 bg-white/72 px-3 py-2 text-center text-sm text-foreground/74 transition hover:border-primary/26 hover:bg-white hover:text-foreground sm:flex-none sm:border-transparent sm:bg-transparent sm:text-left dark:border-white/10 dark:bg-black/10 dark:text-muted-foreground dark:hover:border-primary/20 dark:hover:bg-transparent dark:hover:text-foreground"
                                     >
                                         Log in
                                     </Link>
@@ -264,7 +264,7 @@ export default function Welcome({
                                 <div className="space-y-4 sm:space-y-5">
                                     <Badge
                                         variant="outline"
-                                        className="rounded-full border-primary/20 bg-primary/8 px-4 py-1.5 text-[11px] uppercase tracking-[0.28em] text-primary"
+                                        className="rounded-full border-primary/20 bg-primary/8 px-4 py-1.5 text-[11px] tracking-[0.28em] text-primary uppercase"
                                     >
                                         Portfolio workflow
                                     </Badge>
@@ -275,7 +275,7 @@ export default function Welcome({
                                             portfolios and client-ready
                                             galleries.
                                         </h1>
-                                        <p className="max-w-2xl text-[15px] leading-7 text-muted-foreground sm:text-lg">
+                                        <p className="max-w-2xl text-[15px] leading-7 text-foreground/72 sm:text-lg dark:text-muted-foreground">
                                             CreativeHub helps you upload work,
                                             review Curator-picked previews,
                                             shape stronger project stories, and
@@ -300,7 +300,7 @@ export default function Welcome({
                                     <Button
                                         variant="outline"
                                         size="lg"
-                                        className="h-14 w-full rounded-full border-primary/30 px-7 text-base text-primary hover:border-primary/45 hover:bg-primary/10 hover:text-primary sm:w-auto"
+                                        className="h-14 w-full rounded-full border-primary/35 bg-white/68 px-7 text-base text-primary hover:border-primary/50 hover:bg-primary/10 hover:text-primary sm:w-auto dark:bg-transparent"
                                         asChild
                                     >
                                         <Link href={explore()}>
@@ -310,9 +310,7 @@ export default function Welcome({
                                 </div>
 
                                 <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                                    <Badge variant="outline">
-                                        Photography
-                                    </Badge>
+                                    <Badge variant="outline">Photography</Badge>
                                     <Badge variant="outline">
                                         Design / Case Study
                                     </Badge>
@@ -324,34 +322,34 @@ export default function Welcome({
                             </div>
 
                             <div className="space-y-4">
-                                <div className="space-y-3 rounded-[1.5rem] border border-white/12 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.16),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.12),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.025),rgba(0,0,0,0.18))] p-4 sm:space-y-4 sm:rounded-[1.7rem] sm:p-6">
+                                <div className="space-y-3 rounded-[1.5rem] border border-primary/14 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.1),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.05),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.92),rgba(247,248,255,0.98))] p-4 shadow-[0_24px_64px_rgba(99,102,241,0.08)] sm:space-y-4 sm:rounded-[1.7rem] sm:p-6 dark:border-white/12 dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.16),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.12),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.025),rgba(0,0,0,0.18))] dark:shadow-none">
                                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                         <div className="flex flex-wrap gap-2">
                                             <Badge
                                                 variant="outline"
-                                                className="border-white/15 bg-black/15 text-white/90"
+                                                className="border-primary/18 bg-white/94 text-foreground/82 dark:border-white/15 dark:bg-black/15 dark:text-white/90"
                                             >
                                                 Portraits
                                             </Badge>
                                             <Badge
                                                 variant="outline"
-                                                className="border-white/15 bg-black/15 text-white/90"
+                                                className="border-primary/18 bg-white/94 text-foreground/82 dark:border-white/15 dark:bg-black/15 dark:text-white/90"
                                             >
                                                 Auto-picked preview
                                             </Badge>
                                         </div>
 
-                                        <div className="self-start rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-white/80 backdrop-blur sm:shrink-0">
+                                        <div className="self-start rounded-full border border-primary/16 bg-white/94 px-3 py-1 text-[11px] tracking-[0.24em] text-foreground/62 uppercase backdrop-blur sm:shrink-0 dark:border-white/10 dark:bg-black/25 dark:text-white/80">
                                             Live public gallery
                                         </div>
                                     </div>
 
                                     <div className="max-w-md space-y-2">
-                                        <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-4xl">
+                                        <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-4xl dark:text-white">
                                             {activePreviewFrame?.title ??
                                                 'Quiet Portraits'}
                                         </h2>
-                                        <p className="text-sm leading-6 text-white/75">
+                                        <p className="text-sm leading-6 text-foreground/76 dark:text-white/75">
                                             Browse how published work can look
                                             once projects are curated, titled,
                                             and ready to live on the portfolio.
@@ -359,7 +357,7 @@ export default function Welcome({
                                     </div>
 
                                     <div className="space-y-3 sm:space-y-4">
-                                        <div className="overflow-hidden rounded-[1.3rem] border border-white/12 bg-black/18">
+                                        <div className="overflow-hidden rounded-[1.3rem] border border-primary/14 bg-white/74 shadow-[0_16px_40px_rgba(99,102,241,0.06)] dark:border-white/12 dark:bg-black/18 dark:shadow-none">
                                             {activePreviewFrame ? (
                                                 <div className="relative">
                                                     <div
@@ -376,7 +374,7 @@ export default function Welcome({
                                                                     }
                                                                     className="min-w-full"
                                                                 >
-                                                                    <div className="flex h-[14rem] items-center justify-center bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(0,0,0,0.18))] p-3 sm:h-[20rem] sm:p-5">
+                                                                    <div className="flex h-[14rem] items-center justify-center bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.06),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.04),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.92),rgba(241,244,255,0.98))] p-3 sm:h-[20rem] sm:p-5 dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(0,0,0,0.18))]">
                                                                         <img
                                                                             src={
                                                                                 frame.image_url
@@ -392,9 +390,9 @@ export default function Welcome({
                                                         )}
                                                     </div>
 
-                                                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/45 to-transparent p-3 sm:p-5">
+                                                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/78 via-black/42 to-transparent p-3 sm:p-5">
                                                         <div className="space-y-1">
-                                                            <p className="text-[10px] uppercase tracking-[0.22em] text-white/65">
+                                                            <p className="text-[10px] tracking-[0.22em] text-white/65 uppercase">
                                                                 {
                                                                     activePreviewFrame.category
                                                                 }{' '}
@@ -412,8 +410,8 @@ export default function Welcome({
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <div className="flex h-[14rem] items-end bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.18),transparent_44%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.35))] p-3 sm:h-[20rem]">
-                                                    <p className="max-w-sm text-sm leading-6 text-white/70">
+                                                <div className="flex h-[14rem] items-end bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.08),transparent_44%),linear-gradient(180deg,rgba(255,255,255,0.72),rgba(241,244,255,0.9))] p-3 sm:h-[20rem] dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.18),transparent_44%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.35))]">
+                                                    <p className="max-w-sm text-sm leading-6 text-foreground/70 dark:text-white/70">
                                                         Published work from the
                                                         portfolio will rotate
                                                         here once projects are
@@ -442,8 +440,8 @@ export default function Welcome({
                                                                 }
                                                                 className={`size-2.5 rounded-full transition ${
                                                                     isActive
-                                                                        ? 'bg-white'
-                                                                        : 'bg-white/30 hover:bg-white/50'
+                                                                        ? 'bg-primary dark:bg-white'
+                                                                        : 'bg-primary/25 hover:bg-primary/45 dark:bg-white/30 dark:hover:bg-white/50'
                                                                 }`}
                                                                 aria-label={`Show ${frame.project_name}`}
                                                             />
@@ -453,7 +451,7 @@ export default function Welcome({
                                             </div>
 
                                             {activePreviewFrame ? (
-                                                <p className="text-xs uppercase tracking-[0.22em] text-white/60">
+                                                <p className="text-xs tracking-[0.22em] text-foreground/52 uppercase dark:text-white/60">
                                                     Showing{' '}
                                                     {activePreviewIndex + 1} of{' '}
                                                     {previewFrames.length}
@@ -466,16 +464,15 @@ export default function Welcome({
                         </section>
 
                         <section className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-                            <ProjectInsetPanel className="rounded-[1.5rem] border-primary/16 bg-black/[0.2] p-5 sm:rounded-[1.7rem] sm:p-6">
+                            <ProjectInsetPanel className="rounded-[1.5rem] border-primary/16 bg-white/90 p-5 shadow-[0_18px_44px_rgba(99,102,241,0.05)] sm:rounded-[1.7rem] sm:p-6 dark:border-primary/16 dark:bg-black/[0.2] dark:shadow-none">
                                 <div className="space-y-2.5">
-                                    <p className="text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
+                                    <p className="text-[11px] tracking-[0.26em] text-muted-foreground uppercase">
                                         Public portfolio
                                     </p>
                                     <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                                        A profile that reads like published
-                                        work
+                                        A profile that reads like published work
                                     </h3>
-                                    <p className="max-w-xl text-sm leading-6 text-muted-foreground">
+                                    <p className="max-w-xl text-sm leading-6 text-foreground/72 dark:text-muted-foreground">
                                         Strong headers, focused project cards,
                                         and cleaner creator presentation from
                                         the same workspace.
@@ -483,41 +480,39 @@ export default function Welcome({
                                 </div>
                             </ProjectInsetPanel>
 
-                            <ProjectInsetPanel className="rounded-[1.5rem] border-primary/16 bg-black/[0.2] p-5 sm:rounded-[1.7rem] sm:p-6">
+                            <ProjectInsetPanel className="rounded-[1.5rem] border-primary/16 bg-white/90 p-5 shadow-[0_18px_44px_rgba(99,102,241,0.05)] sm:rounded-[1.7rem] sm:p-6 dark:border-primary/16 dark:bg-black/[0.2] dark:shadow-none">
                                 <div className="space-y-2.5">
-                                    <p className="text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
+                                    <p className="text-[11px] tracking-[0.26em] text-muted-foreground uppercase">
                                         Client review
                                     </p>
                                     <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                                        Favorites, shortlist, and final
-                                        approval
+                                        Favorites, shortlist, and final approval
                                     </h3>
-                                    <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-                                        Keep feedback on the project, not
-                                        spread across inboxes and disconnected
-                                        links.
+                                    <p className="max-w-xl text-sm leading-6 text-foreground/72 dark:text-muted-foreground">
+                                        Keep feedback on the project, not spread
+                                        across inboxes and disconnected links.
                                     </p>
                                 </div>
                             </ProjectInsetPanel>
                         </section>
 
-                        <ProjectSection className="rounded-[1.7rem] border-primary/16 bg-black/[0.18] p-4 sm:rounded-[1.9rem] sm:p-6">
+                        <ProjectSection className="rounded-[1.7rem] border-primary/16 bg-white/90 p-4 shadow-[0_18px_44px_rgba(99,102,241,0.05)] sm:rounded-[1.9rem] sm:p-6 dark:border-primary/16 dark:bg-black/[0.18] dark:shadow-none">
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                 <div className="flex items-center gap-3 sm:gap-4">
-                                    <div className="flex size-12 items-center justify-center rounded-full border border-primary/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)),radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_58%),#151728] text-white shadow-[0_10px_28px_rgba(79,70,229,0.12)] sm:size-14">
-                                        <AppLogoIcon className="size-5 text-white sm:size-6" />
+                                    <div className="flex size-12 items-center justify-center rounded-full border border-primary/24 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.14),transparent_58%),rgba(255,255,255,0.92)] text-primary ring-1 ring-primary/10 sm:size-14 dark:border-primary/20 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)),radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_58%),#151728] dark:text-white dark:ring-0">
+                                        <AppLogoIcon className="size-5 text-primary sm:size-6 dark:text-white" />
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-sm font-semibold tracking-tight">
                                             CreativeHub
                                         </p>
-                                        <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                        <p className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
                                             Curate. Present. Share.
                                         </p>
                                     </div>
                                 </div>
 
-                                <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-right">
+                                <p className="max-w-2xl text-sm leading-6 text-foreground/72 sm:text-right dark:text-muted-foreground">
                                     A calmer workflow for turning raw uploads
                                     into clearer portfolios, stronger project
                                     stories, and client-ready review links.
@@ -525,7 +520,7 @@ export default function Welcome({
                             </div>
                         </ProjectSection>
 
-                        <ProjectSection className="space-y-4 sm:space-y-5 rounded-[2rem]">
+                        <ProjectSection className="space-y-4 rounded-[2rem] border-primary/14 bg-white/88 shadow-[0_18px_54px_rgba(99,102,241,0.05)] sm:space-y-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none">
                             <ProjectSectionHeader
                                 title="What CreativeHub actually helps with"
                                 description="Not just publishing, not just storage. The value is in how the work gets reviewed, shaped, and shared."
@@ -543,7 +538,7 @@ export default function Welcome({
                             </div>
                         </ProjectSection>
 
-                        <ProjectSection className="space-y-4 sm:space-y-5 rounded-[2rem]">
+                        <ProjectSection className="space-y-4 rounded-[2rem] border-primary/14 bg-white/88 shadow-[0_18px_54px_rgba(99,102,241,0.05)] sm:space-y-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none">
                             <ProjectSectionHeader
                                 title="How the flow stays simple"
                                 description="A straightforward sequence that still leaves room for taste, iteration, and better presentation decisions."
@@ -553,13 +548,13 @@ export default function Welcome({
                                 {workflowSteps.map((item) => (
                                     <ProjectInsetPanel
                                         key={item.step}
-                                        className="rounded-[1.35rem] border-primary/16 bg-black/[0.16] p-4 sm:rounded-[1.5rem] sm:p-5"
+                                        className="rounded-[1.35rem] border-primary/16 bg-white p-4 shadow-[0_14px_36px_rgba(99,102,241,0.04)] sm:rounded-[1.5rem] sm:p-5 dark:border-primary/16 dark:bg-black/[0.16] dark:shadow-none"
                                     >
                                         <div className="space-y-3 sm:space-y-4">
                                             <div className="flex items-center justify-between">
                                                 <Badge
                                                     variant="outline"
-                                                    className="rounded-full border-primary/20 bg-primary/8 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-primary"
+                                                    className="rounded-full border-primary/20 bg-primary/8 px-3 py-1 text-[11px] tracking-[0.24em] text-primary uppercase"
                                                 >
                                                     Step {item.step}
                                                 </Badge>
@@ -569,7 +564,7 @@ export default function Welcome({
                                                 <h3 className="text-lg font-semibold tracking-tight">
                                                     {item.title}
                                                 </h3>
-                                                <p className="text-sm leading-6 text-muted-foreground">
+                                                <p className="text-sm leading-6 text-foreground/72 dark:text-muted-foreground">
                                                     {item.description}
                                                 </p>
                                             </div>
@@ -580,7 +575,7 @@ export default function Welcome({
                         </ProjectSection>
 
                         <div className="grid gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-                            <ProjectSection className="space-y-4 sm:space-y-5 rounded-[2rem]">
+                            <ProjectSection className="space-y-4 rounded-[2rem] border-primary/14 bg-white/88 shadow-[0_18px_54px_rgba(99,102,241,0.05)] sm:space-y-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none">
                                 <ProjectSectionHeader
                                     title="Built for different creator rhythms"
                                     description="The same workspace adapts to photography sets, design case studies, and more concept-driven series."
@@ -590,7 +585,7 @@ export default function Welcome({
                                     {creatorModes.map((mode) => (
                                         <ProjectInsetPanel
                                             key={mode.label}
-                                            className="rounded-[1.35rem] border-primary/16 bg-black/[0.16] p-4 sm:rounded-[1.5rem] sm:p-5"
+                                            className="rounded-[1.35rem] border-primary/16 bg-white p-4 shadow-[0_14px_36px_rgba(99,102,241,0.04)] sm:rounded-[1.5rem] sm:p-5 dark:border-primary/16 dark:bg-black/[0.16] dark:shadow-none"
                                         >
                                             <div className="space-y-3">
                                                 <Badge
@@ -599,7 +594,7 @@ export default function Welcome({
                                                 >
                                                     {mode.label}
                                                 </Badge>
-                                                <p className="text-sm leading-6 text-muted-foreground">
+                                                <p className="text-sm leading-6 text-foreground/72 dark:text-muted-foreground">
                                                     {mode.description}
                                                 </p>
                                             </div>
@@ -608,7 +603,7 @@ export default function Welcome({
                                 </div>
                             </ProjectSection>
 
-                            <ProjectSection className="space-y-4 sm:space-y-5 rounded-[2rem]">
+                            <ProjectSection className="space-y-4 rounded-[2rem] border-primary/14 bg-white/88 shadow-[0_18px_54px_rgba(99,102,241,0.05)] sm:space-y-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none">
                                 <ProjectSectionHeader
                                     title="Where the work can end up"
                                     description="Every project can move toward a public portfolio, a private client review, or a cleaner internal draft."
@@ -618,7 +613,7 @@ export default function Welcome({
                                     {outputSurfaces.map((surface) => (
                                         <ProjectInsetPanel
                                             key={surface.title}
-                                            className="rounded-[1.35rem] border-primary/16 bg-black/[0.16] p-4 sm:rounded-[1.5rem] sm:p-5"
+                                            className="rounded-[1.35rem] border-primary/16 bg-white p-4 shadow-[0_14px_36px_rgba(99,102,241,0.04)] sm:rounded-[1.5rem] sm:p-5 dark:border-primary/16 dark:bg-black/[0.16] dark:shadow-none"
                                         >
                                             <div className="flex items-start gap-4">
                                                 <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary">
@@ -628,7 +623,7 @@ export default function Welcome({
                                                     <h3 className="text-base font-semibold tracking-tight">
                                                         {surface.title}
                                                     </h3>
-                                                    <p className="text-sm leading-6 text-muted-foreground">
+                                                    <p className="text-sm leading-6 text-foreground/72 dark:text-muted-foreground">
                                                         {surface.description}
                                                     </p>
                                                 </div>
@@ -639,12 +634,12 @@ export default function Welcome({
                             </ProjectSection>
                         </div>
 
-                        <ProjectSection className="overflow-hidden rounded-[2rem] border-primary/18 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] p-5 sm:rounded-[2.2rem] sm:p-8">
+                        <ProjectSection className="overflow-hidden rounded-[2rem] border-primary/16 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.09),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.05),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.96),rgba(246,247,255,1))] p-5 shadow-[0_20px_60px_rgba(99,102,241,0.08)] sm:rounded-[2.2rem] sm:p-8 dark:border-primary/18 dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] dark:shadow-none">
                             <div className="grid gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
                                 <div className="space-y-4">
                                     <Badge
                                         variant="outline"
-                                        className="rounded-full border-primary/20 bg-primary/8 px-4 py-1.5 text-[11px] uppercase tracking-[0.28em] text-primary"
+                                        className="rounded-full border-primary/20 bg-primary/8 px-4 py-1.5 text-[11px] tracking-[0.28em] text-primary uppercase"
                                     >
                                         Start with one set
                                     </Badge>
@@ -653,7 +648,7 @@ export default function Welcome({
                                             Give the next project a cleaner
                                             start.
                                         </h2>
-                                        <p className="max-w-2xl text-base leading-7 text-muted-foreground">
+                                        <p className="max-w-2xl text-base leading-7 text-foreground/72 dark:text-muted-foreground">
                                             Upload the work, let Curator surface
                                             a stronger first pass, and keep the
                                             path open toward public portfolio

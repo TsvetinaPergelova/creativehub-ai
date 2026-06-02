@@ -80,7 +80,9 @@ export default function Profile({
         makeProfileLink('Instagram', form.data.instagram_url, Instagram),
         makeProfileLink(
             'Contact email',
-            form.data.contact_email ? `mailto:${form.data.contact_email}` : null,
+            form.data.contact_email
+                ? `mailto:${form.data.contact_email}`
+                : null,
             Mail,
         ),
     ].filter(Boolean) as Array<{
@@ -156,7 +158,9 @@ export default function Profile({
                         />
 
                         <ProjectInsetPanel className="overflow-hidden bg-background/70 p-0">
-                            <div className={`h-40 sm:h-48 ${coverStyle.coverClass}`} />
+                            <div
+                                className={`h-40 sm:h-48 ${coverStyle.coverClass}`}
+                            />
 
                             <div className="relative px-5 pb-5 sm:px-6 sm:pb-6">
                                 <div className="absolute top-0 left-5 z-10 flex -translate-y-1/2 flex-col items-start gap-3 sm:left-6">
@@ -171,7 +175,10 @@ export default function Profile({
                                         <div className="relative">
                                             <Avatar className="size-28 overflow-hidden rounded-[2rem] border border-white/10 bg-card shadow-sm transition group-hover:border-primary/40 sm:size-32">
                                                 <AvatarImage
-                                                    src={avatarPreview ?? undefined}
+                                                    src={
+                                                        avatarPreview ??
+                                                        undefined
+                                                    }
                                                     alt={user.name}
                                                 />
                                                 <AvatarFallback className="bg-white/[0.06] text-xl text-foreground">
@@ -208,11 +215,15 @@ export default function Profile({
                                         <div className="space-y-3">
                                             <div className="flex flex-wrap items-center gap-2">
                                                 <p className="text-2xl font-semibold tracking-tight">
-                                                    {form.data.name || user.name}
+                                                    {form.data.name ||
+                                                        user.name}
                                                 </p>
                                                 {form.data.specialization ? (
                                                     <Badge variant="outline">
-                                                        {form.data.specialization}
+                                                        {
+                                                            form.data
+                                                                .specialization
+                                                        }
                                                     </Badge>
                                                 ) : null}
                                             </div>
@@ -309,7 +320,7 @@ export default function Profile({
                                                         .profile_cover_style ===
                                                     option.value
                                                         ? 'border-primary/50 bg-primary/[0.08]'
-                                                        : 'border-white/10 bg-background/40 hover:border-primary/25'
+                                                        : 'border-primary/18 bg-background/40 hover:border-primary/35'
                                                 }`}
                                             >
                                                 <div
@@ -377,8 +388,11 @@ export default function Profile({
                                             required
                                             autoComplete="name"
                                             placeholder="Full name"
+                                            className="border-primary/18 shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
-                                        <InputError message={form.errors.name} />
+                                        <InputError
+                                            message={form.errors.name}
+                                        />
                                     </div>
 
                                     <div className="grid gap-2 md:col-span-2">
@@ -394,7 +408,7 @@ export default function Profile({
                                             }
                                             rows={6}
                                             placeholder="Tell visitors what kind of work you make, how you approach it, and what makes your point of view distinct."
-                                            className="min-h-44 rounded-[1.6rem] border-white/10 bg-background/75 px-5 py-4 text-base leading-7 shadow-none placeholder:text-muted-foreground/75 focus-visible:ring-primary/20 md:text-base"
+                                            className="min-h-44 rounded-[1.6rem] border-primary/18 bg-background/75 px-5 py-4 text-base leading-7 shadow-none placeholder:text-muted-foreground/75 focus-visible:border-primary/60 focus-visible:ring-primary/20 md:text-base"
                                         />
                                         <InputError message={form.errors.bio} />
                                     </div>
@@ -413,6 +427,7 @@ export default function Profile({
                                                 )
                                             }
                                             placeholder="Portrait photographer, design systems, art direction..."
+                                            className="border-primary/18 shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.specialization}
@@ -420,7 +435,9 @@ export default function Profile({
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="location">Location</Label>
+                                        <Label htmlFor="location">
+                                            Location
+                                        </Label>
                                         <Input
                                             id="location"
                                             value={form.data.location}
@@ -431,6 +448,7 @@ export default function Profile({
                                                 )
                                             }
                                             placeholder="Sofia, Bulgaria"
+                                            className="border-primary/18 shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.location}
@@ -438,7 +456,7 @@ export default function Profile({
                                     </div>
                                 </div>
 
-                                <ProjectInsetPanel className="space-y-3">
+                                <ProjectInsetPanel className="space-y-3 border-primary/18 shadow-none">
                                     <div className="flex items-center gap-2 text-sm font-medium">
                                         <UserRound className="size-4 text-primary" />
                                         Public profile snapshot
@@ -508,9 +526,7 @@ export default function Profile({
                                             placeholder="hello@yourstudio.com"
                                         />
                                         <InputError
-                                            message={
-                                                form.errors.contact_email
-                                            }
+                                            message={form.errors.contact_email}
                                         />
                                     </div>
 
@@ -550,15 +566,13 @@ export default function Profile({
                                             placeholder="https://instagram.com/yourhandle"
                                         />
                                         <InputError
-                                            message={
-                                                form.errors.instagram_url
-                                            }
+                                            message={form.errors.instagram_url}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                                    <ProjectInsetPanel className="space-y-2">
+                                    <ProjectInsetPanel className="space-y-2 shadow-none">
                                         <div className="flex items-center gap-2 text-sm font-medium">
                                             <Mail className="size-4 text-primary" />
                                             Contact route
@@ -569,14 +583,14 @@ export default function Profile({
                                         </p>
                                     </ProjectInsetPanel>
 
-                                    <ProjectInsetPanel className="space-y-2">
+                                    <ProjectInsetPanel className="space-y-2 shadow-none">
                                         <div className="flex items-center gap-2 text-sm font-medium">
                                             <Globe className="size-4 text-primary" />
                                             Public links
                                         </div>
                                         <p className="text-sm leading-6 text-muted-foreground">
                                             {form.data.website_url ||
-                                                form.data.instagram_url
+                                            form.data.instagram_url
                                                 ? 'Visitors will be able to jump directly from your profile to the places where your work lives.'
                                                 : 'Add at least one public link so the profile can lead somewhere useful.'}
                                         </p>
@@ -601,8 +615,8 @@ export default function Profile({
 
                             {status === 'verification-link-sent' && (
                                 <div className="text-sm font-medium text-green-600">
-                                    A new verification link has been sent to your
-                                    email address.
+                                    A new verification link has been sent to
+                                    your email address.
                                 </div>
                             )}
                         </ProjectInsetPanel>
@@ -650,13 +664,11 @@ function makeProfileLink(
     label: string,
     href: string | null,
     icon: typeof Globe,
-):
-    | {
-          label: string;
-          href: string;
-          icon: typeof Globe;
-      }
-    | null {
+): {
+    label: string;
+    href: string;
+    icon: typeof Globe;
+} | null {
     if (!href) {
         return null;
     }

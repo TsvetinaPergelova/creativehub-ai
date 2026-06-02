@@ -51,9 +51,9 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                 variant="ghost"
                                 asChild
                                 className={cn(
-                                    'h-11 w-full justify-start rounded-full px-5 text-base',
+                                    'h-11 w-full justify-start rounded-full border border-transparent px-5 text-base shadow-none transition-colors hover:border-primary/25 hover:bg-primary/10 hover:text-primary',
                                     {
-                                        'bg-muted text-foreground':
+                                        'border-primary/35 bg-primary/10 text-primary':
                                             isCurrentOrParentUrl(item.href),
                                     },
                                 )}

@@ -38,13 +38,13 @@ export function WorkspaceQuickSwitcher({
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="group flex w-full items-center gap-3 rounded-full border border-white/10 bg-background/60 px-3 py-2 text-left transition hover:border-primary/25 hover:bg-background/80 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+                className="group flex w-full items-center gap-3 rounded-full border-[1.5px] border-primary/28 bg-white px-3 py-2 text-left shadow-none transition hover:border-primary/40 hover:bg-slate-50 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:border-white/10 dark:bg-background/60 dark:shadow-none dark:hover:bg-background/80"
             >
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-full border border-primary/15 bg-primary/10 text-primary">
                     <Search className="size-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                    <p className="text-sm text-muted-foreground group-hover:text-foreground">
+                    <p className="text-sm text-slate-700 group-hover:text-slate-950 dark:text-muted-foreground dark:group-hover:text-foreground">
                         Search projects or jump back in
                     </p>
                 </div>

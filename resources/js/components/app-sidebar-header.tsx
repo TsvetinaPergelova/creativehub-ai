@@ -1,7 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
 import { LayoutGrid, Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { create, edit, index as projects, show } from '@/actions/App/Http/Controllers/Projects/ProjectController';
+import {
+    create,
+    edit,
+    index as projects,
+    show,
+} from '@/actions/App/Http/Controllers/Projects/ProjectController';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { WorkspaceQuickSwitcher } from '@/components/workspace-quick-switcher';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +15,10 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { index as explore } from '@/routes/explore';
-import type { BreadcrumbItem as BreadcrumbItemType, WorkspaceSharedData } from '@/types';
+import type {
+    BreadcrumbItem as BreadcrumbItemType,
+    WorkspaceSharedData,
+} from '@/types';
 
 type PageProject = {
     id: number;
@@ -46,7 +54,7 @@ type WorkspaceContext = {
 function ContextActionLink({ action }: { action: ContextAction }) {
     const sharedClassName = cn(
         buttonVariants({ variant: 'outline', size: 'sm' }),
-        'rounded-full border-white/10 bg-background/60 hover:border-primary/25 hover:bg-background/80',
+        'rounded-full border-[1.5px] border-primary/28 bg-white text-slate-900 shadow-none hover:border-primary/40 hover:bg-slate-50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80',
     );
 
     if (action.kind === 'anchor') {
@@ -76,7 +84,9 @@ function resolveWorkspaceContext(
                 title: 'Command center',
                 description:
                     'Keep momentum with the next best action, your strongest drafts, and Curator guidance.',
-                actions: [{ label: 'Open projects', kind: 'link', href: projects() }],
+                actions: [
+                    { label: 'Open projects', kind: 'link', href: projects() },
+                ],
             };
         case 'projects/index':
             return {
@@ -89,17 +99,35 @@ function resolveWorkspaceContext(
         case 'projects/create':
             return {
                 eyebrow: project ? 'Editing' : 'New setup',
-                title: project ? 'Refine this project setup' : 'Shape a new project',
+                title: project
+                    ? 'Refine this project setup'
+                    : 'Shape a new project',
                 description:
                     'Set the category, workflow mode, and framing before you start curating the visual set.',
                 actions: project
                     ? [
-                          { label: 'Open project', kind: 'link', href: show(project.id) },
-                          { label: 'View projects', kind: 'link', href: projects() },
+                          {
+                              label: 'Open project',
+                              kind: 'link',
+                              href: show(project.id),
+                          },
+                          {
+                              label: 'View projects',
+                              kind: 'link',
+                              href: projects(),
+                          },
                       ]
                     : [
-                          { label: 'View projects', kind: 'link', href: projects() },
-                          { label: 'Open dashboard', kind: 'link', href: dashboard() },
+                          {
+                              label: 'View projects',
+                              kind: 'link',
+                              href: projects(),
+                          },
+                          {
+                              label: 'Open dashboard',
+                              kind: 'link',
+                              href: dashboard(),
+                          },
                       ],
             };
         case 'projects/show':
@@ -115,12 +143,26 @@ function resolveWorkspaceContext(
                 badges: [
                     project.status ?? 'draft',
                     project.visibility ?? 'private',
-                    processing?.is_reviewing ? 'Curator reviewing' : 'Ready for the next step',
+                    processing?.is_reviewing
+                        ? 'Curator reviewing'
+                        : 'Ready for the next step',
                 ],
                 actions: [
-                    { label: 'Upload images', kind: 'anchor', href: '#project-upload' },
-                    { label: 'Share project', kind: 'anchor', href: '#share-project' },
-                    { label: 'Edit project', kind: 'link', href: edit(project.id) },
+                    {
+                        label: 'Upload images',
+                        kind: 'anchor',
+                        href: '#project-upload',
+                    },
+                    {
+                        label: 'Share project',
+                        kind: 'anchor',
+                        href: '#share-project',
+                    },
+                    {
+                        label: 'Edit project',
+                        kind: 'link',
+                        href: edit(project.id),
+                    },
                 ],
             };
         default:
@@ -184,12 +226,12 @@ export function AppSidebarHeader({
 
             <div
                 ref={mobileTopBarRef}
-                className="fixed inset-x-0 top-0 z-30 border-b border-sidebar-border/60 bg-background/95 backdrop-blur-xl lg:hidden"
+                className="fixed inset-x-0 top-0 z-30 border-b border-slate-300/80 bg-white/98 backdrop-blur-xl lg:hidden dark:border-sidebar-border/60 dark:bg-background/95"
             >
                 <div className="px-4 py-3 md:px-5">
                     <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2">
-                            <SidebarTrigger className="-ml-1 h-8 w-8 rounded-full border border-white/10 bg-background/60" />
+                            <SidebarTrigger className="-ml-1 h-8 w-8 rounded-full border-[1.5px] border-primary/28 bg-white text-slate-900 shadow-none hover:border-primary/40 hover:bg-slate-50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none" />
                         </div>
 
                         <div className="ml-auto flex items-center gap-2">
@@ -207,8 +249,11 @@ export function AppSidebarHeader({
                             <Link
                                 href={dashboard()}
                                 className={cn(
-                                    buttonVariants({ variant: 'outline', size: 'sm' }),
-                                    'rounded-full border-white/10 bg-background/60 hover:border-primary/25 hover:bg-background/80',
+                                    buttonVariants({
+                                        variant: 'outline',
+                                        size: 'sm',
+                                    }),
+                                    'rounded-full border-primary/35 bg-white text-primary shadow-[0_10px_24px_rgba(15,23,42,0.05)] hover:border-primary/50 hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80',
                                 )}
                                 prefetch
                             >
@@ -220,12 +265,12 @@ export function AppSidebarHeader({
                 </div>
             </div>
 
-            <header className="border-b border-sidebar-border/60 bg-background">
+            <header className="border-b border-slate-300/80 bg-white/98 dark:border-sidebar-border/60 dark:bg-background">
                 <div className="hidden px-4 py-3 md:px-5 lg:block">
                     <div className="hidden items-center gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(18rem,38rem)_minmax(0,1fr)]">
-                        <div className="min-w-0 overflow-hidden">
+                        <div className="min-w-0">
                             <div className="flex min-w-0 items-center gap-2">
-                                <SidebarTrigger className="-ml-1 h-8 w-8 rounded-full border border-white/10 bg-background/60" />
+                                <SidebarTrigger className="-ml-1 h-8 w-8 rounded-full border-[1.5px] border-primary/28 bg-white text-slate-900 shadow-none hover:border-primary/40 hover:bg-slate-50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none" />
                                 <div className="min-w-0 overflow-hidden">
                                     <Breadcrumbs breadcrumbs={breadcrumbs} />
                                 </div>
@@ -241,7 +286,7 @@ export function AppSidebarHeader({
                             ) : null}
                         </div>
 
-                        <div className="flex items-center justify-self-end gap-2">
+                        <div className="flex items-center gap-2 justify-self-end">
                             <Link
                                 href={create()}
                                 className={cn(
@@ -256,8 +301,11 @@ export function AppSidebarHeader({
                             <Link
                                 href={dashboard()}
                                 className={cn(
-                                    buttonVariants({ variant: 'outline', size: 'sm' }),
-                                    'rounded-full border-white/10 bg-background/60 hover:border-primary/25 hover:bg-background/80',
+                                    buttonVariants({
+                                        variant: 'outline',
+                                        size: 'sm',
+                                    }),
+                                    'rounded-full border-primary/35 bg-white text-primary shadow-[0_10px_24px_rgba(15,23,42,0.05)] hover:border-primary/50 hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80',
                                 )}
                                 prefetch
                             >
@@ -268,7 +316,7 @@ export function AppSidebarHeader({
                     </div>
                 </div>
 
-                <div className="border-t border-white/6 px-4 py-2 lg:hidden">
+                <div className="border-t border-slate-300/70 px-4 py-2 lg:hidden dark:border-white/6">
                     <div className="flex flex-col gap-2">
                         {workspace ? (
                             <WorkspaceQuickSwitcher
@@ -280,28 +328,28 @@ export function AppSidebarHeader({
                 </div>
 
                 {workspaceContext ? (
-                    <div className="border-t border-white/6 px-4 py-3 md:px-5">
+                    <div className="border-t border-slate-300/70 bg-[#f7f5ff]/92 px-4 py-3 md:px-5 dark:border-white/6 dark:bg-transparent">
                         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                             <div className="min-w-0 space-y-2">
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <p className="text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+                                    <p className="text-[11px] tracking-[0.22em] text-slate-500 uppercase dark:text-muted-foreground">
                                         {workspaceContext.eyebrow}
                                     </p>
                                     {workspaceContext.badges?.map((badge) => (
                                         <Badge
                                             key={badge}
                                             variant="outline"
-                                            className="border-white/10 bg-background/60 capitalize"
+                                            className="border-slate-200 bg-slate-50 text-slate-700 capitalize dark:border-white/10 dark:bg-background/60 dark:text-foreground"
                                         >
                                             {badge}
                                         </Badge>
                                     ))}
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-lg font-semibold tracking-tight">
+                                    <p className="text-lg font-semibold tracking-tight text-slate-950 dark:text-foreground">
                                         {workspaceContext.title}
                                     </p>
-                                    <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
+                                    <p className="max-w-3xl text-sm leading-6 text-slate-600 dark:text-muted-foreground">
                                         {workspaceContext.description}
                                     </p>
                                 </div>

@@ -55,7 +55,7 @@ export default function Login({
                                     {canResetPassword && (
                                         <TextLink
                                             href={request()}
-                                            className="ml-auto text-sm"
+                                            className="ml-auto text-sm text-foreground/90 decoration-primary/24 hover:text-foreground dark:text-foreground"
                                             tabIndex={5}
                                         >
                                             Forgot password?
@@ -95,9 +95,13 @@ export default function Login({
                         </div>
 
                         {canRegister && (
-                            <div className="text-center text-sm text-muted-foreground">
+                            <div className="text-center text-sm text-foreground/68 dark:text-muted-foreground">
                                 Don't have an account?{' '}
-                                <TextLink href={register()} tabIndex={5}>
+                                <TextLink
+                                    href={register()}
+                                    className="text-foreground/90 decoration-primary/24 hover:text-foreground dark:text-foreground"
+                                    tabIndex={5}
+                                >
                                     Sign up
                                 </TextLink>
                             </div>
@@ -107,7 +111,7 @@ export default function Login({
             </Form>
 
             {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
+                <div className="mb-4 text-center text-sm font-medium text-emerald-600 dark:text-emerald-400">
                     {status}
                 </div>
             )}

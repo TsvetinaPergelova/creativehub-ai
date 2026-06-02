@@ -12,7 +12,7 @@ export function ProjectSection({
     return (
         <section
             className={cn(
-                'rounded-xl border border-white/10 bg-card/60 p-4 sm:p-5',
+                'rounded-[1.5rem] border border-slate-200/85 bg-white/88 p-4 shadow-[0_18px_42px_rgba(15,23,42,0.05)] sm:p-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none',
                 className,
             )}
         >
@@ -40,9 +40,11 @@ export function ProjectSectionHeader({
             )}
         >
             <div className="min-w-0 space-y-1">
-                <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+                <h2 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-foreground">
+                    {title}
+                </h2>
                 {description ? (
-                    <p className="text-sm leading-6 text-muted-foreground">
+                    <p className="text-sm leading-6 text-slate-600 dark:text-muted-foreground">
                         {description}
                     </p>
                 ) : null}
@@ -62,7 +64,7 @@ export function ProjectInsetPanel({
     return (
         <div
             className={cn(
-                'rounded-xl border border-white/10 bg-background/50 p-4',
+                'rounded-[1.35rem] border border-slate-200/85 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-background/50 dark:shadow-none',
                 className,
             )}
         >
@@ -115,24 +117,30 @@ export function ProjectOptionCard({
             onClick={onClick}
             disabled={disabled}
             className={cn(
-                'w-full rounded-xl border bg-background/50 p-4 text-left transition hover:border-primary/35 hover:bg-background/70 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60',
+                'w-full rounded-[1.35rem] border border-slate-200/85 bg-white p-4 text-left shadow-[0_10px_24px_rgba(15,23,42,0.05)] transition hover:border-primary/25 hover:bg-white focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60 dark:border-white/10 dark:bg-background/50 dark:shadow-none dark:hover:border-primary/20 dark:hover:bg-background/70',
                 selected
-                    ? 'border-primary/35 bg-primary/10'
-                    : 'border-white/10',
+                    ? 'border-primary/35 bg-primary/10 dark:bg-primary/10'
+                    : '',
                 className,
             )}
         >
             <div className="flex items-start gap-3">
                 <ProjectIconBadge
                     icon={icon}
-                    className={selected ? 'bg-primary text-primary-foreground' : undefined}
+                    className={
+                        selected
+                            ? 'bg-primary text-primary-foreground'
+                            : undefined
+                    }
                 />
                 <div className="min-w-0 flex-1 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-sm font-medium">{title}</p>
+                        <p className="text-sm font-medium text-slate-950 dark:text-foreground">
+                            {title}
+                        </p>
                         {badge}
                     </div>
-                    <p className="text-sm leading-6 text-muted-foreground">
+                    <p className="text-sm leading-6 text-slate-600 dark:text-muted-foreground">
                         {description}
                     </p>
                 </div>

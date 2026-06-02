@@ -29,14 +29,14 @@ export default function DeleteUser() {
                 description="Delete your account and all of its resources"
             />
 
-            <ProjectInsetPanel className="border-rose-500/20 bg-rose-500/8">
+            <ProjectInsetPanel className="border-rose-500/25 bg-rose-500/[0.06]">
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                     <div className="max-w-xl space-y-2">
-                        <div className="flex items-center gap-2 text-rose-100">
+                        <div className="flex items-center gap-2 text-rose-700 dark:text-rose-100">
                             <AlertTriangle className="size-4" />
                             <p className="font-medium">Warning</p>
                         </div>
-                        <p className="text-sm leading-6 text-rose-100/80">
+                        <p className="text-sm leading-6 text-rose-700/85 dark:text-rose-100/80">
                             This permanently removes your account together with
                             its projects, shares, and portfolio data.
                         </p>
@@ -56,10 +56,11 @@ export default function DeleteUser() {
                                 Are you sure you want to delete your account?
                             </DialogTitle>
                             <DialogDescription>
-                                Once your account is deleted, all of its resources
-                                and data will also be permanently deleted. Please
-                                enter your password to confirm you would like to
-                                permanently delete your account.
+                                Once your account is deleted, all of its
+                                resources and data will also be permanently
+                                deleted. Please enter your password to confirm
+                                you would like to permanently delete your
+                                account.
                             </DialogDescription>
 
                             <Form
@@ -71,7 +72,11 @@ export default function DeleteUser() {
                                 resetOnSuccess
                                 className="space-y-6"
                             >
-                                {({ resetAndClearErrors, processing, errors }) => (
+                                {({
+                                    resetAndClearErrors,
+                                    processing,
+                                    errors,
+                                }) => (
                                     <>
                                         <div className="grid gap-2">
                                             <Label
@@ -89,7 +94,9 @@ export default function DeleteUser() {
                                                 autoComplete="current-password"
                                             />
 
-                                            <InputError message={errors.password} />
+                                            <InputError
+                                                message={errors.password}
+                                            />
                                         </div>
 
                                         <DialogFooter className="gap-2">

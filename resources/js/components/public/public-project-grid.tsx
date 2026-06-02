@@ -24,20 +24,20 @@ export default function PublicProjectGrid({
         year: 'numeric',
     });
     const imageBadgeClass =
-        'border-white/20 bg-black/65 px-3 py-1.5 text-sm font-medium text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-md';
+        'border-slate-300/90 bg-white/96 px-3 py-1.5 text-sm font-medium text-slate-900 shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur-md dark:border-white/20 dark:bg-black/65 dark:text-white dark:shadow-[0_8px_24px_rgba(0,0,0,0.28)]';
 
     return (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
             {projects.map((project) => (
                 <Card
                     key={project.id}
-                    className="h-full gap-0 overflow-hidden rounded-[1.5rem] border-primary/18 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/24 hover:bg-card xl:rounded-[1.75rem]"
+                    className="h-full gap-0 overflow-hidden rounded-[1.5rem] border border-primary/18 bg-white py-0 shadow-[0_18px_36px_rgba(15,23,42,0.07)] transition hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_24px_46px_rgba(15,23,42,0.09)] xl:rounded-[1.75rem] dark:border-primary/18 dark:bg-card/85 dark:shadow-none dark:hover:border-primary/24 dark:hover:bg-card"
                 >
                     <Link
                         href={project.public_url ?? '#'}
                         className="group block"
                     >
-                        <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                        <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-muted">
                             {project.cover_image_url ? (
                                 <img
                                     src={project.cover_image_url}
@@ -45,18 +45,18 @@ export default function PublicProjectGrid({
                                     className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                                 />
                             ) : (
-                                <div className="flex size-full items-end justify-start bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_40%)] p-5">
+                                <div className="flex size-full items-end justify-start bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.10),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.08),transparent_42%),linear-gradient(180deg,rgba(255,255,255,1),rgba(248,250,252,0.98))] p-5 dark:bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_40%)]">
                                     <div>
-                                        <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
+                                        <p className="text-xs tracking-[0.28em] text-slate-500 uppercase dark:text-muted-foreground">
                                             Portfolio entry
                                         </p>
-                                        <p className="mt-2 text-lg font-semibold">
+                                        <p className="mt-2 text-lg font-semibold text-slate-950 dark:text-foreground">
                                             {project.name}
                                         </p>
                                     </div>
                                 </div>
                             )}
-                            <div className="absolute left-3 top-3 flex flex-wrap gap-2 sm:left-4 sm:top-4">
+                            <div className="absolute top-3 left-3 flex flex-wrap gap-2 sm:top-4 sm:left-4">
                                 <Badge
                                     variant="outline"
                                     className={imageBadgeClass}
@@ -79,17 +79,17 @@ export default function PublicProjectGrid({
 
                     <CardHeader className="flex min-h-[7.75rem] flex-col justify-between px-4 pt-4 pb-0 sm:min-h-[9.25rem] sm:px-5 sm:pt-5">
                         <div className="space-y-2">
-                            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-muted-foreground">
                                 {project.creator_name ? (
                                     project.creator_profile_url ? (
                                         <Link
                                             href={project.creator_profile_url}
-                                            className="font-medium text-foreground transition hover:text-primary"
+                                            className="font-medium text-slate-900 transition hover:text-primary dark:text-foreground"
                                         >
                                             By {project.creator_name}
                                         </Link>
                                     ) : (
-                                        <span className="font-medium text-foreground">
+                                        <span className="font-medium text-slate-900 dark:text-foreground">
                                             By {project.creator_name}
                                         </span>
                                     )
@@ -112,7 +112,7 @@ export default function PublicProjectGrid({
                                         {project.name}
                                     </Link>
                                 </CardTitle>
-                                <CardDescription className="line-clamp-2 text-sm leading-6 sm:min-h-[4.5rem] sm:line-clamp-3">
+                                <CardDescription className="line-clamp-2 text-sm leading-6 text-slate-600 sm:line-clamp-3 sm:min-h-[4.5rem] dark:text-muted-foreground">
                                     {project.description ??
                                         'Open the project to see the full published sequence and presentation.'}
                                 </CardDescription>
@@ -121,7 +121,7 @@ export default function PublicProjectGrid({
                     </CardHeader>
 
                     <CardContent className="flex min-h-[6rem] flex-1 flex-col px-4 py-4 sm:min-h-[7rem] sm:px-5 sm:py-5">
-                        <div className="flex min-h-[1.5rem] flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                        <div className="flex min-h-[1.5rem] flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-muted-foreground">
                             <span>Published project</span>
                             {project.creator_name ? (
                                 <>
@@ -131,10 +131,10 @@ export default function PublicProjectGrid({
                             ) : null}
                         </div>
 
-                        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-white/10 pt-3 text-sm font-medium sm:pt-4">
+                        <div className="mt-auto flex flex-wrap items-center gap-3 border-t border-primary/16 pt-3 text-sm font-medium sm:pt-4 dark:border-white/10">
                             <Link
                                 href={project.public_url ?? '#'}
-                                className="inline-flex items-center gap-2 text-foreground transition hover:text-primary"
+                                className="inline-flex items-center gap-2 text-slate-900 transition hover:text-primary dark:text-foreground"
                             >
                                 View project
                                 <ArrowRight className="size-4" />
@@ -144,7 +144,7 @@ export default function PublicProjectGrid({
                             project.creator_name ? (
                                 <Link
                                     href={project.creator_profile_url}
-                                    className="text-muted-foreground transition hover:text-foreground"
+                                    className="text-slate-600 transition hover:text-slate-900 dark:text-muted-foreground dark:hover:text-foreground"
                                 >
                                     View {project.creator_name}
                                 </Link>
@@ -154,7 +154,9 @@ export default function PublicProjectGrid({
                                 <SaveProjectButton
                                     creatorId={project.creator_id}
                                     projectSlug={project.slug}
-                                    isSaved={project.is_saved_by_auth_user ?? false}
+                                    isSaved={
+                                        project.is_saved_by_auth_user ?? false
+                                    }
                                     only={['projects']}
                                     compact
                                 />

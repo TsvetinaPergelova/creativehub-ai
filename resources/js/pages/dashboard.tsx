@@ -78,6 +78,8 @@ type AssistantPanel = {
 
 const imageBadgeClass =
     'border-white/20 bg-black/65 px-3 py-1.5 text-sm font-medium text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-md';
+const imageEyebrowClass =
+    'rounded-full border border-white/18 bg-black/62 px-3 py-1.5 text-[11px] font-medium tracking-[0.16em] text-white uppercase shadow-[0_8px_24px_rgba(0,0,0,0.22)] backdrop-blur-md';
 
 function resolveDashboardLink(target: DashboardTarget, projectId: number | null) {
     if (target === 'project' && projectId !== null) {
@@ -116,22 +118,22 @@ function toneClasses(tone: WorkflowProject['dashboard_tone']) {
             };
         case 'naming':
             return {
-                badge: 'border-amber-400/30 bg-amber-400/12 text-amber-100',
+                badge: 'border-amber-300/70 bg-amber-50 text-amber-700 shadow-[0_10px_24px_rgba(245,158,11,0.08)] dark:border-amber-400/30 dark:bg-amber-400/12 dark:text-amber-100 dark:shadow-none',
                 imageBadge:
                     'border-amber-300/35 bg-amber-500/35 px-3 py-1.5 text-sm font-medium text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-md',
-                iconWrap: 'bg-amber-500/15 text-amber-200',
+                iconWrap: 'bg-amber-100 text-amber-500 dark:bg-amber-500/15 dark:text-amber-200',
             };
         case 'published':
             return {
-                badge: 'border-white/15 bg-white/[0.08] text-white',
+                badge: 'border-slate-200 bg-white/90 text-slate-800 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/15 dark:bg-white/[0.08] dark:text-white dark:shadow-none',
                 imageBadge: imageBadgeClass,
-                iconWrap: 'bg-white/[0.08] text-white/90',
+                iconWrap: 'bg-slate-100 text-slate-700 dark:bg-white/[0.08] dark:text-white/90',
             };
         default:
             return {
-                badge: 'border-white/15 bg-white/[0.08] text-white',
+                badge: 'border-slate-200 bg-white/90 text-slate-800 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/15 dark:bg-white/[0.08] dark:text-white dark:shadow-none',
                 imageBadge: imageBadgeClass,
-                iconWrap: 'bg-white/[0.08] text-white/90',
+                iconWrap: 'bg-slate-100 text-slate-700 dark:bg-white/[0.08] dark:text-white/90',
             };
     }
 }
@@ -177,7 +179,7 @@ function AttentionCard({ item }: { item: DashboardAttentionItem }) {
 
     return (
         <Link href={href} className="group block h-full" prefetch>
-            <Card className="h-full gap-4 rounded-[1.5rem] border-white/10 bg-white/[0.04] py-4 shadow-none transition hover:border-primary/20 hover:bg-white/[0.05] sm:py-5">
+            <Card className="h-full gap-4 rounded-[1.5rem] border-slate-200/85 bg-white py-4 shadow-[0_18px_40px_rgba(15,23,42,0.05)] transition hover:border-primary/25 hover:bg-white dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none dark:hover:border-primary/20 dark:hover:bg-white/[0.05] sm:py-5">
                 <CardHeader className="space-y-3 px-4 sm:px-5">
                     <div className="flex items-start justify-between gap-3">
                         <div>
@@ -190,7 +192,7 @@ function AttentionCard({ item }: { item: DashboardAttentionItem }) {
                         </div>
                         <Badge
                             variant="outline"
-                            className="border-white/10 bg-white/[0.06] text-white/85"
+                            className="border-slate-200 bg-slate-50 text-slate-700 dark:border-white/10 dark:bg-white/[0.06] dark:text-white/85"
                         >
                             {item.count === 0 ? 'Clear' : 'Action'}
                         </Badge>
@@ -242,7 +244,7 @@ function WorkflowProjectCardMedia({
 
             <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 px-4 pt-4">
                 <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-xs tracking-[0.2em] text-white/85 uppercase">
+                    <p className={imageEyebrowClass}>
                         {project.category}
                     </p>
                     <Badge
@@ -325,20 +327,20 @@ function WorkflowProjectCardDetails({
                         : 'min-h-[12rem] sm:min-h-[13.5rem] xl:min-h-[15.25rem]',
                 )}
             >
-                <div className="space-y-4">
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                        <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                    <div className="space-y-4">
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                            <span className="rounded-full border border-primary/28 bg-primary/[0.045] px-2.5 py-1 text-slate-700 dark:border-white/10 dark:bg-black/[0.15] dark:text-muted-foreground">
                             {project.asset_count ?? 0} assets
-                        </span>
-                        <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                            </span>
+                            <span className="rounded-full border border-primary/28 bg-primary/[0.045] px-2.5 py-1 text-slate-700 dark:border-white/10 dark:bg-black/[0.15] dark:text-muted-foreground">
                             {project.analyzed_assets_count} analyzed
-                        </span>
-                        <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                            </span>
+                            <span className="rounded-full border border-primary/28 bg-primary/[0.045] px-2.5 py-1 text-slate-700 dark:border-white/10 dark:bg-black/[0.15] dark:text-muted-foreground">
                             {project.pending_assets_count +
                                 project.unnamed_assets_count}{' '}
                             need attention
-                        </span>
-                    </div>
+                            </span>
+                        </div>
 
                     <p
                         className={cn(
@@ -350,7 +352,7 @@ function WorkflowProjectCardDetails({
                     </p>
                 </div>
 
-                <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/10 pt-3 sm:pt-4">
+                <div className="mt-auto flex items-center justify-between gap-3 border-t border-slate-200 pt-3 dark:border-white/10 sm:pt-4">
                     <div className="flex items-center gap-3">
                         <div
                             className={cn(
@@ -400,7 +402,7 @@ function DesktopWorkflowProjectCard({
 
     return (
         <Link href={show(project.id)} className="group block h-full" prefetch>
-            <Card className="h-full gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-card/85 py-0 shadow-none transition hover:-translate-y-1 hover:border-primary/20 hover:bg-card">
+            <Card className="h-full gap-0 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white py-0 shadow-[0_18px_40px_rgba(15,23,42,0.05)] transition hover:-translate-y-1 hover:border-primary/25 hover:bg-white dark:border-white/10 dark:bg-card/85 dark:shadow-none dark:hover:border-primary/20 dark:hover:bg-card">
                 <div className="relative aspect-[16/10] overflow-hidden bg-muted sm:aspect-[4/3]">
                     {project.cover_image_url ? (
                         <img
@@ -423,7 +425,7 @@ function DesktopWorkflowProjectCard({
 
                     <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 px-4 pt-4 sm:px-4 sm:pt-4">
                         <div className="flex flex-wrap items-center gap-2">
-                              <p className="text-xs tracking-[0.2em] text-white/85 uppercase">
+                              <p className={imageEyebrowClass}>
                                   {project.category}
                               </p>
                               <Badge
@@ -459,13 +461,13 @@ function DesktopWorkflowProjectCard({
                 <CardContent className="flex min-h-[12rem] flex-1 flex-col px-4 py-4 sm:min-h-[13.5rem] sm:px-5 sm:py-5 xl:min-h-[15.25rem]">
                     <div className="space-y-4">
                         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                            <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                            <span className="rounded-full border border-primary/28 bg-primary/[0.045] px-2.5 py-1 text-slate-700 dark:border-white/10 dark:bg-black/[0.15] dark:text-muted-foreground">
                                 {project.asset_count ?? 0} assets
                             </span>
-                            <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                            <span className="rounded-full border border-primary/28 bg-primary/[0.045] px-2.5 py-1 text-slate-700 dark:border-white/10 dark:bg-black/[0.15] dark:text-muted-foreground">
                                 {project.analyzed_assets_count} analyzed
                             </span>
-                            <span className="rounded-full border border-white/10 bg-black/[0.15] px-2.5 py-1">
+                            <span className="rounded-full border border-primary/28 bg-primary/[0.045] px-2.5 py-1 text-slate-700 dark:border-white/10 dark:bg-black/[0.15] dark:text-muted-foreground">
                                 {project.pending_assets_count + project.unnamed_assets_count} need attention
                             </span>
                         </div>
@@ -475,7 +477,7 @@ function DesktopWorkflowProjectCard({
                         </p>
                     </div>
 
-                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/10 pt-3 sm:pt-4">
+                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-slate-200 pt-3 dark:border-white/10 sm:pt-4">
                         <div className="flex items-center gap-3">
                             <div
                                 className={cn(
@@ -527,20 +529,20 @@ function WorkflowProjectCard({
         <>
             <div className="sm:hidden">
                 <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-                    <Card className="gap-0 overflow-hidden rounded-[1.75rem] border-white/10 bg-card/85 py-0 shadow-none">
+                    <Card className="gap-0 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white py-0 shadow-[0_18px_40px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-card/85 dark:shadow-none">
                         <WorkflowProjectCardMedia
                             project={project}
                             tone={tone}
                             showMobileTitle
                         />
-                        <div className="border-t border-white/10">
+                        <div className="border-t border-slate-200 dark:border-white/10">
                             <CollapsibleTrigger asChild>
                                 <button
                                     type="button"
                                     className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
                                 >
                                     <div className="min-w-0">
-                                        <p className="text-sm font-medium text-white">
+                                        <p className="text-sm font-medium text-slate-950 dark:text-white">
                                             {isOpen
                                                 ? 'Hide project details'
                                                 : 'View project details'}
@@ -617,10 +619,10 @@ export default function Dashboard({
             <div className="flex h-full min-w-0 flex-1 flex-col gap-6 overflow-x-clip p-3 sm:gap-8 sm:p-6">
                 <section
                     className={cn(
-                        'relative overflow-hidden rounded-[1.75rem] border border-white/10 px-4 py-4 shadow-[0_30px_120px_rgba(0,0,0,0.24)] sm:rounded-[2rem] sm:px-7 sm:py-6',
+                        'relative overflow-hidden rounded-[1.75rem] border border-primary/22 bg-[#faf7ff] px-4 py-4 shadow-[0_24px_64px_rgba(99,102,241,0.07)] dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[0_30px_120px_rgba(0,0,0,0.24)] sm:rounded-[2rem] sm:px-7 sm:py-6',
                         heroUsesImage
-                            ? 'bg-card'
-                            : 'bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.1),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.18),transparent_34%),rgba(255,255,255,0.03)]',
+                            ? 'bg-[#faf7ff]'
+                            : 'bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.08),transparent_28%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.08),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(250,204,21,0.08),transparent_34%),#ffffff] dark:bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.1),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.18),transparent_34%),rgba(255,255,255,0.03)]',
                     )}
                 >
                     {heroProject?.cover_image_url ? (
@@ -628,24 +630,24 @@ export default function Dashboard({
                             <img
                                 src={heroProject.cover_image_url}
                                 alt={heroProject.name}
-                                className="absolute inset-0 size-full object-cover"
+                                className="absolute inset-0 size-full object-cover opacity-[0.82] saturate-100 dark:opacity-100 dark:saturate-100"
                             />
-                            <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(7,9,20,0.92)_0%,rgba(7,9,20,0.82)_38%,rgba(7,9,20,0.72)_58%,rgba(7,9,20,0.82)_100%)]" />
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_34%)]" />
+                            <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(250,247,255,0.74)_0%,rgba(250,247,255,0.68)_28%,rgba(250,247,255,0.44)_54%,rgba(250,247,255,0.26)_74%,rgba(250,247,255,0.18)_100%)] dark:bg-[linear-gradient(110deg,rgba(7,9,20,0.92)_0%,rgba(7,9,20,0.82)_38%,rgba(7,9,20,0.72)_58%,rgba(7,9,20,0.82)_100%)]" />
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.15),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.08),transparent_34%),linear-gradient(90deg,rgba(255,255,255,0.08),transparent_30%,transparent_70%,rgba(255,255,255,0.06))] dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_34%)]" />
                         </>
                     ) : null}
 
                     <div className="relative grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
                         <div className="space-y-3 sm:space-y-4">
                             <div className="space-y-2.5 sm:space-y-3">
-                                <p className="text-xs tracking-[0.32em] text-muted-foreground uppercase">
+                                <p className="text-xs tracking-[0.32em] text-slate-500 uppercase dark:text-muted-foreground">
                                     {primaryAction.eyebrow}
                                 </p>
                                 <div className="space-y-2.5">
-                                    <h1 className="max-w-2xl text-[2.35rem] leading-[0.96] font-semibold tracking-tight sm:text-4xl xl:text-[3.2rem] xl:leading-[1.02]">
+                                    <h1 className="max-w-2xl text-[2rem] leading-[0.98] font-semibold tracking-tight text-slate-950 sm:text-4xl xl:text-[2.65rem] xl:leading-[1.02] dark:text-foreground">
                                         {primaryAction.title}
                                     </h1>
-                                    <p className="max-w-xl text-sm leading-6 text-muted-foreground sm:text-[15px]">
+                                    <p className="max-w-xl text-sm leading-6 text-slate-700 sm:text-[15px] dark:text-muted-foreground">
                                         {primaryAction.description}
                                     </p>
                                 </div>
@@ -668,18 +670,18 @@ export default function Dashboard({
                             </div>
                         </div>
 
-                        <Card className="gap-3 rounded-[1.5rem] border-white/10 bg-black/65 py-3.5 shadow-none backdrop-blur-md sm:rounded-[1.75rem] sm:py-4">
+                        <Card className="gap-3 rounded-[1.5rem] border border-primary/18 bg-white/84 py-3.5 text-slate-950 shadow-[0_14px_34px_rgba(99,102,241,0.05)] backdrop-blur-md dark:border-white/10 dark:bg-black/65 dark:text-white dark:shadow-none sm:rounded-[1.75rem] sm:py-4">
                             <CardHeader className="space-y-2 px-4">
-                                <div className="flex items-center gap-2 text-sm text-foreground">
+                                <div className="flex items-center gap-2 text-sm text-slate-950 dark:text-foreground">
                                     <Sparkles className="size-4 text-primary" />
                                     <CardTitle>{assistantPanel.title}</CardTitle>
                                 </div>
-                                <CardDescription className="line-clamp-2 leading-6 sm:line-clamp-3">
+                                <CardDescription className="line-clamp-2 leading-6 text-slate-600 dark:text-muted-foreground sm:line-clamp-3">
                                     {assistantPanel.summary}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-3 px-4 sm:space-y-3.5">
-                                <div className="space-y-3 rounded-[1.35rem] border border-white/10 bg-black/30 p-3 sm:rounded-[1.5rem] sm:p-3.5">
+                                <div className="space-y-3 rounded-[1.35rem] border border-primary/14 bg-white/80 p-3 sm:rounded-[1.5rem] sm:p-3.5 dark:border-white/10 dark:bg-black/30">
                                     <div className="flex items-start gap-3">
                                         <div
                                             className={cn(
@@ -693,13 +695,13 @@ export default function Dashboard({
                                             <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
                                                 {assistantPanel.primary.eyebrow}
                                             </p>
-                                            <p className="text-sm font-medium">
+                                            <p className="text-sm font-medium text-slate-950 dark:text-foreground">
                                                 {assistantPanel.primary.title}
                                             </p>
                                         </div>
                                     </div>
 
-                                    <p className="line-clamp-2 text-sm leading-6 text-muted-foreground sm:line-clamp-3">
+                                    <p className="line-clamp-2 text-sm leading-6 text-slate-600 dark:text-muted-foreground sm:line-clamp-3">
                                         {assistantPanel.primary.reason}
                                     </p>
 
@@ -708,7 +710,7 @@ export default function Dashboard({
                                             assistantPanel.primary.target,
                                             assistantPanel.primary.project_id,
                                         )}
-                                        className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition hover:text-primary"
+                                        className="inline-flex items-center gap-2 text-sm font-medium text-slate-950 transition hover:text-primary dark:text-foreground"
                                         prefetch
                                     >
                                         {assistantPanel.primary.cta_label}
@@ -718,7 +720,7 @@ export default function Dashboard({
 
                                 {assistantFollowUps.length > 0 ? (
                                     <div className="space-y-2.5">
-                                        <p className="text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
+                                        <p className="text-[11px] tracking-[0.18em] text-slate-500 uppercase dark:text-muted-foreground">
                                             Also worth doing
                                         </p>
                                         <div className="space-y-2.5">
@@ -740,7 +742,7 @@ export default function Dashboard({
                                                                 recommendation.target,
                                                                 recommendation.project_id,
                                                             )}
-                                                            className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/25 px-3 py-2.5 transition hover:border-primary/20 hover:bg-black/35"
+                                                            className="flex items-start gap-3 rounded-2xl border border-primary/14 bg-white/88 px-3 py-2.5 transition hover:border-primary/24 hover:bg-white dark:border-white/10 dark:bg-black/25 dark:hover:border-primary/20 dark:hover:bg-black/35"
                                                             prefetch
                                                         >
                                                             <div
@@ -752,10 +754,10 @@ export default function Dashboard({
                                                                 <FollowUpIcon className="size-3.5" />
                                                             </div>
                                                             <div className="min-w-0 space-y-1">
-                                                                <p className="text-sm font-medium text-foreground">
+                                                                <p className="text-sm font-medium text-slate-950 dark:text-foreground">
                                                                     {recommendation.title}
                                                                 </p>
-                                                                <p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
+                                                                <p className="line-clamp-2 text-xs leading-5 text-slate-600 dark:text-muted-foreground">
                                                                     {recommendation.reason}
                                                                 </p>
                                                             </div>
@@ -766,7 +768,7 @@ export default function Dashboard({
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="flex items-center gap-2 text-sm text-foreground">
+                                    <div className="flex items-center gap-2 text-sm text-slate-950 dark:text-foreground">
                                         <Sparkles className="size-4 text-primary" />
                                         <span>
                                             Use the next action to keep
@@ -824,8 +826,8 @@ export default function Dashboard({
                             ))}
                         </div>
                     ) : (
-                        <div className="rounded-[1.75rem] border border-dashed border-white/15 bg-white/[0.03] p-10 text-center">
-                            <p className="text-sm text-muted-foreground">
+                        <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-slate-50 p-10 text-center dark:border-white/15 dark:bg-white/[0.03]">
+                            <p className="text-sm text-slate-600 dark:text-muted-foreground">
                                 No projects yet. Create one to start shaping
                                 your portfolio.
                             </p>
@@ -848,18 +850,18 @@ export default function Dashboard({
                         {stats.map((stat) => (
                             <Card
                                 key={stat.label}
-                                className="min-h-[8.5rem] gap-3 rounded-[1.5rem] border-white/10 bg-white/[0.04] py-4 shadow-none sm:min-h-[9.5rem] sm:gap-4 sm:py-5"
+                                className="min-h-[8.5rem] gap-3 rounded-[1.5rem] border-slate-200/85 bg-white py-4 shadow-[0_18px_40px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none sm:min-h-[9.5rem] sm:gap-4 sm:py-5"
                             >
                                 <CardHeader className="px-4 sm:px-5">
-                                    <CardTitle className="text-xs tracking-[0.24em] text-muted-foreground uppercase">
+                                    <CardTitle className="text-xs tracking-[0.24em] text-slate-500 uppercase dark:text-muted-foreground">
                                         {stat.label}
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="mt-auto space-y-2 px-4 sm:space-y-3 sm:px-5">
-                                    <p className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                                    <p className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-foreground sm:text-4xl">
                                         {stat.value}
                                     </p>
-                                    <p className="hidden text-sm leading-6 text-muted-foreground sm:block">
+                                    <p className="hidden text-sm leading-6 text-slate-600 dark:text-muted-foreground sm:block">
                                         {stat.hint}
                                     </p>
                                 </CardContent>
