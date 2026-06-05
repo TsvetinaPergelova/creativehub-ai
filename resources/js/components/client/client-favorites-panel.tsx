@@ -20,7 +20,7 @@ export default function ClientFavoritesPanel({
         : null;
 
     return (
-        <Card className="border-white/10 bg-card/85 shadow-sm backdrop-blur">
+        <Card className="border-slate-200 bg-white shadow-none backdrop-blur dark:border-white/10 dark:bg-card/60 dark:shadow-none">
             <CardHeader className="px-5 py-4">
                 <CardTitle className="flex items-center gap-2">
                     <Heart className="size-4 text-rose-500" />
@@ -28,7 +28,7 @@ export default function ClientFavoritesPanel({
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 px-5 pb-5">
-                <div className="flex items-end justify-between gap-4 rounded-xl border border-white/10 bg-background/50 p-3.5 sm:p-4">
+                <div className="flex items-end justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50 p-3.5 sm:p-4 dark:border-white/10 dark:bg-background/45">
                     <div>
                         <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
                             Favorites
@@ -40,7 +40,7 @@ export default function ClientFavoritesPanel({
                     <Badge variant="outline">{shortlistLabel}</Badge>
                 </div>
 
-                <div className="rounded-xl border border-white/10 bg-background/40 p-3.5 text-sm text-muted-foreground sm:p-4">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-muted-foreground sm:p-4 dark:border-white/10 dark:bg-background/40">
                     Mark the frames you want to keep in focus. Your shortlist stays attached to this gallery link.
                 </div>
 

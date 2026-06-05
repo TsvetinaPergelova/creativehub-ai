@@ -47,7 +47,7 @@ export default function ProjectUploadReview({
     }
 
     return (
-        <Card className="bg-card/60">
+        <Card className="bg-white dark:bg-card/60">
             <CardHeader>
                 <Badge variant="outline" className="w-fit">
                     Optional
@@ -63,7 +63,7 @@ export default function ProjectUploadReview({
                 {assetsForReview.map((asset) => (
                     <div
                         key={asset.id}
-                        className="space-y-4 rounded-lg border bg-background/70 p-4"
+                    className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-background/70"
                     >
                         <div className="overflow-hidden rounded-lg border bg-muted">
                             <img

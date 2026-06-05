@@ -12,7 +12,7 @@ export function ProjectSection({
     return (
         <section
             className={cn(
-                'rounded-[1.5rem] border border-slate-200/85 bg-white/88 p-4 shadow-[0_18px_42px_rgba(15,23,42,0.05)] sm:p-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none',
+                'rounded-[1.5rem] border border-slate-200/85 bg-white/88 p-4 shadow-none sm:p-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none',
                 className,
             )}
         >
@@ -64,7 +64,7 @@ export function ProjectInsetPanel({
     return (
         <div
             className={cn(
-                'rounded-[1.35rem] border border-slate-200/85 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-background/50 dark:shadow-none',
+                'rounded-[1.35rem] border border-slate-200/85 bg-white p-4 shadow-none dark:border-white/10 dark:bg-background/50 dark:shadow-none',
                 className,
             )}
         >
@@ -117,7 +117,7 @@ export function ProjectOptionCard({
             onClick={onClick}
             disabled={disabled}
             className={cn(
-                'w-full rounded-[1.35rem] border border-slate-200/85 bg-white p-4 text-left shadow-[0_10px_24px_rgba(15,23,42,0.05)] transition hover:border-primary/25 hover:bg-white focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60 dark:border-white/10 dark:bg-background/50 dark:shadow-none dark:hover:border-primary/20 dark:hover:bg-background/70',
+                'w-full rounded-[1.35rem] border border-slate-200/85 bg-white p-4 text-left shadow-none transition hover:border-primary/25 hover:bg-white focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60 dark:border-white/10 dark:bg-background/50 dark:shadow-none dark:hover:border-primary/20 dark:hover:bg-background/70',
                 selected
                     ? 'border-primary/35 bg-primary/10 dark:bg-primary/10'
                     : '',

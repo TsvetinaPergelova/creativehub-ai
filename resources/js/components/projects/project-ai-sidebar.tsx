@@ -41,7 +41,7 @@ export default function ProjectAiSidebar({
     const visibleHighlights = highlights.slice(0, 3);
 
     return (
-        <Card className="overflow-hidden bg-card/60">
+        <Card className="overflow-hidden bg-white shadow-none dark:bg-card/60">
             <CardHeader className="space-y-4 border-b px-4 py-5 sm:px-6 sm:pb-5">
                 <div className="space-y-2">
                     <div className="flex items-center gap-3">
@@ -82,10 +82,7 @@ export default function ProjectAiSidebar({
                             </p>
                         ) : (
                             visibleHighlights.map((asset) => (
-                                <div
-                                    key={asset.id}
-                                    className="rounded-lg border bg-background/70 p-3"
-                                >
+                                <div key={asset.id} className="rounded-lg border bg-background/70 p-3">
                                     <p className="text-sm font-medium break-words">
                                         {asset.title ?? asset.filename}
                                     </p>

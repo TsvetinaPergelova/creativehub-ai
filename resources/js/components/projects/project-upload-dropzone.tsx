@@ -170,23 +170,25 @@ export default function ProjectUploadDropzone({
                 </div>
             </div>
 
-            <div className="rounded-lg border bg-background/50 p-5">
+            <div className="rounded-lg border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-background/50">
                 <div className="space-y-5">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div className="min-w-0">
-                            <p className="text-sm font-medium">Upload status</p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm font-medium text-slate-950 dark:text-foreground">
+                                Upload status
+                            </p>
+                            <p className="text-sm text-slate-600 dark:text-muted-foreground">
                                 {uploadLabel}
                             </p>
                         </div>
                         {statusPercentage && (
-                            <p className="text-sm font-medium text-foreground">
+                            <p className="text-sm font-medium text-slate-900 dark:text-foreground">
                                 {statusPercentage}
                             </p>
                         )}
                     </div>
 
-                    <div className="h-2 overflow-hidden rounded-full bg-muted">
+                    <div className="h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-muted">
                         <div
                             className={`h-full rounded-full transition-all duration-300 ${progressToneClass}`}
                             style={{
@@ -195,12 +197,12 @@ export default function ProjectUploadDropzone({
                         />
                     </div>
 
-                    <p className="text-sm break-words text-muted-foreground">
+                    <p className="text-sm break-words text-slate-600 dark:text-muted-foreground">
                         {uploadDescription}
                     </p>
 
                     {hasCompletedUpload && !form.hasErrors && (
-                        <div className="flex items-start gap-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3">
+                        <div className="flex items-start gap-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 shadow-none">
                             <CheckCircle2 className="size-4 shrink-0 text-emerald-400" />
                             <div className="min-w-0 space-y-1">
                                 <p className="text-sm font-medium">
@@ -220,31 +222,31 @@ export default function ProjectUploadDropzone({
                         </div>
                     )}
 
-                    <dl className="grid grid-cols-3 gap-3 border-t pt-4 text-sm">
+                    <dl className="grid grid-cols-3 gap-3 border-t border-slate-200 pt-4 text-sm dark:border-white/10">
                         <div className="min-w-0 space-y-1">
-                            <dt className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
+                            <dt className="text-xs tracking-[0.22em] text-slate-500 uppercase dark:text-muted-foreground">
                                 Files
                             </dt>
-                            <dd className="font-medium text-foreground">
+                            <dd className="font-medium text-slate-950 dark:text-foreground">
                                 {summaryCount}
                             </dd>
                         </div>
                         <div className="min-w-0 space-y-1">
-                            <dt className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
+                            <dt className="text-xs tracking-[0.22em] text-slate-500 uppercase dark:text-muted-foreground">
                                 Size
                             </dt>
-                            <dd className="font-medium text-foreground">
+                            <dd className="font-medium text-slate-950 dark:text-foreground">
                                 {summaryBytes === 0
                                     ? '0 MB'
                                     : `${(summaryBytes / (1024 * 1024)).toFixed(1)} MB`}
                             </dd>
                         </div>
                         <div className="min-w-0 space-y-1">
-                            <dt className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
+                            <dt className="text-xs tracking-[0.22em] text-slate-500 uppercase dark:text-muted-foreground">
                                 Latest
                             </dt>
                             <dd
-                                className="truncate font-medium text-foreground"
+                                className="truncate font-medium text-slate-950 dark:text-foreground"
                                 title={latestFilename ?? undefined}
                             >
                                 {latestFilename ?? 'No upload yet'}

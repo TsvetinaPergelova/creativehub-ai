@@ -162,7 +162,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
             <Head title="Explore" />
 
             <div className="space-y-5 p-4 sm:space-y-7 sm:p-6">
-                <ProjectSection className="relative overflow-hidden rounded-[1.75rem] border-primary/18 bg-[#faf7ff] px-4 py-4 shadow-[0_24px_64px_rgba(99,102,241,0.07)] sm:px-5 sm:py-5 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[0_30px_120px_rgba(0,0,0,0.24)]">
+                <ProjectSection className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white px-4 py-4 shadow-none sm:px-5 sm:py-5 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
                     <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] xl:items-center">
                         <div className="space-y-2.5">
                             <div className="space-y-1.5">
@@ -186,7 +186,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                         </div>
 
                         <div className="grid grid-cols-3 gap-2">
-                            <ProjectInsetPanel className="flex min-h-[6.4rem] flex-col rounded-[1.05rem] border-primary/16 bg-white/84 px-3 py-2.5 shadow-[0_10px_24px_rgba(15,23,42,0.05)] sm:min-h-[6.8rem] sm:rounded-[1.1rem] sm:py-3 dark:border-primary/18 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex min-h-[6.4rem] flex-col rounded-[1.05rem] border border-primary/16 bg-[#f5f1ff] px-3 py-2.5 shadow-none sm:min-h-[6.8rem] sm:rounded-[1.1rem] sm:py-3 dark:border-primary/18 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[9px] leading-5 tracking-[0.14em] text-slate-500 uppercase sm:text-[10px] sm:tracking-[0.2em] dark:text-muted-foreground">
                                     Live projects
                                 </p>
@@ -194,7 +194,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                     {projects.length}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex min-h-[6.4rem] flex-col rounded-[1.05rem] border-primary/16 bg-white/84 px-3 py-2.5 shadow-[0_10px_24px_rgba(15,23,42,0.05)] sm:min-h-[6.8rem] sm:rounded-[1.1rem] sm:py-3 dark:border-primary/18 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex min-h-[6.4rem] flex-col rounded-[1.05rem] border border-primary/16 bg-[#f5f1ff] px-3 py-2.5 shadow-none sm:min-h-[6.8rem] sm:rounded-[1.1rem] sm:py-3 dark:border-primary/18 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[9px] leading-5 tracking-[0.14em] text-slate-500 uppercase sm:text-[10px] sm:tracking-[0.2em] dark:text-muted-foreground">
                                     Categories
                                 </p>
@@ -202,7 +202,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                     {categories.length}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex min-h-[6.4rem] flex-col rounded-[1.05rem] border-primary/16 bg-white/84 px-3 py-2.5 shadow-[0_10px_24px_rgba(15,23,42,0.05)] sm:min-h-[6.8rem] sm:rounded-[1.1rem] sm:py-3 dark:border-primary/18 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex min-h-[6.4rem] flex-col rounded-[1.05rem] border border-primary/16 bg-[#f5f1ff] px-3 py-2.5 shadow-none sm:min-h-[6.8rem] sm:rounded-[1.1rem] sm:py-3 dark:border-primary/18 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[9px] leading-5 tracking-[0.14em] text-slate-500 uppercase sm:text-[10px] sm:tracking-[0.2em] dark:text-muted-foreground">
                                     Creators
                                 </p>
@@ -214,7 +214,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                     </div>
                 </ProjectSection>
 
-                <ProjectSection className="space-y-4 rounded-[1.75rem] border-primary/16 bg-white/88 px-4 py-5 shadow-[0_18px_54px_rgba(99,102,241,0.05)] dark:border-white/8 dark:bg-transparent dark:px-0 dark:py-0 dark:shadow-none">
+                <ProjectSection className="space-y-4 rounded-[1.75rem] border-primary/16 bg-white/88 px-4 py-5 shadow-[0_18px_54px_rgba(99,102,241,0.05)] dark:border-white/10 dark:bg-card/60 dark:px-4 dark:py-5 dark:shadow-none">
                     <ProjectSectionHeader
                         title="Explore controls"
                         description="Narrow the feed by project title, category, or creator without leaving the discovery flow."
@@ -245,7 +245,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                     setQuery(event.target.value)
                                 }
                                 placeholder="Search projects, creators, categories..."
-                                className="h-11 rounded-full border-primary/20 bg-white pr-4 pl-11 text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] placeholder:text-slate-400 focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:placeholder:text-muted-foreground dark:focus-visible:border-ring"
+                                className="h-11 rounded-full border-primary/20 bg-[#f5f1ff] pr-4 pl-11 text-slate-900 shadow-none placeholder:text-slate-400 focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:placeholder:text-muted-foreground dark:focus-visible:border-ring"
                             />
                         </div>
 
@@ -255,7 +255,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                     value={categoryFilter}
                                     onValueChange={setCategoryFilter}
                                 >
-                                    <SelectTrigger className="h-10 min-w-[11rem] rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                    <SelectTrigger className="h-10 min-w-[11rem] rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                         <SelectValue placeholder="Category" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -277,7 +277,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                     value={creatorFilter}
                                     onValueChange={setCreatorFilter}
                                 >
-                                    <SelectTrigger className="h-10 min-w-[11rem] rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                    <SelectTrigger className="h-10 min-w-[11rem] rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                         <SelectValue placeholder="Creator" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -301,7 +301,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                         setSort(value as SortOption)
                                     }
                                 >
-                                    <SelectTrigger className="h-10 min-w-[10rem] rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                    <SelectTrigger className="h-10 min-w-[10rem] rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                         <SlidersHorizontal className="size-4 text-slate-400 dark:text-muted-foreground" />
                                         <SelectValue placeholder="Sort" />
                                     </SelectTrigger>
@@ -332,7 +332,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                         setQuery(event.target.value)
                                     }
                                     placeholder="Search projects, creators, categories..."
-                                    className="h-11 rounded-full border-primary/20 bg-white pr-4 pl-11 text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] placeholder:text-slate-400 focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:placeholder:text-muted-foreground dark:focus-visible:border-ring"
+                                    className="h-11 rounded-full border-primary/20 bg-[#f5f1ff] pr-4 pl-11 text-slate-900 shadow-none placeholder:text-slate-400 focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:placeholder:text-muted-foreground dark:focus-visible:border-ring"
                                 />
                             </div>
 
@@ -340,7 +340,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                 value={categoryFilter}
                                 onValueChange={setCategoryFilter}
                             >
-                                <SelectTrigger className="h-11 rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                <SelectTrigger className="h-11 rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                     <SelectValue placeholder="Category" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -362,7 +362,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                 value={creatorFilter}
                                 onValueChange={setCreatorFilter}
                             >
-                                <SelectTrigger className="h-11 rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                <SelectTrigger className="h-11 rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                     <SelectValue placeholder="Creator" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -386,7 +386,7 @@ export default function ExploreIndex({ projects }: { projects: Project[] }) {
                                     setSort(value as SortOption)
                                 }
                             >
-                                <SelectTrigger className="h-11 rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                <SelectTrigger className="h-11 rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                     <SlidersHorizontal className="size-4 text-slate-400 dark:text-muted-foreground" />
                                     <SelectValue placeholder="Sort" />
                                 </SelectTrigger>

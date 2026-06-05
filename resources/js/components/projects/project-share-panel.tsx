@@ -92,7 +92,7 @@ export default function ProjectSharePanel({
         : null;
 
     return (
-        <Card className="overflow-hidden bg-card/60">
+        <Card className="overflow-hidden bg-white shadow-none dark:bg-card/60">
             <CardHeader className="space-y-4 border-b px-4 py-5 sm:px-6 sm:pb-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div className="space-y-2">

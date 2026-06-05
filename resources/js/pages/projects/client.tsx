@@ -161,11 +161,11 @@ export default function ClientGallery({
         <>
             <Head title={gallery.project_name} />
 
-            <div className="relative min-h-screen bg-background px-3 py-6 text-foreground sm:px-6 sm:py-10 lg:px-8">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.16),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_34%)]" />
+            <div className="relative min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.08),transparent_28%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.08),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(250,204,21,0.08),transparent_34%),#ffffff] px-3 py-6 text-foreground sm:px-6 sm:py-10 lg:px-8 dark:bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.1),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.18),transparent_34%),rgba(255,255,255,0.03)]">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.15),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.08),transparent_34%),linear-gradient(90deg,rgba(255,255,255,0.08),transparent_30%,transparent_70%,rgba(255,255,255,0.06))] dark:bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_34%)]" />
 
                 <div className="relative mx-auto max-w-7xl space-y-6 sm:space-y-8">
-                    <section className="relative overflow-hidden rounded-xl border bg-card/85 p-0 shadow-sm backdrop-blur sm:p-10">
+                    <section className="relative overflow-hidden rounded-[1.75rem] border border-primary/18 bg-[#faf7ff] p-0 shadow-none sm:rounded-[2rem] sm:p-10 dark:border-white/10 dark:bg-white/[0.03]">
                         {gallery.cover_image_url && (
                             <>
                                 <img
@@ -173,12 +173,12 @@ export default function ClientGallery({
                                     alt={`${gallery.project_name} cover`}
                                     className="pointer-events-none absolute inset-0 size-full object-cover"
                                 />
-                                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,6,17,0.92),rgba(6,6,17,0.68),rgba(6,6,17,0.9))]" />
+                                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,rgba(250,247,255,0.82)_0%,rgba(250,247,255,0.72)_28%,rgba(250,247,255,0.36)_54%,rgba(250,247,255,0.18)_74%,rgba(250,247,255,0.12)_100%)] dark:bg-[linear-gradient(110deg,rgba(7,9,20,0.92)_0%,rgba(7,9,20,0.82)_38%,rgba(7,9,20,0.72)_58%,rgba(7,9,20,0.82)_100%)]" />
                             </>
                         )}
 
                         <div className="relative lg:hidden">
-                            <div className="relative overflow-hidden bg-card/90">
+                            <div className="relative overflow-hidden bg-white/72 backdrop-blur-sm">
                                 {gallery.cover_image_url ? (
                                     <>
                                         <img
@@ -186,10 +186,10 @@ export default function ClientGallery({
                                             alt={`${gallery.project_name} cover`}
                                             className="size-full aspect-[4/5] object-cover"
                                         />
-                                        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,6,17,0.35),rgba(6,6,17,0.1),rgba(6,6,17,0.9))]" />
+                                        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(250,247,255,0.72),rgba(250,247,255,0.34),rgba(250,247,255,0.94))]" />
                                     </>
                                 ) : (
-                                    <div className="aspect-[4/5] bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.24),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.18),transparent_38%),rgba(255,255,255,0.04)]" />
+                                    <div className="aspect-[4/5] bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.08),transparent_38%),#ffffff]" />
                                 )}
 
                                 <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-4">
@@ -200,42 +200,42 @@ export default function ClientGallery({
                                 </div>
 
                                 <div className="absolute inset-x-0 bottom-0 space-y-4 p-4">
-                                    <p className="text-xs uppercase tracking-[0.3em] text-white/80">
+                                    <p className="text-xs uppercase tracking-[0.3em] text-primary/70">
                                         Client gallery
                                     </p>
-                                    <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">
+                                    <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 dark:text-foreground">
                                         {gallery.project_name}
                                     </h1>
                                     <div className="mt-3 flex flex-wrap gap-2">
                                         <Badge
                                             variant="outline"
-                                            className="bg-black/60 text-white backdrop-blur-md"
+                                            className="border-primary/20 bg-white/80 text-primary backdrop-blur-md"
                                         >
                                             {favoritesCount} favorite{favoritesCount === 1 ? '' : 's'}
                                         </Badge>
                                     </div>
                                     <div className="grid grid-cols-3 gap-2">
-                                        <div className="rounded-xl border border-white/10 bg-black/55 p-3 backdrop-blur-md">
-                                            <p className="text-[9px] leading-tight uppercase tracking-[0.14em] text-white/70 sm:text-[10px] sm:tracking-[0.22em]">
+                                        <div className="rounded-xl border border-slate-200 bg-white/85 p-3 shadow-none backdrop-blur-md">
+                                            <p className="text-[9px] leading-tight uppercase tracking-[0.14em] text-slate-500 sm:text-[10px] sm:tracking-[0.22em]">
                                                 Available
                                             </p>
-                                            <p className="mt-3 text-2xl font-semibold text-white">
+                                            <p className="mt-3 text-2xl font-semibold text-slate-950">
                                                 {assets.length}
                                             </p>
                                         </div>
-                                        <div className="rounded-xl border border-white/10 bg-black/55 p-3 backdrop-blur-md">
-                                            <p className="text-[9px] leading-tight uppercase tracking-[0.14em] text-white/70 sm:text-[10px] sm:tracking-[0.22em]">
+                                        <div className="rounded-xl border border-slate-200 bg-white/85 p-3 shadow-none backdrop-blur-md">
+                                            <p className="text-[9px] leading-tight uppercase tracking-[0.14em] text-slate-500 sm:text-[10px] sm:tracking-[0.22em]">
                                                 Shortlist
                                             </p>
-                                            <p className="mt-3 text-2xl font-semibold text-white">
+                                            <p className="mt-3 text-2xl font-semibold text-slate-950">
                                                 {favoritesCount}
                                             </p>
                                         </div>
-                                        <div className="rounded-xl border border-white/10 bg-black/55 p-3 backdrop-blur-md">
-                                            <p className="text-[9px] leading-tight uppercase tracking-[0.14em] text-white/70 sm:text-[10px] sm:tracking-[0.22em]">
+                                        <div className="rounded-xl border border-slate-200 bg-white/85 p-3 shadow-none backdrop-blur-md">
+                                            <p className="text-[9px] leading-tight uppercase tracking-[0.14em] text-slate-500 sm:text-[10px] sm:tracking-[0.22em]">
                                                 Highlights
                                             </p>
-                                            <p className="mt-3 text-2xl font-semibold text-white">
+                                            <p className="mt-3 text-2xl font-semibold text-slate-950">
                                                 {highlightedAssets}
                                             </p>
                                         </div>
@@ -246,21 +246,21 @@ export default function ClientGallery({
 
                         <div className="relative hidden gap-5 lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
                             <div className="space-y-4 sm:space-y-5">
-                                <div className="space-y-3">
-                                    <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">
+                                <div className="rounded-[1.5rem] border border-white/55 bg-white/82 p-5 shadow-none backdrop-blur-md sm:p-6 dark:border-white/10 dark:bg-background/55">
+                                    <p className="text-sm uppercase tracking-[0.3em] text-primary/70">
                                         Client gallery
                                     </p>
-                                    <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+                                    <h1 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-foreground sm:text-5xl">
                                         {gallery.project_name}
                                     </h1>
-                                    <p className="max-w-3xl text-sm leading-6 text-muted-foreground sm:text-lg sm:leading-7">
+                                    <p className="max-w-3xl text-sm leading-6 text-slate-700 sm:text-lg sm:leading-7 dark:text-muted-foreground">
                                         {gallery.project_description ??
                                             'Review the gallery, save the strongest frames, and keep the conversation focused on what should move forward.'}
                                     </p>
                                 </div>
 
                                 <div className="flex flex-wrap gap-2">
-                                    <Badge>Shared review</Badge>
+                                    <Badge className="bg-primary text-primary-foreground">Shared review</Badge>
                                     <Badge variant="outline">
                                         {assets.length} proof{assets.length === 1 ? '' : 's'}
                                     </Badge>
@@ -271,30 +271,30 @@ export default function ClientGallery({
                             </div>
 
                             <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:grid-cols-1">
-                                <div className="rounded-xl border border-white/10 bg-background/55 p-3 sm:p-4">
-                                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-none sm:p-4 dark:border-white/10 dark:bg-background/55">
+                                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500 dark:text-muted-foreground">
                                         Available
                                     </p>
-                                    <p className="mt-2 text-2xl font-semibold sm:text-3xl">{assets.length}</p>
+                                    <p className="mt-2 text-2xl font-semibold text-slate-950 sm:text-3xl dark:text-foreground">{assets.length}</p>
                                 </div>
-                                <div className="rounded-xl border border-white/10 bg-background/55 p-3 sm:p-4">
-                                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-none sm:p-4 dark:border-white/10 dark:bg-background/55">
+                                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500 dark:text-muted-foreground">
                                         Shortlist
                                     </p>
-                                    <p className="mt-2 text-2xl font-semibold sm:text-3xl">{favoritesCount}</p>
+                                    <p className="mt-2 text-2xl font-semibold text-slate-950 sm:text-3xl dark:text-foreground">{favoritesCount}</p>
                                 </div>
-                                <div className="rounded-xl border border-white/10 bg-background/55 p-3 sm:p-4">
-                                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                                <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-none sm:p-4 dark:border-white/10 dark:bg-background/55">
+                                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500 dark:text-muted-foreground">
                                         Highlights
                                     </p>
-                                    <p className="mt-2 text-2xl font-semibold sm:text-3xl">{highlightedAssets}</p>
+                                    <p className="mt-2 text-2xl font-semibold text-slate-950 sm:text-3xl dark:text-foreground">{highlightedAssets}</p>
                                 </div>
                             </div>
                         </div>
                     </section>
 
                     {access.requires_password ? (
-                        <Card className="mx-auto max-w-xl border-white/10 bg-card/85 shadow-sm backdrop-blur">
+                        <Card className="mx-auto max-w-xl border-slate-200 bg-white shadow-none backdrop-blur dark:border-white/10 dark:bg-card/60 dark:shadow-none">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <LockKeyhole className="size-4" />
@@ -323,7 +323,7 @@ export default function ClientGallery({
                     ) : (
                         <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
                             <section className="space-y-5">
-                                <div className="rounded-xl border bg-card/65 p-4 sm:p-5">
+                                    <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5 dark:border-white/10 dark:bg-card/60">
                                     <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                                         <div>
                                             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
@@ -356,7 +356,7 @@ export default function ClientGallery({
                                         return (
                                             <figure
                                                 key={asset.id}
-                                                className="group overflow-hidden rounded-xl border border-white/10 bg-card/85 shadow-sm transition-transform duration-200 hover:-translate-y-1"
+                                                className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-none transition-transform duration-200 hover:-translate-y-1 dark:border-white/10 dark:bg-card/70 dark:shadow-none"
                                             >
                                                 <div className="relative">
                                                     <button
@@ -384,7 +384,7 @@ export default function ClientGallery({
                                                                 type="button"
                                                                 variant="outline"
                                                                 size="icon"
-                                                                className="border-white/10 bg-background/80 backdrop-blur"
+                                                                className="border-white/10 bg-background/80 shadow-none backdrop-blur"
                                                                 onClick={() => openAsset(index)}
                                                             >
                                                                 <Expand className="size-4" />
@@ -393,11 +393,11 @@ export default function ClientGallery({
                                                                 type="button"
                                                                 variant={asset.is_favorite ? 'default' : 'outline'}
                                                                 size="icon"
-                                                                className="border-white/10 bg-background/80 backdrop-blur"
+                                                                className="border-white/10 bg-background/80 shadow-none backdrop-blur"
                                                                 onClick={() => toggleFavorite(asset)}
                                                             >
                                                                 <Heart
-                                                                    className={`size-4 ${asset.is_favorite ? 'fill-current' : ''}`}
+                                                                    className={`size-4 ${asset.is_favorite ? 'fill-current text-rose-500' : 'text-slate-700'}`}
                                                                 />
                                                             </Button>
                                                         </div>
@@ -439,7 +439,7 @@ export default function ClientGallery({
                                     <Button
                                         type="button"
                                         variant="outline"
-                                        className="w-full justify-between rounded-xl border-white/10 bg-card/85 px-4 py-3 text-left shadow-sm backdrop-blur"
+                                        className="w-full justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-left shadow-none backdrop-blur dark:border-white/10 dark:bg-card/60 dark:shadow-none"
                                         onClick={() => setIsGuideDialogOpen(true)}
                                     >
                                         <span className="inline-flex items-center gap-2">
@@ -459,13 +459,13 @@ export default function ClientGallery({
                                 <Collapsible
                                     open={isFinalizeOpen}
                                     onOpenChange={setIsFinalizeOpen}
-                                    className="overflow-hidden rounded-xl border border-white/10 bg-card/85 shadow-sm backdrop-blur"
+                                    className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-none backdrop-blur dark:border-white/10 dark:bg-card/60 dark:shadow-none"
                                 >
                                     <Card className="border-0 bg-transparent shadow-none">
                                         <CollapsibleTrigger asChild>
                                             <button
                                                 type="button"
-                                                className="w-full text-left transition hover:bg-white/[0.03] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+                                                className="w-full text-left transition hover:bg-slate-50 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:hover:bg-white/[0.03]"
                                             >
                                                 <CardHeader className="px-5 py-4">
                                                     <div className="flex items-start justify-between gap-3">
@@ -485,7 +485,7 @@ export default function ClientGallery({
                                             </button>
                                         </CollapsibleTrigger>
                                         <CollapsibleContent>
-                                            <CardContent className="space-y-4 border-t px-5 py-4">
+                                            <CardContent className="space-y-4 border-t border-slate-200 px-5 py-4 dark:border-white/10">
                                                 <div className="grid gap-2">
                                                     <label
                                                         htmlFor="reviewer_name"
@@ -529,7 +529,7 @@ export default function ClientGallery({
                                                         }
                                                         rows={4}
                                                         placeholder="Optional overall feedback for the creator."
-                                                        className="flex min-h-24 w-full rounded-xl border border-white/10 bg-background/60 px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40"
+                                                        className="flex min-h-24 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/40 dark:border-white/10 dark:bg-background/60"
                                                     />
                                                     {reviewForm.errors.reviewer_comment ? (
                                                         <p className="text-sm text-rose-300">
@@ -573,7 +573,7 @@ export default function ClientGallery({
                                     <Collapsible
                                         open={isGuideOpen}
                                         onOpenChange={setIsGuideOpen}
-                                        className="overflow-hidden rounded-xl border border-white/10 bg-card/85 shadow-sm backdrop-blur"
+                                    className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-none backdrop-blur dark:border-white/10 dark:bg-card/60 dark:shadow-none"
                                     >
                                         <Card className="border-0 bg-transparent shadow-none">
                                             <CollapsibleTrigger asChild>
@@ -647,7 +647,7 @@ export default function ClientGallery({
                                             type="button"
                                             variant="outline"
                                             onClick={showPreviousAsset}
-                                            className="absolute left-4 top-1/2 size-9 -translate-y-1/2 rounded-full border-white/25 bg-black/65 text-white shadow-lg backdrop-blur-md hover:bg-black/80"
+                                            className="absolute left-4 top-1/2 size-9 -translate-y-1/2 rounded-full border-white/25 bg-black/65 text-white shadow-none backdrop-blur-md hover:bg-black/80"
                                         >
                                             <ChevronLeft className="size-4" />
                                             <span className="sr-only">Previous proof</span>
@@ -656,7 +656,7 @@ export default function ClientGallery({
                                             type="button"
                                             variant="outline"
                                             onClick={showNextAsset}
-                                            className="absolute right-4 top-1/2 size-9 -translate-y-1/2 rounded-full border-white/25 bg-black/65 text-white shadow-lg backdrop-blur-md hover:bg-black/80"
+                                            className="absolute right-4 top-1/2 size-9 -translate-y-1/2 rounded-full border-white/25 bg-black/65 text-white shadow-none backdrop-blur-md hover:bg-black/80"
                                         >
                                             <ChevronRight className="size-4" />
                                             <span className="sr-only">Next proof</span>
@@ -664,7 +664,7 @@ export default function ClientGallery({
                                     </>
                                 )}
 
-                                <div className="absolute bottom-4 left-4 rounded-md bg-background/85 px-3 py-2 text-xs text-foreground shadow-sm backdrop-blur-sm">
+                                <div className="absolute bottom-4 left-4 rounded-md bg-background/85 px-3 py-2 text-xs text-foreground shadow-none backdrop-blur-sm">
                                     {selectedAssetIndex !== null
                                         ? `${selectedAssetIndex + 1} of ${assets.length}`
                                         : null}
@@ -740,7 +740,7 @@ export default function ClientGallery({
                                             onClick={() => toggleFavorite(selectedAsset)}
                                         >
                                             <Heart
-                                                className={`mr-2 size-4 ${selectedAsset.is_favorite ? 'fill-current' : ''}`}
+                                                className={`mr-2 size-4 ${selectedAsset.is_favorite ? 'fill-current text-rose-500' : 'text-slate-700'}`}
                                             />
                                             {selectedAsset.is_favorite
                                                 ? 'Remove from shortlist'

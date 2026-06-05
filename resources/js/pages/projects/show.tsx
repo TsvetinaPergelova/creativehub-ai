@@ -263,26 +263,26 @@ export default function ShowProject({
                                 alt={`${project.name} cover`}
                                 className="pointer-events-none absolute inset-0 size-full object-cover"
                             />
-                            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,6,17,0.88),rgba(6,6,17,0.6),rgba(6,6,17,0.82))]" />
-                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.22),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.18),transparent_40%)]" />
+                            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.72),rgba(255,255,255,0.32),rgba(255,255,255,0.7))] dark:bg-[linear-gradient(90deg,rgba(6,6,17,0.88),rgba(6,6,17,0.6),rgba(6,6,17,0.82))]" />
+                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.42),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(124,58,237,0.14),transparent_38%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.22),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.18),transparent_40%)]" />
                         </>
                     ) : (
                         <>
-                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.2),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_38%)]" />
-                            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.03),transparent)]" />
+                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.55),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(124,58,237,0.12),transparent_36%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.2),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.16),transparent_38%)]" />
+                            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.18),transparent)] dark:bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.03),transparent)]" />
                         </>
                     )}
                     <div className="relative grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_34rem] xl:items-stretch">
                         <div className="flex min-w-0 flex-col gap-4 sm:gap-8">
                             <div className="space-y-4 sm:space-y-6">
                                 <div className="space-y-3">
-                                    <p className="text-xs tracking-[0.34em] text-muted-foreground uppercase">
+                                    <p className="text-xs tracking-[0.34em] text-slate-700 uppercase drop-shadow-sm dark:text-muted-foreground">
                                         {project.category}
                                     </p>
-                                    <h1 className="max-w-4xl text-2xl font-semibold tracking-tight text-foreground sm:text-5xl xl:text-6xl">
+                                    <h1 className="max-w-4xl text-2xl font-semibold tracking-tight text-slate-950 drop-shadow-sm sm:text-5xl xl:text-6xl dark:text-foreground">
                                         {project.name}
                                     </h1>
-                                    <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-lg sm:leading-7">
+                                    <p className="max-w-2xl text-sm leading-6 text-slate-800 drop-shadow-sm sm:text-lg sm:leading-7 dark:text-muted-foreground">
                                         {project.description ??
                                             'Add a description to help frame this project before upload.'}
                                     </p>
@@ -290,22 +290,20 @@ export default function ShowProject({
 
                                 <div className="space-y-3">
                                     <div className="space-y-2">
-                                        <p className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
+                                        <p className="text-xs tracking-[0.22em] text-slate-700 uppercase drop-shadow-sm dark:text-muted-foreground">
                                             Project state
                                         </p>
                                         <div className="flex flex-wrap gap-2">
-                                            <Badge className="border border-primary/35 bg-primary/85 text-primary-foreground capitalize shadow-sm backdrop-blur-md">
+                                            <Badge className="rounded-full border border-primary/20 bg-primary text-primary-foreground capitalize shadow-none">
                                                 {project.status}
                                             </Badge>
                                             <Badge
-                                                variant="outline"
-                                                className="border-white/15 bg-background/70 text-foreground capitalize shadow-sm backdrop-blur-md"
+                                                className="rounded-full border border-primary/20 bg-primary text-primary-foreground capitalize shadow-none"
                                             >
                                                 {project.visibility}
                                             </Badge>
                                             <Badge
-                                                variant="outline"
-                                                className="border-white/15 bg-background/70 text-foreground shadow-sm backdrop-blur-md"
+                                                className="rounded-full border border-primary/20 bg-primary text-primary-foreground shadow-none"
                                             >
                                                 {project.has_explicit_cover
                                                     ? 'Custom cover'
@@ -318,7 +316,7 @@ export default function ShowProject({
 
                                     <div className="space-y-1.5">
                                         <div className="flex items-start gap-3">
-                                            <span className="max-w-xl text-sm leading-6 text-muted-foreground">
+                                            <span className="max-w-xl text-sm leading-6 text-slate-800 drop-shadow-sm dark:text-muted-foreground">
                                                 {project.has_explicit_cover
                                                     ? 'Custom cover selected from your asset library.'
                                                     : project.cover_image_url
@@ -336,11 +334,11 @@ export default function ShowProject({
                             onOpenChange={setIsPulseOpen}
                             className="min-w-0 self-stretch"
                         >
-                            <Card className="min-w-0 gap-0 overflow-hidden border-white/10 bg-background/72 py-0 shadow-xl backdrop-blur">
+                            <Card className="min-w-0 gap-0 overflow-hidden border-primary/16 bg-white/88 py-0 shadow-none backdrop-blur dark:border-white/10 dark:bg-background/72 dark:shadow-none">
                                 <CollapsibleTrigger asChild>
                                     <button
                                         type="button"
-                                        className="w-full text-left transition hover:bg-white/[0.03] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+                                        className="w-full text-left transition hover:bg-white/30 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:hover:bg-white/[0.03]"
                                     >
                                         <CardHeader className="px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-5">
                                             <div className="space-y-3 sm:space-y-5">
@@ -357,7 +355,7 @@ export default function ShowProject({
                                                     </CardDescription>
                                                 </div>
 
-                                                <div className="rounded-xl border bg-background/45 px-3 py-3 backdrop-blur-sm sm:px-4">
+                                                <div className="rounded-xl border border-primary/12 bg-white/88 px-3 py-3 shadow-none backdrop-blur-sm sm:px-4 dark:border-white/10 dark:bg-background/45 dark:shadow-none">
                                                     <div className="grid gap-3">
                                                         <div className="grid grid-cols-3 gap-2 text-sm sm:gap-4">
                                                             <div>
@@ -424,7 +422,7 @@ export default function ShowProject({
                                         {heroStats.map((stat) => (
                                             <div
                                                 key={stat.label}
-                                                className="rounded-xl border bg-background/65 p-3.5"
+                                                className="rounded-xl border border-primary/12 bg-white/90 p-3.5 shadow-none dark:border-white/10 dark:bg-background/65 dark:shadow-none"
                                             >
                                                 <p className="text-xs tracking-[0.24em] text-muted-foreground uppercase">
                                                     {stat.label}
@@ -463,7 +461,7 @@ export default function ShowProject({
                                             </Button>
                                         </div>
 
-                                        <div className="rounded-xl border bg-background/45 p-4">
+                                        <div className="rounded-xl border border-primary/12 bg-white/82 p-4 shadow-none dark:border-white/10 dark:bg-background/45 dark:shadow-none">
                                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                                 <div className="min-w-0">
                                                     <p className="text-sm font-medium">
@@ -525,7 +523,7 @@ export default function ShowProject({
                                     />
                                 </div>
 
-                                <div className="overflow-hidden rounded-xl border bg-background/55 p-4">
+                                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-4 shadow-none dark:border-white/10 dark:bg-background/55 dark:shadow-none">
                                     <div className="flex flex-col gap-4">
                                         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                                             <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start">
@@ -558,7 +556,7 @@ export default function ShowProject({
                                                                     now:
                                                                 </span>{' '}
                                                                 <span
-                                                                    className="inline-block max-w-full truncate align-bottom text-primary/90 sm:max-w-[min(100%,34rem)]"
+                                                                    className="inline-block max-w-full whitespace-normal break-words align-bottom text-primary/90 sm:max-w-[min(100%,34rem)]"
                                                                     title={
                                                                         processing.current_asset_label
                                                                     }
@@ -628,7 +626,7 @@ export default function ShowProject({
                                                 </div>
                                             </div>
 
-                                            <div className="w-full rounded-xl border bg-background/70 px-4 py-3 text-sm xl:min-w-56">
+                                            <div className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm xl:min-w-56 shadow-none dark:border-white/10 dark:bg-background/70">
                                                 <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">
                                                     Progress
                                                 </p>
@@ -750,7 +748,7 @@ export default function ShowProject({
                         {latestReviewedAsset ? (
                             <section
                                 id="curator-review"
-                                className="hidden overflow-hidden rounded-xl border bg-card/50 p-4 md:block md:p-6"
+                                className="hidden overflow-hidden rounded-xl border border-slate-200 bg-white p-4 shadow-none md:block md:p-6 dark:border-white/10 dark:bg-card/50 dark:shadow-none"
                             >
                                 <Collapsible
                                     open={isResultsOpen}
@@ -797,7 +795,7 @@ export default function ShowProject({
                                                             ?.is_highlight ? (
                                                             <Badge
                                                                 variant="outline"
-                                                                className="border-amber-400/30 bg-amber-400/10 text-amber-200"
+                                                                className="border-amber-500/35 bg-amber-100 text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
                                                             >
                                                                 Highlight
                                                                 candidate
@@ -843,7 +841,7 @@ export default function ShowProject({
                                                             ?.is_highlight ? (
                                                             <Badge
                                                                 variant="outline"
-                                                                className="border-amber-400/30 bg-amber-400/10 text-amber-200"
+                                                                className="border-amber-500/35 bg-amber-100 text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
                                                             >
                                                                 Highlight
                                                                 candidate
@@ -912,7 +910,7 @@ export default function ShowProject({
                                                         Alt text
                                                     </p>
                                                     <p
-                                                        className="line-clamp-2 text-sm leading-6 text-foreground/85"
+                                                        className="text-sm leading-6 whitespace-normal break-words text-foreground/85"
                                                         title={
                                                             latestReviewedAsset
                                                                 .analysis
@@ -958,7 +956,7 @@ export default function ShowProject({
                         ) : null}
 
                         <Collapsible defaultOpen className="hidden md:block">
-                            <div className="overflow-hidden rounded-xl border bg-card/60 p-4 sm:p-5">
+                            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white p-4 shadow-none sm:p-5 dark:border-white/10 dark:bg-card/60 dark:shadow-none">
                                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                                     <div className="min-w-0">
                                         <h2 className="text-xl font-semibold tracking-tight">
@@ -1075,7 +1073,7 @@ export default function ShowProject({
                                         ?.is_highlight ? (
                                         <Badge
                                             variant="outline"
-                                            className="border-amber-400/30 bg-amber-400/10 text-amber-200"
+                                            className="border-amber-500/35 bg-amber-100 text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
                                         >
                                             Highlight candidate
                                         </Badge>

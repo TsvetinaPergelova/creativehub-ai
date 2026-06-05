@@ -53,6 +53,7 @@ export default function ProjectAssetTitleForm({
                         onChange={(event) => form.setData('title', event.target.value)}
                         placeholder="Give this image a clear title"
                         maxLength={120}
+                        className="bg-[#f5f1ff] shadow-none dark:bg-background/70"
                     />
                     <div
                         className="flex min-w-0 items-baseline gap-1 text-xs text-muted-foreground"

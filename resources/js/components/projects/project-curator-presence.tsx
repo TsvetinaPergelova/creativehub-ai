@@ -81,7 +81,7 @@ export default function ProjectCuratorPresence({
             <div className="pointer-events-none fixed inset-x-4 bottom-4 z-50 sm:left-auto sm:right-6 sm:w-[22rem]">
                 <div className="pointer-events-auto relative w-full">
                     {isOpen ? (
-                        <div className="absolute bottom-20 right-0 w-full rounded-[1.75rem] border border-white/10 bg-background/95 p-4 shadow-[0_24px_80px_rgba(4,4,18,0.45)] backdrop-blur-xl">
+                        <div className="absolute bottom-20 right-0 w-full rounded-[1.75rem] border border-white/10 bg-background/95 p-4 shadow-none backdrop-blur-xl">
                             <div className="absolute -bottom-2 right-7 size-5 rotate-45 rounded-[0.45rem] border-r border-b border-white/10 bg-background/95" />
 
                             <div className="space-y-4">
@@ -154,7 +154,7 @@ export default function ProjectCuratorPresence({
                             onClick={() => setIsOpen((currentState) => !currentState)}
                             aria-expanded={isOpen}
                             aria-label={isOpen ? `Hide ${assistantName} update` : `Show ${assistantName} update`}
-                            className="group relative flex items-center gap-3 rounded-full border border-primary/20 bg-background/92 px-3 py-2 shadow-[0_12px_30px_rgba(4,4,18,0.32)] backdrop-blur-xl transition hover:border-primary/35 hover:bg-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
+                            className="group relative flex items-center gap-3 rounded-full border border-primary/20 bg-background/92 px-3 py-2 shadow-none backdrop-blur-xl transition hover:border-primary/35 hover:bg-background focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
                         >
                             <div className="absolute inset-0 rounded-full bg-primary/10 blur-xl" />
                             <div className="relative flex size-12 items-center justify-center">
@@ -164,7 +164,7 @@ export default function ProjectCuratorPresence({
                                         <span className="absolute inset-[7px] rounded-full bg-primary/18 animate-pulse" />
                                     </>
                                 ) : null}
-                                <span className="relative flex size-12 items-center justify-center rounded-full border border-primary/25 bg-primary text-primary-foreground shadow-[0_0_40px_rgba(124,58,237,0.4)]">
+                                <span className="relative flex size-12 items-center justify-center rounded-full border border-primary/25 bg-primary text-primary-foreground shadow-none">
                                     {processing.is_reviewing ? (
                                         <LoaderCircle className="size-5 animate-spin" />
                                     ) : (

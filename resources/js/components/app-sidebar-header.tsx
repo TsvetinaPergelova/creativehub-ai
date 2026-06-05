@@ -54,7 +54,7 @@ type WorkspaceContext = {
 function ContextActionLink({ action }: { action: ContextAction }) {
     const sharedClassName = cn(
         buttonVariants({ variant: 'outline', size: 'sm' }),
-        'rounded-full border-[1.5px] border-primary/28 bg-white text-slate-900 shadow-none hover:border-primary/40 hover:bg-slate-50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80',
+        'rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground',
     );
 
     if (action.kind === 'anchor') {
@@ -331,15 +331,14 @@ export function AppSidebarHeader({
                     <div className="border-t border-slate-300/70 bg-[#f7f5ff]/92 px-4 py-3 md:px-5 dark:border-white/6 dark:bg-transparent">
                         <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                             <div className="min-w-0 space-y-2">
-                                <div className="flex flex-wrap items-center gap-2">
+                                    <div className="flex flex-wrap items-center gap-2">
                                     <p className="text-[11px] tracking-[0.22em] text-slate-500 uppercase dark:text-muted-foreground">
                                         {workspaceContext.eyebrow}
                                     </p>
                                     {workspaceContext.badges?.map((badge) => (
                                         <Badge
                                             key={badge}
-                                            variant="outline"
-                                            className="border-slate-200 bg-slate-50 text-slate-700 capitalize dark:border-white/10 dark:bg-background/60 dark:text-foreground"
+                                            className="rounded-full border border-primary/20 bg-primary text-primary-foreground capitalize shadow-none"
                                         >
                                             {badge}
                                         </Badge>

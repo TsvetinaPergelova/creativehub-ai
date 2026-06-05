@@ -202,7 +202,7 @@ export default function Profile({
                                             type="button"
                                             variant="outline"
                                             size="sm"
-                                            className="w-28 rounded-full bg-background/85 backdrop-blur sm:w-32"
+                                            className="w-28 rounded-full border-primary/28 bg-white/[0.04] text-primary shadow-none backdrop-blur hover:border-primary/45 hover:bg-primary/10 hover:text-primary sm:w-32"
                                             onClick={removeAvatar}
                                         >
                                             Remove avatar
@@ -266,7 +266,7 @@ export default function Profile({
                                                                     ? undefined
                                                                     : 'noreferrer'
                                                             }
-                                                            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-foreground transition hover:border-primary/30 hover:text-primary"
+                                                            className="inline-flex items-center gap-2 rounded-full border border-primary/28 bg-white/[0.04] px-3 py-2 text-xs text-primary transition hover:border-primary/45 hover:bg-primary/10 hover:text-primary"
                                                         >
                                                             <Icon className="size-3.5" />
                                                             {label}
@@ -388,7 +388,7 @@ export default function Profile({
                                             required
                                             autoComplete="name"
                                             placeholder="Full name"
-                                            className="border-primary/18 shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
+                                            className="border-primary/18 bg-[#f5f1ff] shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.name}
@@ -408,7 +408,7 @@ export default function Profile({
                                             }
                                             rows={6}
                                             placeholder="Tell visitors what kind of work you make, how you approach it, and what makes your point of view distinct."
-                                            className="min-h-44 rounded-[1.6rem] border-primary/18 bg-background/75 px-5 py-4 text-base leading-7 shadow-none placeholder:text-muted-foreground/75 focus-visible:border-primary/60 focus-visible:ring-primary/20 md:text-base"
+                                            className="min-h-44 rounded-[1.6rem] border-primary/18 bg-[#f5f1ff] px-5 py-4 text-base leading-7 text-slate-900 shadow-none placeholder:text-muted-foreground/75 focus-visible:border-primary/60 focus-visible:ring-primary/20 dark:bg-background/60 dark:text-foreground dark:placeholder:text-muted-foreground md:text-base"
                                         />
                                         <InputError message={form.errors.bio} />
                                     </div>
@@ -427,7 +427,7 @@ export default function Profile({
                                                 )
                                             }
                                             placeholder="Portrait photographer, design systems, art direction..."
-                                            className="border-primary/18 shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
+                                            className="border-primary/18 bg-[#f5f1ff] shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.specialization}
@@ -448,7 +448,7 @@ export default function Profile({
                                                 )
                                             }
                                             placeholder="Sofia, Bulgaria"
-                                            className="border-primary/18 shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
+                                            className="border-primary/18 bg-[#f5f1ff] shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.location}
@@ -503,6 +503,7 @@ export default function Profile({
                                             required
                                             autoComplete="username"
                                             placeholder="Email address"
+                                            className="border-primary/18 bg-[#f5f1ff] shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.email}
@@ -524,6 +525,7 @@ export default function Profile({
                                                 )
                                             }
                                             placeholder="hello@yourstudio.com"
+                                            className="border-primary/18 bg-[#f5f1ff] shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.contact_email}
@@ -544,6 +546,7 @@ export default function Profile({
                                                 )
                                             }
                                             placeholder="https://yourstudio.com"
+                                            className="border-primary/18 bg-[#f5f1ff] shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.website_url}
@@ -564,6 +567,7 @@ export default function Profile({
                                                 )
                                             }
                                             placeholder="https://instagram.com/yourhandle"
+                                            className="border-primary/18 bg-[#f5f1ff] shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/20"
                                         />
                                         <InputError
                                             message={form.errors.instagram_url}
@@ -572,7 +576,7 @@ export default function Profile({
                                 </div>
 
                                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                                    <ProjectInsetPanel className="space-y-2 shadow-none">
+                                    <ProjectInsetPanel className="space-y-3 border-primary/18 shadow-none">
                                         <div className="flex items-center gap-2 text-sm font-medium">
                                             <Mail className="size-4 text-primary" />
                                             Contact route
@@ -583,7 +587,7 @@ export default function Profile({
                                         </p>
                                     </ProjectInsetPanel>
 
-                                    <ProjectInsetPanel className="space-y-2 shadow-none">
+                                    <ProjectInsetPanel className="space-y-3 border-primary/18 shadow-none">
                                         <div className="flex items-center gap-2 text-sm font-medium">
                                             <Globe className="size-4 text-primary" />
                                             Public links

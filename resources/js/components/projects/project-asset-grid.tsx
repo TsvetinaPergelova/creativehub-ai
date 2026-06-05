@@ -284,9 +284,9 @@ export default function ProjectAssetGrid({
                         type="button"
                         onClick={() => openAsset(index)}
                         className={cn(
-                            'w-full overflow-hidden rounded-xl border bg-card/80 text-left shadow-sm transition hover:bg-card focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
+                            'w-full overflow-hidden rounded-xl border bg-card/80 text-left shadow-none transition hover:bg-card focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none',
                             asset.analysis?.is_highlight
-                                ? 'border-amber-400/45 shadow-[0_0_0_1px_rgba(251,191,36,0.12)] hover:border-amber-400/65'
+                                ? 'border-amber-400/45 hover:border-amber-400/65'
                                 : 'hover:border-primary/40',
                         )}
                     >
@@ -297,12 +297,12 @@ export default function ProjectAssetGrid({
                                 className="h-full w-full object-cover transition duration-300 hover:scale-[1.02]"
                             />
                             {asset.analysis?.is_highlight && (
-                                <div className="absolute inset-x-0 top-0 bg-amber-400/95 px-4 py-2 text-left text-[11px] font-semibold tracking-[0.22em] text-amber-950 uppercase shadow-sm">
+                                <div className="absolute inset-x-0 top-0 bg-amber-400/95 px-4 py-2 text-left text-[11px] font-semibold tracking-[0.22em] text-amber-950 uppercase shadow-none">
                                     Highlight
                                 </div>
                             )}
                             <div className="absolute top-3 right-3 flex items-center gap-2">
-                                <span className="inline-flex items-center gap-1 rounded-md bg-background/85 px-2.5 py-1 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">
+                                <span className="inline-flex items-center gap-1 rounded-md bg-background/85 px-2.5 py-1 text-xs font-medium text-foreground shadow-none backdrop-blur-sm">
                                     <Expand className="size-3.5" />
                                     Preview
                                 </span>
@@ -439,12 +439,12 @@ export default function ProjectAssetGrid({
                                     </>
                                 )}
 
-                                <div className="absolute top-3 left-3 rounded-full bg-background/85 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm sm:top-auto sm:bottom-4 sm:left-4 sm:rounded-md sm:px-3 sm:py-2">
+                                <div className="absolute top-3 left-3 rounded-full bg-background/85 px-3 py-1.5 text-xs font-medium text-foreground shadow-none backdrop-blur-sm sm:top-auto sm:bottom-4 sm:left-4 sm:rounded-md sm:px-3 sm:py-2">
                                     {selectedAssetIndex !== null
                                         ? `${selectedAssetIndex + 1} of ${assets.length}`
                                         : null}
                                 </div>
-                                <div className="absolute right-3 bottom-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full bg-background/85 px-3 py-1.5 text-[11px] text-foreground shadow-sm backdrop-blur-sm sm:right-4 sm:bottom-4 sm:max-w-none sm:rounded-md sm:px-3 sm:py-2 sm:text-xs">
+                                <div className="absolute right-3 bottom-3 inline-flex max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full bg-background/85 px-3 py-1.5 text-[11px] text-foreground shadow-none backdrop-blur-sm sm:right-4 sm:bottom-4 sm:max-w-none sm:rounded-md sm:px-3 sm:py-2 sm:text-xs">
                                     <Search className="size-3.5" />
                                     <span className="sm:hidden">
                                         {isZoomed
@@ -513,7 +513,7 @@ export default function ProjectAssetGrid({
 
                                 <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                                     <div className="mx-auto w-full max-w-[22rem] space-y-4 py-4 pb-28 sm:max-w-none sm:px-6 sm:py-5 sm:pb-5">
-                                        <div className="rounded-2xl border bg-card/45">
+                                        <div className="rounded-2xl border bg-card/45 shadow-none">
                                             <div className="border-b px-3 py-3 sm:px-4 sm:py-4">
                                                 <div className="min-w-0">
                                                     <p className="text-sm font-medium">
@@ -526,7 +526,7 @@ export default function ProjectAssetGrid({
                                                 </div>
                                             </div>
 
-                                            <div className="px-2 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
+                                            <div className="bg-[#f5f1ff] px-2 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4 dark:bg-background/50">
                                                 <div className="space-y-5">
                                                     <section className="space-y-3 px-1 py-1 sm:px-0 sm:py-0">
                                                         <div className="space-y-1">
@@ -581,7 +581,7 @@ export default function ProjectAssetGrid({
                                                         </div>
                                                     </section>
 
-                                                    <section className="space-y-4 rounded-xl border bg-card/50 p-3 sm:p-4">
+                                                    <section className="space-y-4 rounded-xl border bg-white p-3 shadow-none sm:p-4 dark:bg-background/70">
                                                             <div className="space-y-1">
                                                                 <p className="text-sm font-medium">
                                                                     Naming
@@ -625,7 +625,7 @@ export default function ProjectAssetGrid({
                                                             </div>
 
                                                             <div className="grid grid-cols-3 gap-3">
-                                                                <div className="min-w-0 rounded-xl border bg-card/70 p-3">
+                                                                <div className="min-w-0 rounded-xl border bg-white p-3 shadow-none dark:bg-background/70">
                                                                     <p className="truncate text-[10px] tracking-[0.1em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.18em]">
                                                                         Composition
                                                                     </p>
@@ -638,7 +638,7 @@ export default function ProjectAssetGrid({
                                                                         )}
                                                                     </p>
                                                                 </div>
-                                                                <div className="min-w-0 rounded-xl border bg-card/70 p-3">
+                                                                <div className="min-w-0 rounded-xl border bg-white p-3 shadow-none dark:bg-background/70">
                                                                     <p className="truncate text-[10px] tracking-[0.1em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.18em]">
                                                                         Focus
                                                                     </p>
@@ -651,7 +651,7 @@ export default function ProjectAssetGrid({
                                                                         )}
                                                                     </p>
                                                                 </div>
-                                                                <div className="min-w-0 rounded-xl border bg-card/70 p-3">
+                                                                <div className="min-w-0 rounded-xl border bg-white p-3 shadow-none dark:bg-background/70">
                                                                     <p className="truncate text-[10px] tracking-[0.1em] text-muted-foreground uppercase sm:text-[11px] sm:tracking-[0.18em]">
                                                                         Lighting
                                                                     </p>
@@ -667,7 +667,7 @@ export default function ProjectAssetGrid({
                                                             </div>
                                                     </section>
 
-                                                    <section className="space-y-4 rounded-xl border bg-card/50 p-3 sm:p-4">
+                                                    <section className="space-y-4 rounded-xl border bg-white p-3 shadow-none sm:p-4 dark:bg-background/70">
                                                             <div className="space-y-1">
                                                                 <p className="text-sm font-medium">
                                                                     AI readout
@@ -712,7 +712,7 @@ export default function ProjectAssetGrid({
                                                                 </div>
                                                             )}
 
-                                                            <div className="space-y-3 rounded-lg border bg-background/60 p-4">
+                                                            <div className="space-y-3 rounded-lg border bg-white p-4 shadow-none dark:bg-background/70">
                                                                 <div className="flex items-center gap-2">
                                                                     <Sparkles className="size-4 text-primary" />
                                                                     <p className="text-sm font-medium">
@@ -774,7 +774,7 @@ export default function ProjectAssetGrid({
                                                     </p>
 
                                                     <div className="flex items-center gap-3">
-                                                        <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-destructive/40 bg-destructive/15 text-destructive shadow-sm">
+                                                        <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-destructive/40 bg-destructive/15 text-destructive shadow-none">
                                                             <AlertTriangle className="size-5" />
                                                         </div>
 

@@ -81,25 +81,22 @@ export default function PublicProfile({
         <>
             <Head title={`${creator.name} Portfolio`} />
 
-            <div className="relative min-h-screen bg-background px-4 py-10 text-foreground sm:px-6 lg:px-8">
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.16),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.14),transparent_34%)]" />
+            <div className="relative min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.08),transparent_28%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.08),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(250,204,21,0.08),transparent_34%),#ffffff] px-4 py-10 text-foreground sm:px-6 lg:px-8 dark:bg-[radial-gradient(circle_at_top_left,rgba(244,114,182,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(250,204,21,0.1),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(99,102,241,0.18),transparent_34%),rgba(255,255,255,0.03)]">
                 <div className="relative mx-auto max-w-6xl space-y-8 lg:space-y-10">
-                    <section className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-card/85 shadow-sm backdrop-blur">
+                    <section className="overflow-hidden rounded-[2.2rem] border border-slate-200/80 bg-white shadow-none backdrop-blur dark:border-white/10 dark:bg-card/85 dark:shadow-sm">
                         <div className={`relative h-44 sm:h-52 lg:h-60 ${coverStyle.coverClass}`}>
-                            <div className="absolute inset-x-0 -bottom-10 h-32 bg-gradient-to-b from-transparent via-card/18 to-card/72 blur-3xl sm:-bottom-12 sm:h-36" />
-                            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent via-card/8 to-card/48 sm:h-24" />
                         </div>
 
                         <div className="px-6 pb-6 sm:px-8 sm:pb-8 lg:px-10 lg:pb-10">
                             <div className="space-y-6">
                                 <div className="grid gap-6 md:grid-cols-[auto_minmax(0,1fr)] md:items-start">
                                     <div className="space-y-3">
-                                        <Avatar className="size-28 -mt-20 overflow-hidden rounded-[2rem] border border-white/10 bg-card shadow-[0_16px_50px_rgba(0,0,0,0.28)] sm:size-32 sm:-mt-24">
+                                        <Avatar className="size-28 -mt-20 overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-none sm:size-32 sm:-mt-24 dark:border-white/10 dark:bg-card">
                                             <AvatarImage
                                                 src={creator.avatar ?? undefined}
                                                 alt={creator.name}
                                             />
-                                            <AvatarFallback className="bg-white/[0.08] text-3xl text-foreground">
+                                            <AvatarFallback className="bg-slate-50 text-3xl text-slate-900 dark:bg-white/[0.08] dark:text-foreground">
                                                 {getInitials(creator.name)}
                                             </AvatarFallback>
                                         </Avatar>
@@ -107,15 +104,15 @@ export default function PublicProfile({
 
                                     <div className="space-y-5 pt-4 sm:pt-6">
                                         <div className="space-y-2.5">
-                                            <p className="text-[11px] uppercase tracking-[0.34em] text-muted-foreground">
+                                            <p className="text-[11px] uppercase tracking-[0.34em] text-primary/70">
                                                 CreativeHub Portfolio
                                             </p>
-                                            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+                                            <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl dark:text-foreground">
                                                 {creator.name}
                                             </h1>
                                         </div>
 
-                                        <p className="max-w-3xl text-lg leading-8 text-muted-foreground">
+                                        <p className="max-w-3xl text-lg leading-8 text-slate-700 dark:text-muted-foreground">
                                             {creator.bio ??
                                                 'A curated selection of public work, ready to share with clients, collaborators, and new audiences.'}
                                         </p>
@@ -124,7 +121,7 @@ export default function PublicProfile({
                                             {creator.contact_email ? (
                                                 <Button
                                                     size="sm"
-                                                    className="rounded-full px-5"
+                                                    className="rounded-full px-5 shadow-none"
                                                     asChild
                                                 >
                                                     <a
@@ -151,15 +148,15 @@ export default function PublicProfile({
                                                 </Button>
                                             ) : null}
 
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                size="sm"
-                                                className="rounded-full px-5"
-                                                onClick={() =>
-                                                    void copy(creator.profile_url)
-                                                }
-                                            >
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="rounded-full border-primary/35 px-5 text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:hover:bg-background/80 dark:hover:text-foreground"
+                                                    onClick={() =>
+                                                        void copy(creator.profile_url)
+                                                    }
+                                                >
                                                 {isCopied
                                                     ? 'Copied portfolio link'
                                                     : 'Copy portfolio link'}
@@ -193,7 +190,7 @@ export default function PublicProfile({
                                                                 ? undefined
                                                                 : 'noreferrer'
                                                         }
-                                                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-foreground transition hover:border-primary/30 hover:text-primary"
+                                                        className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm text-primary shadow-none transition hover:border-primary/35 hover:bg-primary/10 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:hover:bg-background/80"
                                                     >
                                                         <Icon className="size-4" />
                                                         {label}
@@ -209,13 +206,13 @@ export default function PublicProfile({
                                         {creatorFacts.map((fact) => (
                                             <Card
                                                 key={fact.label}
-                                                className="rounded-[1.35rem] border-white/10 bg-black/[0.14] py-0 shadow-none"
+                                                className="rounded-[1.35rem] border border-primary/18 bg-[#f5f1ff] py-0 shadow-none dark:border-white/10 dark:bg-background/55"
                                             >
                                                 <CardContent className="space-y-2 px-4 py-4">
-                                                    <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                                                    <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500 dark:text-muted-foreground">
                                                         {fact.label}
                                                     </p>
-                                                    <p className="text-sm font-medium text-foreground">
+                                                    <p className="text-sm font-medium text-slate-950 dark:text-foreground">
                                                         {fact.value}
                                                     </p>
                                                 </CardContent>
@@ -242,7 +239,7 @@ export default function PublicProfile({
                         </div>
 
                         {projects.length === 0 ? (
-                            <div className="rounded-[1.5rem] border border-dashed bg-card/70 p-10 text-center text-sm text-muted-foreground">
+                            <div className="rounded-[1.5rem] border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-sm text-muted-foreground dark:border-white/10 dark:bg-card/70">
                                 No public projects yet.
                             </div>
                         ) : (

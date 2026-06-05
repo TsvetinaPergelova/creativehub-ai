@@ -64,7 +64,12 @@ export default function SaveProjectButton({
         <Button
             type="button"
             variant={isSaved ? 'secondary' : 'outline'}
-            className={className}
+            className={[
+                'rounded-full border-primary/35 text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:hover:bg-background/80 dark:hover:text-foreground',
+                className,
+            ]
+                .filter(Boolean)
+                .join(' ')}
             size={compact ? 'sm' : 'default'}
             onClick={toggleSavedProject}
             disabled={processing}

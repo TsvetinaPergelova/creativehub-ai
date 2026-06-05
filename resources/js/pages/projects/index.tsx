@@ -149,7 +149,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
             <Head title="Projects" />
 
             <div className="space-y-6 p-4 sm:space-y-7 sm:p-6">
-                <ProjectSection className="relative overflow-hidden rounded-[1.75rem] border-primary/18 bg-[#faf7ff] px-4 py-4 shadow-[0_24px_64px_rgba(99,102,241,0.07)] sm:px-5 sm:py-5 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[0_30px_120px_rgba(0,0,0,0.24)]">
+                <ProjectSection className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white px-4 py-4 shadow-none sm:px-5 sm:py-5 dark:border-white/10 dark:bg-white/[0.03] dark:shadow-none">
                     <div className="space-y-4 sm:hidden">
                         <div className="space-y-1.5">
                             <p className="text-[11px] tracking-[0.28em] text-slate-500 uppercase dark:text-muted-foreground">
@@ -171,7 +171,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                         </div>
 
                         <div className="grid grid-cols-2 gap-2.5">
-                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border-primary/16 bg-white/84 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-2 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.18em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Total
                                 </p>
@@ -179,7 +179,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     {totalProjects}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border-primary/16 bg-white/84 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-2 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.18em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Attention
                                 </p>
@@ -187,7 +187,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     {attentionProjects}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border-primary/16 bg-white/84 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-2 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.18em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Published
                                 </p>
@@ -195,7 +195,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     {publishedProjects}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border-primary/16 bg-white/84 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[5rem] flex-col justify-between rounded-[1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-2 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.18em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Client
                                 </p>
@@ -231,7 +231,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                         </div>
 
                         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border-primary/16 bg-white/84 px-3 py-1.5 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-1.5 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.2em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Total
                                 </p>
@@ -239,7 +239,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     {totalProjects}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border-primary/16 bg-white/84 px-3 py-1.5 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-1.5 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.2em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Needs attention
                                 </p>
@@ -247,7 +247,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     {attentionProjects}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border-primary/16 bg-white/84 px-3 py-1.5 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-1.5 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.2em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Published
                                 </p>
@@ -255,7 +255,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     {publishedProjects}
                                 </p>
                             </ProjectInsetPanel>
-                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border-primary/16 bg-white/84 px-3 py-1.5 shadow-[0_10px_24px_rgba(15,23,42,0.05)] dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
+                            <ProjectInsetPanel className="flex h-[6.35rem] flex-col justify-between rounded-[1.1rem] border border-primary/16 bg-[#f5f1ff] px-3 py-1.5 shadow-none dark:border-white/10 dark:bg-black/[0.16] dark:shadow-none">
                                 <p className="text-[10px] tracking-[0.2em] text-slate-500 uppercase dark:text-muted-foreground">
                                     Client
                                 </p>
@@ -295,7 +295,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     setQuery(event.target.value)
                                 }
                                 placeholder="Search projects..."
-                                className="h-11 rounded-full border-primary/20 bg-white pr-4 pl-11 text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] placeholder:text-slate-400 focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:placeholder:text-muted-foreground dark:focus-visible:border-ring"
+                                className="h-11 rounded-full border-primary/20 bg-[#f5f1ff] pr-4 pl-11 text-slate-900 shadow-none placeholder:text-slate-400 focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:placeholder:text-muted-foreground dark:focus-visible:border-ring"
                             />
                         </div>
 
@@ -306,7 +306,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     setStatusFilter(value as StatusFilter)
                                 }
                             >
-                                <SelectTrigger className="h-11 w-full rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                <SelectTrigger className="h-11 w-full rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                     <div className="flex items-center gap-2">
                                         <CircleDot className="size-4 text-slate-400 dark:text-muted-foreground" />
                                         <SelectValue placeholder="Status" />
@@ -335,7 +335,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     )
                                 }
                             >
-                                <SelectTrigger className="h-11 w-full rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                <SelectTrigger className="h-11 w-full rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                     <div className="flex items-center gap-2">
                                         <Eye className="size-4 text-slate-400 dark:text-muted-foreground" />
                                         <SelectValue placeholder="Visibility" />
@@ -365,7 +365,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     setModeFilter(value as ModeFilter)
                                 }
                             >
-                                <SelectTrigger className="h-11 w-full rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                <SelectTrigger className="h-11 w-full rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                     <div className="flex items-center gap-2">
                                         <LayoutGrid className="size-4 text-slate-400 dark:text-muted-foreground" />
                                         <SelectValue placeholder="Mode" />
@@ -398,7 +398,7 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                                     setSort(value as SortOption)
                                 }
                             >
-                                <SelectTrigger className="h-11 w-full rounded-full border-primary/20 bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-inherit dark:focus-visible:border-ring">
+                                <SelectTrigger className="h-11 w-full rounded-full border-primary/35 bg-white text-primary shadow-none hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus-visible:border-primary/50 dark:border-white/10 dark:bg-background/60 dark:text-foreground dark:shadow-none dark:hover:bg-background/80 dark:hover:text-foreground dark:focus-visible:border-ring">
                                     <div className="flex items-center gap-2">
                                         <SlidersHorizontal className="size-4 text-slate-400 dark:text-muted-foreground" />
                                         <SelectValue placeholder="Sort" />
@@ -422,17 +422,6 @@ export default function ProjectsIndex({ projects }: { projects: Project[] }) {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between dark:text-muted-foreground">
-                        <p>
-                            Showing {filteredProjects.length} of {totalProjects}{' '}
-                            project{totalProjects === 1 ? '' : 's'}.
-                        </p>
-                        {hasActiveFilters ? (
-                            <p>Filters are shaping the library view.</p>
-                        ) : (
-                            <p>The full workspace library is visible.</p>
-                        )}
-                    </div>
                 </ProjectSection>
 
                 {projects.length === 0 ? (
